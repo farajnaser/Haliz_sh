@@ -90,17 +90,12 @@ export default async function ReportsPage() {
     });
   });
 
-  // 5. Final calculation: Total Profit (for display) should include Capital + Net Profit share
-  // And Remaining = (Capital + Net Profit) - Total Already Paid
+  // 5. Final calculation: Total Entitled = Capital Returned (Wholesale) + Net Profit share
+  // And Remaining = Total Entitled - Total Already Paid
   Object.keys(reportMap).forEach(partnerId => {
     const data = reportMap[partnerId];
-    // We add capital to totalProfit because user wants "Capital + Profit" as the entitled amount
-    // But we check if sales > 0 to entitle capital as per previous rule
-    if (data.totalSalesCount > 0) {
-      data.totalEntitled = data.totalCapital + data.totalProfit;
-    } else {
-      data.totalEntitled = 0;
-    }
+    // Capital is now returned per item (represented by totalWholesale)
+    data.totalEntitled = data.totalWholesale + data.totalProfit;
     data.totalRemaining = Math.max(0, data.totalEntitled - data.totalPaid);
   });
 
