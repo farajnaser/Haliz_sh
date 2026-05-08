@@ -8,12 +8,12 @@ export async function PUT(
   try {
     const { itemId } = await params;
     const body = await req.json();
-    const { isDiscounted, soldStatus } = body;
+    const { discountAmount, soldStatus } = body;
 
     const item = await prisma.orderItem.update({
       where: { id: itemId },
       data: {
-        isDiscounted: isDiscounted !== undefined ? isDiscounted : undefined,
+        discountAmount: discountAmount !== undefined ? discountAmount : undefined,
         soldStatus: soldStatus !== undefined ? soldStatus : undefined,
       },
     });

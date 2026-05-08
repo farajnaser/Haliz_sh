@@ -17,7 +17,7 @@ interface OrderItem {
   id: string;
   quantity: number;
   price: number;
-  isDiscounted: boolean;
+  discountAmount: number;
   soldStatus: string;
   product: { 
     name: string; 
@@ -182,23 +182,25 @@ export default function OrdersClient({ initialOrders, partners }: { initialOrder
                               </div>
                               <div className="text-left">
                                 <span className="text-sm font-black block text-pink-600">{formatPrice(item.price * item.quantity)}</span>
-                                {item.isDiscounted && (
-                                  <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">خصم</span>
+                                {item.discountAmount > 0 && (
+                                  <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">
+                                    خصم {formatPrice(item.discountAmount)}
+                                  </span>
                                 )}
                               </div>
                             </div>
                             
                             {/* Item Actions */}
-                            <div className="flex items-center gap-3 pt-2 border-t border-pink-50/50">
-                              <div className="flex items-center gap-2">
-                                <input 
-                                  type="checkbox" 
-                                  id={`discount-${item.id}`}
-                                  checked={item.isDiscounted}
-                                  onChange={(e) => updateItemStatus(order.id, item.id, { isDiscounted: e.target.checked })}
-                                  className="w-4 h-4 accent-pink-500"
+                            <div className="flex items-center gap-4 pt-2 border-t border-pink-50/50">
+                              <div className="flex items-center gap-2 flex-1 max-w-[120px]">
+                                <span className="text-[10px] font-bold text-[#a0848f] whitespace-nowrap">الخصم:</span>
+                                <Input 
+                                  type="number"
+                                  className="h-7 text-[10px] px-2 border-pink-100 rounded-lg focus:ring-pink-200"
+                                  value={item.discountAmount || ""}
+                                  onChange={(e) => updateItemStatus(order.id, item.id, { discountAmount: parseFloat(e.target.value) || 0 })}
+                                  placeholder="0"
                                 />
-                                <label htmlFor={`discount-${item.id}`} className="text-[10px] font-bold text-[#a0848f]">بيع بتخفيض</label>
                               </div>
                               
                               <div className="mr-auto flex gap-1">
