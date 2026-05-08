@@ -150,7 +150,7 @@ export default function CategoriesClient({ initialCategories }: { initialCategor
               <Input {...register("image")} placeholder="https://..." />
             </div>
             <div className="flex gap-3 pt-2">
-              <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-pink-500 to-rose-600 text-white">
+              <Button type="submit" disabled={isSubmitting} className="bg-pink-500 text-white hover:bg-pink-600">
                 {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : editing ? "حفظ" : "إضافة"}
               </Button>
               <Button type="button" variant="outline" onClick={() => setIsFormOpen(false)}>إلغاء</Button>

@@ -469,7 +469,7 @@ export default function ProductForm({
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="bg-gradient-to-r from-pink-500 to-rose-600 text-white hover:from-pink-600 hover:to-rose-700 min-w-[120px]"
+          className="bg-pink-500 text-white hover:bg-pink-600 min-w-[120px]"
         >
           {isSubmitting ? (
             <Loader2 className="w-4 h-4 animate-spin" />

@@ -141,7 +141,7 @@ export default function SettingsClient({ settings }: { settings: Settings }) {
         </CardContent>
       </Card>
 
-      <Button type="submit" disabled={isSaving} className="bg-gradient-to-r from-pink-500 to-rose-600 text-white gap-2">
+      <Button type="submit" disabled={isSaving} className="bg-pink-500 text-white hover:bg-pink-600 gap-2">
         {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
         حفظ الإعدادات
       </Button>

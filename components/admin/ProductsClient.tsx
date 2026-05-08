@@ -133,7 +133,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
         </div>
         <Button
           onClick={handleAdd}
-          className="bg-gradient-to-r from-pink-500 to-rose-600 text-white hover:from-pink-600 hover:to-rose-700 gap-2 shadow-lg shadow-pink-200 dark:shadow-none"
+          className="bg-pink-500 text-white hover:bg-pink-600 gap-2 shadow-sm"
         >
           <Plus className="w-4 h-4" />
           إضافة منتج

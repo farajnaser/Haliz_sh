@@ -125,7 +125,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         <div className="flex flex-col sm:flex-row gap-3">
           <Button
             size="lg"
-            className="flex-1 bg-gradient-to-r from-pink-500 to-rose-600 text-white hover:from-pink-600 hover:to-rose-700 rounded-2xl gap-2 py-6 text-base"
+            className="flex-1 bg-pink-500 text-white hover:bg-pink-600 rounded-2xl gap-2 py-6 text-base"
             disabled={product.stock === 0}
             onClick={handleAddToCart}
           >
