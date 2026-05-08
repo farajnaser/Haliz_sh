@@ -319,8 +319,10 @@ export default function ProductsClient({ initialProducts, categories, partners }
                               const totalContribution = product.owners.reduce((acc, o) => acc + o.amount, 0);
                               return product.owners.map((o, idx) => {
                                 const sharePercent = totalContribution > 0 ? (o.amount / totalContribution) : 0;
-                                // Amount due = Capital Investment + Share of Total Profit
-                                const partnerEarned = o.amount + ((product.totalSalesProfit || 0) * sharePercent);
+                                // Amount due = Capital Investment + Share of Total Profit (Only if at least one item is sold)
+                                const partnerEarned = (product.totalSalesRevenue || 0) > 0 
+                                  ? (o.amount + ((product.totalSalesProfit || 0) * sharePercent)) 
+                                  : 0;
                                 const partnerPaid = o.paidProfit || 0;
                                 const partnerRemaining = partnerEarned - partnerPaid;
 
