@@ -28,6 +28,8 @@ export interface Product {
     amount: number; 
     partner?: { name: string | null; email: string | null } 
   }[];
+  totalSalesRevenue?: number;
+  totalSalesProfit?: number;
   createdAt: Date;
 }
 

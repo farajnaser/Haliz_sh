@@ -9,6 +9,13 @@ export default async function AdminProductsPage() {
         createdBy: { select: { name: true, email: true } },
         owners: { 
           include: { partner: true } 
+        },
+        orderItems: {
+          where: {
+            order: {
+              status: { not: "CANCELLED" }
+            }
+          }
         }
       },
       orderBy: { createdAt: "desc" },
@@ -16,5 +23,18 @@ export default async function AdminProductsPage() {
     prisma.category.findMany({ orderBy: { name: "asc" } }),
     prisma.partner.findMany({ select: { id: true, name: true } })
   ]);
-  return <ProductsClient initialProducts={products} categories={categories} partners={partners} />;
+
+  // Calculate revenue per product to pass to client
+  const productsWithRevenue = products.map(p => {
+    const totalSalesRevenue = p.orderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    const totalSalesProfit = p.orderItems.reduce((acc, item) => acc + ((item.price - p.wholesalePrice) * item.quantity), 0);
+    
+    return {
+      ...p,
+      totalSalesRevenue,
+      totalSalesProfit
+    };
+  });
+
+  return <ProductsClient initialProducts={productsWithRevenue} categories={categories} partners={partners} />;
 }

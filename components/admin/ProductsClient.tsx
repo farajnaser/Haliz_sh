@@ -244,15 +244,34 @@ export default function ProductsClient({ initialProducts, categories, partners }
                           {statusLabels[product.status]}
                         </span>
                       </td>
-                      {/* Partners */}
+                      {/* Partners with Revenue Shares */}
                       <td className="px-4 py-3">
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-2">
                           {product.owners && product.owners.length > 0 ? (
-                            product.owners.map((o, idx) => (
-                              <span key={idx} className="text-xs font-bold text-pink-600 bg-pink-50 px-2 py-0.5 rounded-full w-fit">
-                                {o.partner?.name || "شريك"}
-                              </span>
-                            ))
+                            (() => {
+                              const totalContribution = product.owners.reduce((acc, o) => acc + o.amount, 0);
+                              return product.owners.map((o, idx) => {
+                                const sharePercent = totalContribution > 0 ? (o.amount / totalContribution) : 0;
+                                const partnerRevenue = (product.totalSalesRevenue || 0) * sharePercent;
+                                const partnerProfit = (product.totalSalesProfit || 0) * sharePercent;
+
+                                return (
+                                  <div key={idx} className="flex flex-col bg-pink-50/50 p-2 rounded-lg border border-pink-100/50 min-w-[120px]">
+                                    <span className="text-xs font-bold text-pink-700">{o.partner?.name || "شريك"}</span>
+                                    <div className="flex flex-col text-[10px] text-muted-foreground mt-1 gap-0.5">
+                                      <div className="flex justify-between">
+                                        <span>إيراد:</span>
+                                        <span className="text-pink-600 font-medium">{formatPrice(partnerRevenue)}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span>ربح:</span>
+                                        <span className="text-green-600 font-bold">{formatPrice(partnerProfit)}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              });
+                            })()
                           ) : (
                             <span className="text-[10px] text-muted-foreground italic">لا يوجد شركاء</span>
                           )}
