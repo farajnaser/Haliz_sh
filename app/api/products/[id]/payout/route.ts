@@ -41,6 +41,7 @@ export async function PATCH(
         },
         orderItems: {
           where: {
+            soldStatus: "SOLD",
             order: {
               status: { not: "CANCELLED" }
             }
@@ -51,7 +52,7 @@ export async function PATCH(
 
     // Re-calculate the stats for the UI
     const totalSalesRevenue = product?.orderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0) || 0;
-    const totalSalesProfit = product?.orderItems.reduce((acc, item) => acc + ((item.price - (product?.wholesalePrice || 0)) * item.quantity), 0) || 0;
+    const totalSalesProfit = product?.orderItems.reduce((acc, item) => acc + (((item.price - (item.discountAmount || 0)) - (product?.wholesalePrice || 0)) * item.quantity), 0) || 0;
 
     const productsWithRevenue = {
       ...product,

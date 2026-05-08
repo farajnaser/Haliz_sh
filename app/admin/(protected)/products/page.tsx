@@ -12,6 +12,7 @@ export default async function AdminProductsPage() {
         },
         orderItems: {
           where: {
+            soldStatus: "SOLD",
             order: {
               status: { not: "CANCELLED" }
             }
@@ -27,7 +28,7 @@ export default async function AdminProductsPage() {
   // Calculate revenue per product to pass to client
   const productsWithRevenue = products.map(p => {
     const totalSalesRevenue = p.orderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    const totalSalesProfit = p.orderItems.reduce((acc, item) => acc + ((item.price - p.wholesalePrice) * item.quantity), 0);
+    const totalSalesProfit = p.orderItems.reduce((acc, item) => acc + (((item.price - (item.discountAmount || 0)) - p.wholesalePrice) * item.quantity), 0);
     
     return {
       ...p,
