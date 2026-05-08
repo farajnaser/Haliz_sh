@@ -61,7 +61,17 @@ export async function POST(req: NextRequest) {
         })),
       },
     },
-    include: { items: { include: { product: true } } },
+    include: { 
+      items: { 
+        include: { 
+          product: { 
+            include: { 
+              owners: { include: { partner: true } } 
+            } 
+          } 
+        } 
+      } 
+    },
   });
 
   return NextResponse.json(order, { status: 201 });

@@ -484,7 +484,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
 
                     <div className="space-y-3">
                       {order.items.map(item => {
-                        const productPartners = item.product.owners.map(o => o.partner.name).join(" + ");
+                        const productPartners = item.product?.owners?.map((o: any) => o.partner?.name).filter(Boolean).join(" + ") || "";
                         return (
                           <div key={item.id} className={`bg-muted/30 p-4 rounded-2xl border ${item.soldStatus === 'SOLD' ? 'border-green-100' : 'border-pink-50'}`}>
                             <div className="flex justify-between items-start mb-3">
