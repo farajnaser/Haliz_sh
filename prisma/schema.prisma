@@ -107,12 +107,13 @@ model Settings {
 }
 
 model ProductOwner {
-  id        String  @id @default(cuid())
-  productId String
-  partnerId String
-  amount    Float // المبلغ الذي دفعه الشخص
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  id          String  @id @default(cuid())
+  productId   String
+  partnerId   String
+  amount      Float   // المبلغ الذي دفعه الشخص (المساهمة)
+  paidProfit  Float   @default(0) // المبالغ التي استلمها الشريك من الأرباح حتى الآن
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  partner     Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
 
   @@index([productId])
   @@index([partnerId])

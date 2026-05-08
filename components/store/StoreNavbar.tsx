@@ -47,59 +47,59 @@ function NavbarContent() {
   return (
     <>
       <header 
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-white/80 backdrop-blur-md shadow-sm shadow-pink-100/50 py-3" : "bg-white py-5"
+        className={`sticky top-0 z-50 transition-all duration-500 ${
+          scrolled ? "glass border-b border-pink-50 py-3 shadow-sm" : "bg-white py-6"
         }`} 
         dir="rtl"
       >
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between">
           
-          {/* Right side (RTL left) - Icons */}
-          <div className="flex items-center gap-5 text-pink-400">
+          {/* Right side - Icons */}
+          <div className="flex items-center gap-6 text-[#1a1a1a]">
             <button 
               onClick={() => setSearchOpen(true)}
-              className="hover:text-pink-500 transition-colors hidden sm:block"
+              className="hover:text-[#ff9ecb] transition-all duration-300 hidden sm:block hover:scale-110"
             >
-              <Search className="w-5 h-5 stroke-[1.5]" />
+              <Search className="w-6 h-6 stroke-[1.5]" />
             </button>
             <button
               onClick={() => openCart()}
-              className="relative hover:text-pink-500 transition-colors flex items-center gap-1 group"
+              className="relative hover:text-[#ff9ecb] transition-all duration-300 flex items-center gap-1 group hover:scale-110"
             >
-              <ShoppingBag className="w-5 h-5 stroke-[1.5] group-hover:scale-110 transition-transform" />
+              <ShoppingBag className="w-6 h-6 stroke-[1.5]" />
               {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full bg-pink-500 text-white shadow-sm shadow-pink-200">
+                <span className="absolute -top-2 -right-2 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full bg-[#ff85ba] text-white shadow-lg">
                   {totalItems}
                 </span>
               )}
             </button>
-            <button className="hover:text-pink-500 transition-colors hidden sm:block">
-              <Heart className="w-5 h-5 stroke-[1.5]" />
+            <button className="hover:text-[#ff9ecb] transition-all duration-300 hidden sm:block hover:scale-110">
+              <Heart className="w-6 h-6 stroke-[1.5]" />
             </button>
           </div>
 
           {/* Center - Logo */}
           <Link 
             href="/" 
-            className="text-3xl font-light tracking-[0.3em] uppercase text-pink-950 mx-auto absolute left-1/2 -translate-x-1/2 flex items-center gap-2"
+            className="text-4xl font-black tracking-tighter text-[#ff9ecb] mx-auto absolute left-1/2 -translate-x-1/2 flex items-center gap-2 drop-shadow-sm"
           >
             HALIZ
           </Link>
 
-          {/* Left side (RTL right) - Mobile Menu */}
-          <div className="flex items-center gap-4 text-pink-400">
+          {/* Left side - Mobile Menu */}
+          <div className="flex items-center gap-4 text-[#1a1a1a]">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="hover:text-pink-500 transition-colors sm:hidden"
+              className="hover:text-[#ff9ecb] transition-all duration-300 sm:hidden"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6 stroke-[1.5]" /> : <Menu className="w-6 h-6 stroke-[1.5]" />}
+              {mobileMenuOpen ? <X className="w-7 h-7 stroke-[1.5]" /> : <Menu className="w-7 h-7 stroke-[1.5]" />}
             </button>
           </div>
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className={`hidden sm:block transition-all duration-300 ${scrolled ? "h-0 overflow-hidden opacity-0" : "mt-6"}`}>
-          <ul className="flex items-center justify-center gap-10">
+        <nav className={`hidden sm:block transition-all duration-500 overflow-hidden ${scrolled ? "h-0 opacity-0" : "mt-8"}`}>
+          <ul className="flex items-center justify-center gap-12">
             {navLinks.map((link) => {
               const linkUrl = new URL(link.href, "http://x.com");
               const linkCat = linkUrl.searchParams.get("cat");
@@ -109,12 +109,12 @@ function NavbarContent() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className={`relative text-sm font-medium transition-all group ${
-                      isActive ? "text-pink-600" : "text-pink-900/60 hover:text-pink-600"
+                    className={`relative text-xs font-black uppercase tracking-[0.2em] transition-all duration-300 group ${
+                      isActive ? "text-[#ff85ba]" : "text-gray-400 hover:text-[#ff9ecb]"
                     }`}
                   >
                     {link.label}
-                    <span className={`absolute -bottom-1 left-0 w-full h-[1px] bg-pink-300 transform origin-right transition-transform duration-300 ${
+                    <span className={`absolute -bottom-2 left-0 w-full h-[2px] bg-[#ff9ecb] transform origin-center transition-transform duration-500 ${
                       isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                     }`} />
                   </Link>
@@ -123,6 +123,7 @@ function NavbarContent() {
             })}
           </ul>
         </nav>
+
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (

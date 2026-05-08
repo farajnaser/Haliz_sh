@@ -31,13 +31,13 @@ export default function ProductCard({ product }: Props) {
   return (
     <div 
       onClick={handleCardClick}
-      className="group relative flex flex-col bg-white transition-all duration-300 cursor-pointer"
+      className="group relative flex flex-col bg-transparent transition-all duration-500 cursor-pointer"
     >
       {/* Image Container */}
-      <div className="relative aspect-[4/5] bg-[#f5f5f5] overflow-hidden mb-4 rounded-3xl">
-        {/* HALIZ Tag - PINK */}
-        <div className="absolute top-4 left-4 z-20 bg-[#ff9ecb] px-3 py-1 text-[10px] font-black uppercase tracking-tighter text-white shadow-sm rounded-sm">
-          HALIZ
+      <div className="relative aspect-[3/4] bg-[#fafafa] overflow-hidden mb-5 rounded-[2.5rem] soft-shadow border border-pink-50/50">
+        {/* NEW Tag */}
+        <div className="absolute top-5 right-5 z-20 bg-white/90 backdrop-blur-md px-4 py-1.5 text-[10px] font-black uppercase tracking-widest text-[#ff85ba] rounded-full shadow-sm">
+          جديد
         </div>
         
         {image ? (
@@ -46,7 +46,7 @@ export default function ProductCard({ product }: Props) {
             alt={displayName}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-700"
+            className="object-cover group-hover:scale-110 transition-transform duration-1000"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -54,12 +54,12 @@ export default function ProductCard({ product }: Props) {
           </div>
         )}
 
-        {/* Quick Add Button */}
-        <div className="absolute inset-0 flex items-end justify-center p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-30">
+        {/* Quick Add Overlay */}
+        <div className="absolute inset-0 flex items-end justify-center p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 z-30 translate-y-4 group-hover:translate-y-0">
           <button
             onClick={(e) => {
               e.preventDefault();
-              e.stopPropagation(); // CRITICAL: Stop the card click from firing
+              e.stopPropagation();
               addItem({
                 id: product.id,
                 name: displayName,
@@ -67,8 +67,9 @@ export default function ProductCard({ product }: Props) {
                 image: image || "",
                 stock: 99,
               });
+              // toast.success("تم الإضافة للسلة");
             }}
-            className="w-full bg-white/90 backdrop-blur-md text-black py-3 rounded-xl text-xs font-bold shadow-lg flex items-center justify-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 hover:bg-[#ff9ecb] hover:text-white pointer-events-auto"
+            className="w-full bg-white text-black py-4 rounded-2xl text-[11px] font-black shadow-2xl flex items-center justify-center gap-2 hover:bg-[#ff9ecb] hover:text-white transition-all duration-300"
           >
             <ShoppingBag className="w-4 h-4" />
             أضيفي للسلة
@@ -77,17 +78,17 @@ export default function ProductCard({ product }: Props) {
       </div>
 
       {/* Info Container */}
-      <div className="flex flex-col text-center items-center px-2">
-        <h3 className="text-[13px] font-medium text-[#222] group-hover:text-pink-600 transition-colors leading-tight mb-1 line-clamp-1">
+      <div className="flex flex-col text-center items-center px-4 space-y-1">
+        <span className="text-[10px] text-[#ff85ba] font-black uppercase tracking-[0.2em]">
+          {product.category?.nameAr || product.category?.name || "HALIZ"}
+        </span>
+        
+        <h3 className="text-sm md:text-base font-bold text-[#1a1a1a] group-hover:text-[#ff9ecb] transition-colors leading-tight line-clamp-1">
           {displayName}
         </h3>
-        
-        <p className="text-[11px] text-[#999] mb-2 font-medium">
-          {product.category?.nameAr || product.category?.name || "HALIZ"}
-        </p>
 
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-[14px] font-bold text-[#111]">
+        <div className="pt-1">
+          <span className="text-base md:text-lg font-black text-[#1a1a1a]">
             {formatPrice(product.retailPrice)}
           </span>
         </div>

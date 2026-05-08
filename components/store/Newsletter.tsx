@@ -14,28 +14,30 @@ const TIKTOK_ICON = (
 
 export default function Newsletter() {
   return (
-    <section className="py-24" dir="rtl">
+    <section className="py-32" dir="rtl">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="bg-pink-50 rounded-[4rem] p-12 sm:p-20 relative overflow-hidden flex flex-col items-center text-center">
+        <div className="bg-[#fff0f6] rounded-[4rem] p-16 md:p-24 relative overflow-hidden flex flex-col items-center text-center soft-shadow">
           {/* Decorative gradients */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-pink-200/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-pink-200/40 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#ff9ecb]/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#ff85ba]/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
           
-          <div className="relative z-10 max-w-2xl space-y-10">
-            <div className="space-y-4">
-              <span className="text-pink-500 font-bold tracking-[0.2em] text-xs uppercase">انضمي إلينا</span>
-              <h2 className="text-3xl sm:text-5xl font-light text-pink-950 leading-tight">اشتركي في عالم HALIZ</h2>
-              <p className="text-pink-900/60 font-medium text-lg">كوني أول من يعرف عن مجموعاتنا الجديدة، العروض الحصرية، ونصائح الجمال من خبرائنا.</p>
+          <div className="relative z-10 max-w-3xl space-y-12">
+            <div className="space-y-6">
+              <span className="section-subtitle">انضمي لنخبة HALIZ</span>
+              <h2 className="section-title !mb-0 !leading-tight text-4xl md:text-6xl">اشتركي في عالم الجمال</h2>
+              <p className="text-gray-400 font-bold text-lg md:text-xl opacity-80 leading-relaxed">
+                كوني أول من يعرف عن مجموعاتنا الجديدة، العروض الحصرية، ونصائح الجمال من خبرائنا.
+              </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-6 w-full justify-center">
+            <div className="flex flex-col sm:flex-row gap-8 w-full justify-center pt-4">
               <a 
                 href="https://www.facebook.com/share/18Pwmj1cvH/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="bg-white text-pink-600 border border-pink-100 px-10 py-5 rounded-full font-bold shadow-xl shadow-pink-100 hover:bg-pink-500 hover:text-white hover:border-pink-500 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3 group"
+                className="btn-haliz-outline !px-12 !py-5 text-base flex items-center justify-center gap-3"
               >
-                <span className="group-hover:scale-110 transition-transform">{FACEBOOK_ICON}</span>
+                <span className="scale-125">{FACEBOOK_ICON}</span>
                 تابعينا على فيسبوك
               </a>
               
@@ -43,14 +45,16 @@ export default function Newsletter() {
                 href="https://www.tiktok.com/@haliz.sh6?_r=1&_t=ZS-96B7G0VXPc1" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="bg-pink-500 text-white px-10 py-5 rounded-full font-bold shadow-xl shadow-pink-200 hover:bg-pink-600 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3 group"
+                className="btn-haliz !px-12 !py-5 text-base flex items-center justify-center gap-3"
               >
-                <span className="group-hover:scale-110 transition-transform">{TIKTOK_ICON}</span>
+                <span className="scale-125">{TIKTOK_ICON}</span>
                 تابعينا على تيك توك
               </a>
             </div>
             
-            <p className="text-[10px] text-pink-300 font-bold uppercase tracking-widest pt-4">بالانضمام، أنتِ توافقين على سياسة الخصوصية الخاصة بنا</p>
+            <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.3em] pt-8 opacity-50">
+              بالانضمام، أنتِ توافقين على سياسة الخصوصية الخاصة بنا
+            </p>
           </div>
         </div>
       </div>

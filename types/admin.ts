@@ -26,6 +26,7 @@ export interface Product {
   owners?: { 
     partnerId: string; 
     amount: number; 
+    paidProfit: number;
     partner?: { name: string | null; email: string | null } 
   }[];
   totalSalesRevenue?: number;

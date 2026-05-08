@@ -64,6 +64,46 @@ export default function ProductsClient({ initialProducts, categories, partners }
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Payout states
+  const [isPayoutDialogOpen, setIsPayoutDialogOpen] = useState(false);
+  const [isPayoutSubmitting, setIsPayoutSubmitting] = useState(false);
+  const [payoutData, setPayoutData] = useState<{
+    productId: string;
+    partnerId: string;
+    partnerName: string;
+    currentPaid: number;
+    earned: number;
+  } | null>(null);
+  const [payoutAmount, setPayoutAmount] = useState<string>("");
+
+  const handlePayout = async () => {
+    if (!payoutData || !payoutAmount) return;
+    setIsPayoutSubmitting(true);
+    try {
+      const res = await fetch(`/api/products/${payoutData.productId}/payout`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          partnerId: payoutData.partnerId,
+          amount: parseFloat(payoutAmount)
+        })
+      });
+
+      if (!res.ok) throw new Error();
+      
+      const updatedProduct = await res.json();
+      setProducts((prev) => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
+      
+      toast.success("تم تسجيل الدفعة بنجاح");
+      setIsPayoutDialogOpen(false);
+      setPayoutAmount("");
+    } catch {
+      toast.error("حدث خطأ أثناء تسجيل الدفعة");
+    } finally {
+      setIsPayoutSubmitting(false);
+    }
+  };
+
   const filtered = products.filter((p) => {
     const matchesSearch = 
       p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -244,7 +284,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
                           {statusLabels[product.status]}
                         </span>
                       </td>
-                      {/* Partners with Revenue Shares */}
+                      {/* Partners with Revenue & Payout Shares */}
                       <td className="px-4 py-3">
                         <div className="flex flex-col gap-2">
                           {product.owners && product.owners.length > 0 ? (
@@ -252,20 +292,45 @@ export default function ProductsClient({ initialProducts, categories, partners }
                               const totalContribution = product.owners.reduce((acc, o) => acc + o.amount, 0);
                               return product.owners.map((o, idx) => {
                                 const sharePercent = totalContribution > 0 ? (o.amount / totalContribution) : 0;
-                                const partnerRevenue = (product.totalSalesRevenue || 0) * sharePercent;
-                                const partnerProfit = (product.totalSalesProfit || 0) * sharePercent;
+                                const partnerEarned = (product.totalSalesProfit || 0) * sharePercent;
+                                const partnerPaid = o.paidProfit || 0;
+                                const partnerRemaining = partnerEarned - partnerPaid;
 
                                 return (
-                                  <div key={idx} className="flex flex-col bg-pink-50/50 p-2 rounded-lg border border-pink-100/50 min-w-[120px]">
-                                    <span className="text-xs font-bold text-pink-700">{o.partner?.name || "شريك"}</span>
-                                    <div className="flex flex-col text-[10px] text-muted-foreground mt-1 gap-0.5">
+                                  <div key={idx} className="flex flex-col bg-white p-3 rounded-2xl border border-pink-100/50 soft-shadow min-w-[160px]">
+                                    <div className="flex justify-between items-center mb-2">
+                                      <span className="text-xs font-black text-pink-700">{o.partner?.name || "شريك"}</span>
+                                      <button 
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setPayoutData({
+                                            productId: product.id,
+                                            partnerId: o.partnerId,
+                                            partnerName: o.partner?.name || "الشريك",
+                                            currentPaid: partnerPaid,
+                                            earned: partnerEarned
+                                          });
+                                          setIsPayoutDialogOpen(true);
+                                        }}
+                                        className="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full hover:bg-pink-500 hover:text-white transition-all font-bold"
+                                      >
+                                        تسجيل دفعة
+                                      </button>
+                                    </div>
+                                    <div className="flex flex-col text-[10px] gap-1">
                                       <div className="flex justify-between">
-                                        <span>إيراد:</span>
-                                        <span className="text-pink-600 font-medium">{formatPrice(partnerRevenue)}</span>
+                                        <span className="text-gray-400">إجمالي الربح:</span>
+                                        <span className="font-bold">{formatPrice(partnerEarned)}</span>
                                       </div>
                                       <div className="flex justify-between">
-                                        <span>ربح:</span>
-                                        <span className="text-green-600 font-bold">{formatPrice(partnerProfit)}</span>
+                                        <span className="text-blue-400">المستلم:</span>
+                                        <span className="font-bold text-blue-600">{formatPrice(partnerPaid)}</span>
+                                      </div>
+                                      <div className="flex justify-between pt-1 border-t border-pink-50 mt-1">
+                                        <span className="text-pink-400">المتبقي:</span>
+                                        <span className={`font-black ${partnerRemaining > 0 ? 'text-green-600' : 'text-gray-300'}`}>
+                                          {formatPrice(partnerRemaining)}
+                                        </span>
                                       </div>
                                     </div>
                                   </div>
@@ -344,6 +409,56 @@ export default function ProductsClient({ initialProducts, categories, partners }
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Payout Dialog */}
+      <Dialog open={isPayoutDialogOpen} onOpenChange={setIsPayoutDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]" dir="rtl">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-black text-pink-700 flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              تسجيل دفعة أرباح
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-6 py-4">
+            <div className="bg-pink-50/50 p-4 rounded-2xl border border-pink-100">
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-sm font-bold text-gray-500">الشريك:</span>
+                <span className="text-sm font-black text-pink-900">{payoutData?.partnerName}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-bold text-gray-500">إجمالي الأرباح المستحقة:</span>
+                <span className="text-sm font-black text-green-600">{formatPrice(payoutData?.earned || 0)}</span>
+              </div>
+              <div className="flex justify-between items-center mt-1 pt-1 border-t border-pink-100/50">
+                <span className="text-sm font-bold text-gray-500">تم استلام سابقاً:</span>
+                <span className="text-sm font-black text-blue-600">{formatPrice(payoutData?.currentPaid || 0)}</span>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-black text-pink-900">المبلغ المراد تسجيله كمدفوع (دينار ليبي):</label>
+              <Input
+                type="number"
+                placeholder="أدخل المبلغ..."
+                value={payoutAmount}
+                onChange={(e) => setPayoutAmount(e.target.value)}
+                className="rounded-xl border-pink-100 focus:ring-pink-200"
+              />
+              <p className="text-[10px] text-gray-400 font-bold italic">
+                * سيتم تحديث إجمالي المبلغ المستلم بإضافة هذا المبلغ.
+              </p>
+            </div>
+
+            <Button 
+              onClick={handlePayout}
+              disabled={isPayoutSubmitting || !payoutAmount}
+              className="w-full btn-haliz"
+            >
+              {isPayoutSubmitting ? "جاري الحفظ..." : "تأكيد الدفع"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

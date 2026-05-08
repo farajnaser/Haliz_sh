@@ -14,63 +14,66 @@ const TIKTOK_ICON = (
 
 export default function StoreFooter() {
   return (
-    <footer className="bg-pink-50/50 pt-16 pb-8 border-t border-pink-100" dir="rtl">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 items-start text-pink-950">
+    <footer className="bg-white pt-20 pb-10 border-t border-pink-50" dir="rtl">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16 items-start">
         
         {/* Right Section - Logo and Description */}
         <div className="flex flex-col items-center md:items-start text-center md:text-right">
-          <h2 className="text-4xl font-black tracking-tighter mb-6 uppercase text-black">HALIZ</h2>
-          <p className="text-xs leading-relaxed max-w-xs text-gray-500 font-medium">
-            عالم من الجمال والأناقة يجمع لكِ أرقى مستحضرات التجميل، العناية بالبشرة، والإكسسوارات الفاخرة التي تبرز سحركِ الخاص.
+          <h2 className="text-5xl font-black tracking-tighter mb-6 text-[#ff9ecb] drop-shadow-sm">HALIZ</h2>
+          <p className="text-sm leading-relaxed max-w-xs text-gray-400 font-medium italic">
+            عالم من الجمال والأناقة يجمع لكِ أرقى مستحضرات التجميل، العناية بالبشرة، والإكسسوارات الفاخرة.
           </p>
         </div>
 
         {/* Center Section - Links */}
-        <div className="flex justify-around md:justify-center md:gap-24 w-full">
+        <div className="flex justify-around md:justify-center md:gap-32 w-full pt-4">
           <div>
-            <h3 className="font-bold mb-6 text-sm text-pink-900 tracking-wide">الروابط المهمة</h3>
+            <h3 className="font-bold mb-8 text-xs text-gray-900 uppercase tracking-[0.3em]">الروابط</h3>
             <ul className="space-y-4">
-              <li><a href="/" className="text-sm text-pink-700/70 hover:text-pink-500 font-medium transition-colors">الرئيسية</a></li>
-              <li><a href="/products" className="text-sm text-pink-700/70 hover:text-pink-500 font-medium transition-colors">المتجر</a></li>
+              <li><a href="/" className="text-sm text-gray-400 hover:text-[#ff9ecb] font-bold transition-all duration-300">الرئيسية</a></li>
+              <li><a href="/products" className="text-sm text-gray-400 hover:text-[#ff9ecb] font-bold transition-all duration-300">المتجر</a></li>
             </ul>
           </div>
           <div>
-            <h3 className="font-bold mb-6 text-sm text-pink-900 tracking-wide">روابط المساعدة</h3>
-            <ul className="space-y-4 text-sm text-pink-700/70 font-medium">
-              <li><a href="#" className="hover:text-pink-500 transition-colors">من نحن</a></li>
-              <li><a href="#" className="hover:text-pink-500 transition-colors">سياسة الخصوصية</a></li>
-              <li><a href="#" className="hover:text-pink-500 transition-colors">الشروط والأحكام</a></li>
-              <li><a href="#" className="hover:text-pink-500 transition-colors">الاسترجاع</a></li>
+            <h3 className="font-bold mb-8 text-xs text-gray-900 uppercase tracking-[0.3em]">المساعدة</h3>
+            <ul className="space-y-4">
+              <li><a href="#" className="text-sm text-gray-400 hover:text-[#ff9ecb] font-bold transition-all duration-300">من نحن</a></li>
+              <li><a href="#" className="text-sm text-gray-400 hover:text-[#ff9ecb] font-bold transition-all duration-300">الخصوصية</a></li>
             </ul>
           </div>
         </div>
 
-        {/* Left Section - Libya & Social */}
-        <div className="flex flex-col items-center md:items-end justify-center h-full gap-6">
-          <div className="text-center md:text-right font-bold text-lg mb-2">
-            <span className="text-5xl font-black text-[#ff85ba] drop-shadow-md tracking-tighter" style={{ fontFamily: "Impact, sans-serif" }}>!Thank You</span><br/>
-            <div className="text-sm mt-3 block text-pink-700/80 font-bold leading-relaxed">
+        {/* Left Section - Libya & Social (Matching Image) */}
+        <div className="flex flex-col items-center md:items-end gap-10">
+          <div className="text-center md:text-right">
+            <h1 className="text-7xl font-black text-[#ff9ecb]/40 tracking-tighter select-none" style={{ fontFamily: "'Outfit', sans-serif" }}>
+              !Thank You
+            </h1>
+            <div className="text-xl mt-4 block text-[#ff85ba] font-black leading-tight tracking-tight">
               شحن لجميع مدن<br/>
               دولة ليبيا 🇱🇾
             </div>
           </div>
-          <div className="flex gap-4">
-            <a href="https://wa.me/218922612675" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-pink-100 bg-white flex items-center justify-center text-[#ff85ba] hover:bg-[#ff85ba] hover:text-white transition-all duration-300 shadow-sm shadow-pink-50">
-              <MessageCircle className="w-5 h-5" />
+          <div className="flex gap-6">
+            <a href="https://wa.me/218922612675" target="_blank" rel="noopener noreferrer" 
+               className="w-16 h-16 rounded-full border border-pink-100 bg-white flex items-center justify-center text-[#ff9ecb] hover:bg-pink-50 hover:scale-110 transition-all duration-500 soft-shadow">
+              <MessageCircle className="w-6 h-6" />
             </a>
-            <a href="https://www.facebook.com/share/18Pwmj1cvH/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-pink-100 bg-white flex items-center justify-center text-[#ff85ba] hover:bg-[#ff85ba] hover:text-white transition-all duration-300 shadow-sm shadow-pink-50">
+            <a href="https://www.facebook.com/share/18Pwmj1cvH/" target="_blank" rel="noopener noreferrer" 
+               className="w-16 h-16 rounded-full border border-pink-100 bg-white flex items-center justify-center text-[#ff9ecb] hover:bg-pink-50 hover:scale-110 transition-all duration-500 soft-shadow">
               {FACEBOOK_ICON}
             </a>
-            <a href="https://www.tiktok.com/@haliz.sh6?_r=1&_t=ZS-96B7G0VXPc1" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-pink-100 bg-white flex items-center justify-center text-[#ff85ba] hover:bg-[#ff85ba] hover:text-white transition-all duration-300 shadow-sm shadow-pink-50">
+            <a href="https://www.tiktok.com/@haliz.sh6?_r=1&_t=ZS-96B7G0VXPc1" target="_blank" rel="noopener noreferrer" 
+               className="w-16 h-16 rounded-full border border-pink-100 bg-white flex items-center justify-center text-[#ff9ecb] hover:bg-pink-50 hover:scale-110 transition-all duration-500 soft-shadow">
               {TIKTOK_ICON}
             </a>
           </div>
         </div>
       </div>
 
-      <div className="mt-16 pt-8 border-t border-pink-100/50 flex flex-col items-center justify-center text-center px-4">
-        <p className="text-[10px] text-gray-400 font-bold mb-4 uppercase tracking-widest">
-          © {new Date().getFullYear()} HALIZ. جميع الحقوق محفوظة
+      <div className="mt-24 pt-10 border-t border-gray-50 flex flex-col items-center justify-center text-center px-4">
+        <p className="text-[10px] text-gray-300 font-bold uppercase tracking-[0.5em]">
+          © {new Date().getFullYear()} HALIZ LUXURY STORE
         </p>
       </div>
     </footer>

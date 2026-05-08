@@ -9,8 +9,8 @@ const features = [
 
 export default function ServiceFeatures() {
   return (
-    <section className="py-16 border-t border-pink-50" dir="rtl">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+    <section className="py-24" dir="rtl">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8">
         {features.map((f) => {
           const Icon = f.icon;
           return (
@@ -18,11 +18,11 @@ export default function ServiceFeatures() {
               key={f.title} 
               className="flex flex-col items-center justify-center text-center group cursor-default"
             >
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-pink-50 text-pink-500 mb-5 group-hover:scale-110 group-hover:bg-pink-100 group-hover:text-pink-600 transition-all duration-500">
-                <Icon className="w-7 h-7 stroke-[1.5]" />
+              <div className="w-20 h-20 rounded-[2rem] flex items-center justify-center bg-[#fff0f6] text-[#ff9ecb] mb-6 group-hover:scale-110 group-hover:bg-[#ff9ecb] group-hover:text-white transition-all duration-700 soft-shadow border border-white">
+                <Icon className="w-8 h-8 stroke-[1.5]" />
               </div>
-              <h3 className="font-bold text-pink-950 text-base mb-2 tracking-wide">{f.title}</h3>
-              <p className="text-pink-700/60 text-sm leading-relaxed max-w-[160px] font-medium">{f.desc}</p>
+              <h3 className="font-black text-[#1a1a1a] text-lg mb-2 tracking-tight">{f.title}</h3>
+              <p className="text-gray-400 text-sm leading-relaxed max-w-[180px] font-bold opacity-70">{f.desc}</p>
             </div>
           );
         })}
