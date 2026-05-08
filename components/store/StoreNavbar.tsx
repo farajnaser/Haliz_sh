@@ -81,7 +81,7 @@ function NavbarContent() {
           {/* Center - Logo */}
           <Link 
             href="/" 
-            className="text-4xl font-black tracking-tighter text-[#ff9ecb] mx-auto absolute left-1/2 -translate-x-1/2 flex items-center gap-2 drop-shadow-sm"
+            className="text-4xl font-black tracking-tighter text-[#ff9ecb] mx-auto absolute left-1/2 -translate-x-1/2 flex items-center gap-2 drop-shadow-sm hover:scale-105 transition-all duration-500 hover:text-[#ff85ba] hover:drop-shadow-[0_0_15px_rgba(255,158,203,0.5)]"
           >
             HALIZ
           </Link>

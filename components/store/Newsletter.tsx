@@ -1,62 +1,36 @@
 "use client";
 
-const FACEBOOK_ICON = (
-  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-  </svg>
-);
-
-const TIKTOK_ICON = (
-  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-    <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-1.13-.31-2.34-.25-3.41.33-.71.38-1.27 1.03-1.51 1.8-.31.82-.2 1.69.25 2.46.35.61.92 1.09 1.58 1.35.81.33 1.68.38 2.53.21 1.25-.21 2.39-.96 2.73-2.16.14-.37.2-.75.2-1.14-.07-4.48-.04-8.96-.06-13.44z"/>
-  </svg>
-);
-
 export default function Newsletter() {
   return (
-    <section className="py-32" dir="rtl">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="bg-[#fff0f6] rounded-[4rem] p-16 md:p-24 relative overflow-hidden flex flex-col items-center text-center soft-shadow">
-          {/* Decorative gradients */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#ff9ecb]/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#ff85ba]/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
-          
-          <div className="relative z-10 max-w-3xl space-y-12">
-            <div className="space-y-6">
-              <span className="section-subtitle">انضمي لنخبة HALIZ</span>
-              <h2 className="section-title !mb-0 !leading-tight text-4xl md:text-6xl">اشتركي في عالم الجمال</h2>
-              <p className="text-gray-400 font-bold text-lg md:text-xl opacity-80 leading-relaxed">
-                كوني أول من يعرف عن مجموعاتنا الجديدة، العروض الحصرية، ونصائح الجمال من خبرائنا.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-8 w-full justify-center pt-4">
-              <a 
-                href="https://www.facebook.com/share/18Pwmj1cvH/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="btn-haliz-outline !px-12 !py-5 text-base flex items-center justify-center gap-3"
-              >
-                <span className="scale-125">{FACEBOOK_ICON}</span>
-                تابعينا على فيسبوك
-              </a>
-              
-              <a 
-                href="https://www.tiktok.com/@haliz.sh6?_r=1&_t=ZS-96B7G0VXPc1" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="btn-haliz !px-12 !py-5 text-base flex items-center justify-center gap-3"
-              >
-                <span className="scale-125">{TIKTOK_ICON}</span>
-                تابعينا على تيك توك
-              </a>
-            </div>
-            
-            <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.3em] pt-8 opacity-50">
-              بالانضمام، أنتِ توافقين على سياسة الخصوصية الخاصة بنا
-            </p>
-          </div>
+    <section className="py-32 px-6 bg-[#fff0f6]">
+      <div className="max-w-4xl mx-auto text-center space-y-12">
+        <div className="space-y-4">
+          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#ff9ecb]">انضمي لعالم هاليز</span>
+          <h2 className="text-4xl md:text-6xl font-black text-[#1a1a1a] tracking-tighter">
+            اشتركي ليصلك كل جديد
+          </h2>
+          <p className="text-gray-500 font-bold text-lg max-w-xl mx-auto opacity-80 leading-relaxed">
+            كوني أول من يعرف عن أحدث المجموعات، العروض الحصرية، ونصائح الجمال من خبرائنا.
+          </p>
         </div>
+
+        <form className="relative max-w-2xl mx-auto group" dir="rtl">
+          <input
+            type="email"
+            placeholder="بريدك الإلكتروني"
+            className="w-full h-20 pl-44 pr-10 rounded-full bg-white border-2 border-transparent focus:border-[#ff9ecb] outline-none text-lg font-bold transition-all duration-500 shadow-sm"
+          />
+          <button
+            type="submit"
+            className="absolute left-2 top-2 bottom-2 px-10 rounded-full bg-[#1a1a1a] text-white font-black text-sm uppercase tracking-widest hover:bg-[#ff9ecb] transition-all duration-300"
+          >
+            اشتركي الآن
+          </button>
+        </form>
+        
+        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+          نحن نحترم خصوصيتك. يمكنك إلغاء الاشتراك في أي وقت.
+        </p>
       </div>
     </section>
   );

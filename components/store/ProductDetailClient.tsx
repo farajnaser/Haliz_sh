@@ -56,13 +56,13 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
       {/* Images */}
       <div className="space-y-3">
-        <div className="relative aspect-square rounded-3xl overflow-hidden bg-muted">
+        <div className="group relative aspect-square rounded-3xl overflow-hidden bg-muted transition-all duration-700 hover:shadow-[0_0_80px_rgba(255,158,203,0.3)] border border-transparent hover:border-pink-200">
           {product.images[selectedImage] ? (
             <Image
               src={product.images[selectedImage]}
               alt={product.nameAr || product.name}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-1000 group-hover:scale-110"
               sizes="(max-width: 1024px) 100vw, 50vw"
               priority
             />
@@ -122,31 +122,36 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           <span className="text-sm text-muted-foreground">{product.stock} متاح</span>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-4">
           <Button
             size="lg"
-            className="flex-1 btn-haliz rounded-2xl gap-2 py-6 text-base"
+            className="flex-1 btn-haliz rounded-2xl gap-2 py-8 text-lg shadow-xl shadow-pink-100/50"
             disabled={product.stock === 0}
             onClick={handleAddToCart}
           >
-            <ShoppingCart className="w-5 h-5" />
+            <ShoppingCart className="w-6 h-6" />
             {product.stock === 0 ? "نفذ من المخزون" : "أضف للسلة"}
           </Button>
           <Button
             size="lg"
             variant="outline"
-            className="flex-1 rounded-2xl border-green-300 text-green-700 hover:bg-green-50 gap-2 py-6 text-base"
+            className="flex-1 btn-haliz-outline rounded-2xl gap-2 py-8 text-lg border-pink-200"
             onClick={handleWhatsApp}
           >
-            <MessageCircle className="w-5 h-5" />
+            <MessageCircle className="w-6 h-6" />
             اطلب عبر واتساب
           </Button>
         </div>
 
-        <div className="p-4 bg-muted/50 rounded-2xl text-sm space-y-2">
-          <p className="flex items-center gap-2">✅ شحن سريع</p>
-          <p className="flex items-center gap-2">🔄 إرجاع مجاني خلال يومين</p>
-          <p className="flex items-center gap-2">💬 دعم فوري عبر واتساب</p>
+        <div className="p-6 bg-pink-50/50 rounded-[2rem] text-sm space-y-3 border border-pink-100/50">
+          <p className="flex items-center gap-3 text-pink-900 font-medium">
+            <span className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-[10px]">✅</span>
+            شحن سريع لجميع المدن
+          </p>
+          <p className="flex items-center gap-3 text-pink-900 font-medium">
+            <span className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-[10px]">💬</span>
+            دعم فوري واستفسارات عبر واتساب
+          </p>
         </div>
       </div>
     </div>

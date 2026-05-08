@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ShoppingBag } from "lucide-react";
+import { Plus } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
 
@@ -24,20 +24,19 @@ export default function ProductCard({ product }: Props) {
   const displayName = product.nameAr || product.name;
   const image = product.images?.[0];
 
-  const handleCardClick = () => {
-    router.push(`/products/${product.slug}`);
-  };
-
   return (
     <div 
-      onClick={handleCardClick}
-      className="group relative flex flex-col bg-transparent transition-all duration-500 cursor-pointer"
+      onClick={() => router.push(`/products/${product.slug}`)}
+      className="group flex flex-col bg-white overflow-hidden cursor-pointer rounded-[3rem] shadow-sm hover:shadow-[0_0_50px_rgba(255,158,203,0.25)] transition-all duration-500 border border-transparent hover:border-pink-200"
+      dir="rtl"
     >
       {/* Image Container */}
-      <div className="relative aspect-[3/4] bg-[#fafafa] overflow-hidden mb-5 rounded-[2.5rem] soft-shadow border border-pink-50/50">
-        {/* NEW Tag */}
-        <div className="absolute top-5 right-5 z-20 bg-white/90 backdrop-blur-md px-4 py-1.5 text-[10px] font-black uppercase tracking-widest text-[#ff85ba] rounded-full shadow-sm">
-          جديد
+      <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-[#f8f9fa] rounded-t-[3rem]">
+        {/* Badge Example (Optional) */}
+        <div className="absolute top-6 right-6 z-10 flex gap-2">
+           <span className="bg-[#1a1a1a] text-white text-[10px] font-black px-3 py-1 uppercase tracking-widest rounded-full">
+             جديد
+           </span>
         </div>
         
         {image ? (
@@ -45,20 +44,37 @@ export default function ProductCard({ product }: Props) {
             src={image}
             alt={displayName}
             fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-            className="object-cover group-hover:scale-110 transition-transform duration-1000"
+            unoptimized
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover object-top group-hover:scale-110 transition-transform duration-700"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="w-full h-full flex items-center justify-center bg-gray-100">
             <span className="text-4xl opacity-10">✨</span>
           </div>
         )}
+      </div>
 
-        {/* Quick Add Overlay */}
-        <div className="absolute inset-0 flex items-end justify-center p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 z-30 translate-y-4 group-hover:translate-y-0">
+      {/* Info Container */}
+      <div className="space-y-3 px-6 pb-6">
+        <div>
+          <h3 className="text-[#1a1a1a] font-black text-lg tracking-tight mb-1 truncate">
+            {displayName}
+          </h3>
+          <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">
+            {product.category?.nameAr || product.category?.name || "مجموعة حصرية"}
+          </p>
+        </div>
+
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-2">
+          <div className="flex flex-col">
+            <span className="text-[#1a1a1a] font-black text-xl leading-none">
+              {formatPrice(product.retailPrice)}
+            </span>
+          </div>
+          
           <button
             onClick={(e) => {
-              e.preventDefault();
               e.stopPropagation();
               addItem({
                 id: product.id,
@@ -67,30 +83,12 @@ export default function ProductCard({ product }: Props) {
                 image: image || "",
                 stock: 99,
               });
-              // toast.success("تم الإضافة للسلة");
             }}
-            className="w-full bg-white text-black py-4 rounded-2xl text-[11px] font-black shadow-2xl flex items-center justify-center gap-2 hover:bg-[#ff9ecb] hover:text-white transition-all duration-300"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1a1a1a] text-white hover:bg-[#ff9ecb] transition-all duration-300 shadow-md group/btn"
           >
-            <ShoppingBag className="w-4 h-4" />
-            أضيفي للسلة
+            <Plus className="w-4 h-4 text-white group-hover/btn:rotate-90 transition-transform" />
+            <span className="text-xs font-black tracking-wider">أضف للسلة</span>
           </button>
-        </div>
-      </div>
-
-      {/* Info Container */}
-      <div className="flex flex-col text-center items-center px-4 space-y-1">
-        <span className="text-[10px] text-[#ff85ba] font-black uppercase tracking-[0.2em]">
-          {product.category?.nameAr || product.category?.name || "HALIZ"}
-        </span>
-        
-        <h3 className="text-sm md:text-base font-bold text-[#1a1a1a] group-hover:text-[#ff9ecb] transition-colors leading-tight line-clamp-1">
-          {displayName}
-        </h3>
-
-        <div className="pt-1">
-          <span className="text-base md:text-lg font-black text-[#1a1a1a]">
-            {formatPrice(product.retailPrice)}
-          </span>
         </div>
       </div>
     </div>

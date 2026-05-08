@@ -19,7 +19,7 @@ export default function ShowcaseBanners({ banners }: Props) {
         <Link 
           key={index} 
           href={banner.href}
-          className="group relative h-[500px] md:h-[600px] w-full overflow-hidden rounded-[3rem] soft-shadow border border-pink-50/50"
+          className="group relative h-[500px] md:h-[600px] w-full overflow-hidden rounded-[3rem] soft-shadow border border-pink-50/50 hover:border-pink-300 transition-all duration-500 hover:shadow-[0_0_80px_rgba(255,158,203,0.2)]"
         >
           <Image
             src={banner.image}
