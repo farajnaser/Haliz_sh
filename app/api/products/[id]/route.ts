@@ -25,7 +25,32 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const body = await req.json();
   const { name, owners, ...rest } = body;
 
-  const profit = (rest.retailPrice || 0) - (rest.wholesalePrice || 0);
+  // Sanitize rest to avoid Prisma errors with relations or non-existent fields
+  const allowedFields = [
+    "nameAr", "description", "descriptionAr", "retailPrice", 
+    "wholesalePrice", "stock", "sku", "barcode", "featured", 
+    "images", "categoryId", "status"
+  ];
+  const updateData: any = {};
+  allowedFields.forEach(f => {
+    if (rest[f] !== undefined) updateData[f] = rest[f];
+  });
+
+  const finalWholesalePrice = updateData.wholesalePrice !== undefined ? updateData.wholesalePrice : 0;
+  const finalStock = updateData.stock !== undefined ? updateData.stock : 0;
+  const totalCapitalLimit = finalWholesalePrice * finalStock;
+
+  // Validation: Sum of owners' amounts <= Total Capital
+  if (owners && owners.length > 0) {
+    const totalOwnersAmount = owners.reduce((acc: number, o: any) => acc + (o.amount || 0), 0);
+    if (totalOwnersAmount > totalCapitalLimit && totalCapitalLimit > 0) {
+      return NextResponse.json({ 
+        error: `إجمالي مبالغ المساهمين (${totalOwnersAmount}) يتجاوز رأس مال المنتج (${totalCapitalLimit})` 
+      }, { status: 400 });
+    }
+  }
+
+  const profit = (updateData.retailPrice || 0) - (updateData.wholesalePrice || 0);
 
   // Generate new slug if name changed
   let slug: string | undefined;
@@ -52,7 +77,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       name,
       ...(slug && { slug }),
       profit,
-      ...rest,
+      ...updateData,
       owners: {
         deleteMany: {},
         create: (owners || []).map((o: any) => ({

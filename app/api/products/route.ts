@@ -66,6 +66,18 @@ export async function POST(req: NextRequest) {
     uniqueSlug = `${slug}-${counter++}`;
   }
 
+  const totalCapitalLimit = (rest.wholesalePrice || 0) * (rest.stock || 0);
+
+  // Validation: Sum of owners' amounts <= Total Capital
+  if (owners && owners.length > 0) {
+    const totalOwnersAmount = owners.reduce((acc: number, o: any) => acc + (o.amount || 0), 0);
+    if (totalOwnersAmount > totalCapitalLimit && totalCapitalLimit > 0) {
+      return NextResponse.json({ 
+        error: `إجمالي مبالغ المساهمين (${totalOwnersAmount}) يتجاوز رأس مال المنتج (${totalCapitalLimit})` 
+      }, { status: 400 });
+    }
+  }
+
   const profit = (rest.retailPrice || 0) - (rest.wholesalePrice || 0);
 
   const product = await prisma.product.create({
