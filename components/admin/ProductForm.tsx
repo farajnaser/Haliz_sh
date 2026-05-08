@@ -136,8 +136,9 @@ export default function ProductForm({
         return next;
       });
       toast.success("تم رفع الصورة بنجاح");
-    } catch {
-      toast.error("فشل رفع الصورة. تحقق من إعدادات Cloudinary");
+    } catch (err) {
+      toast.error("فشل رفع الصورة. تأكد من إضافة مفتاح ImgBB في Vercel وإعادة الرفع (Redeploy)");
+      console.error(err);
     } finally {
       setUploadingIndex(null);
     }
