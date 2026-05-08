@@ -204,15 +204,10 @@ export default function OrdersClient({ initialOrders, partners }: { initialOrder
                                 />
                               </div>
                               
-                              <div className="mr-auto flex gap-1">
-                                <Button 
-                                  size="sm" 
-                                  variant={item.soldStatus === 'SOLD' ? 'default' : 'outline'}
-                                  className={`h-7 px-3 text-[10px] font-bold rounded-full ${item.soldStatus === 'SOLD' ? 'bg-green-500 hover:bg-green-600' : 'border-pink-100'}`}
-                                  onClick={() => updateItemStatus(order.id, item.id, { soldStatus: item.soldStatus === 'SOLD' ? 'PENDING' : 'SOLD' })}
-                                >
-                                  {item.soldStatus === 'SOLD' ? 'تم البيع' : 'تحديد كـ مباع'}
-                                </Button>
+                              <div className="mr-auto">
+                                <span className={`text-[10px] font-bold px-3 py-1 rounded-full ${order.status === 'COMPLETED' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
+                                  {order.status === 'COMPLETED' ? 'تم البيع' : 'في انتظار الاكتمال'}
+                                </span>
                               </div>
                             </div>
                           </div>

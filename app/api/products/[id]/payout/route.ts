@@ -41,10 +41,8 @@ export async function PATCH(
         },
         orderItems: {
           where: {
-            // @ts-ignore
-            soldStatus: "SOLD",
             order: {
-              status: { not: "CANCELLED" }
+              status: "COMPLETED"
             }
           }
         }

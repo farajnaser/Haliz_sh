@@ -9,7 +9,11 @@ interface AdminReport {
   name: string;
   email: string;
   totalRevenue: number;
+  totalWholesale: number;
+  totalDiscount: number;
   totalProfit: number;
+  totalCapital: number;
+  totalEntitled: number;
   totalPaid: number;
   totalRemaining: number;
   totalSalesCount: number;
@@ -26,6 +30,8 @@ export default function ReportsClient({ initialData }: Props) {
 
   const overallRevenue = sortedData.reduce((acc, curr) => acc + curr.totalRevenue, 0);
   const overallProfit = sortedData.reduce((acc, curr) => acc + curr.totalProfit, 0);
+  const overallWholesale = sortedData.reduce((acc, curr) => acc + curr.totalWholesale, 0);
+  const overallDiscount = sortedData.reduce((acc, curr) => acc + curr.totalDiscount, 0);
   const overallRemaining = sortedData.reduce((acc, curr) => acc + curr.totalRemaining, 0);
 
   return (
@@ -79,11 +85,13 @@ export default function ReportsClient({ initialData }: Props) {
               <thead className="bg-[#fcfcfc] border-b">
                 <tr>
                   <th className="text-right px-8 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">الشريك</th>
-                  <th className="text-right px-8 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider text-center">المنتجات / المبيعات</th>
-                  <th className="text-right px-8 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">إجمالي الربح</th>
-                  <th className="text-right px-8 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">المستلم</th>
-                  <th className="text-right px-8 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">المتبقي</th>
-                  <th className="text-center px-8 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">الحالة</th>
+                   <th className="text-right px-8 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider text-center">المنتجات / المبيعات</th>
+                  <th className="text-right px-4 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">الجملة / الخصم</th>
+                  <th className="text-right px-4 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">رأس المال / الربح</th>
+                  <th className="text-right px-4 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">إجمالي المستحق</th>
+                  <th className="text-right px-4 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">المستلم</th>
+                  <th className="text-right px-4 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">المتبقي</th>
+                  <th className="text-center px-4 py-5 font-black text-[11px] text-gray-400 uppercase tracking-wider">الحالة</th>
                 </tr>
               </thead>
               <tbody>
@@ -104,16 +112,28 @@ export default function ReportsClient({ initialData }: Props) {
                         <span className="text-[10px] text-gray-400 font-bold">{admin.totalSalesCount} قطعة مباعة</span>
                       </div>
                     </td>
-                    <td className="px-8 py-6 font-black text-gray-700">{formatPrice(admin.totalProfit)}</td>
-                    <td className="px-8 py-6">
+                     <td className="px-4 py-6">
+                      <div className="flex flex-col">
+                        <span className="text-[11px] text-gray-400">الجملة: <b className="text-gray-600">{formatPrice(admin.totalWholesale)}</b></span>
+                        <span className="text-[11px] text-red-400">الخصم: <b className="text-red-500">-{formatPrice(admin.totalDiscount)}</b></span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-6">
+                      <div className="flex flex-col">
+                        <span className="text-[11px] text-gray-400">رأس المال: <b className="text-gray-600">{formatPrice(admin.totalCapital)}</b></span>
+                        <span className="text-[11px] text-green-400">الربح: <b className="text-green-600">+{formatPrice(admin.totalProfit)}</b></span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-6 font-black text-gray-700">{formatPrice(admin.totalEntitled)}</td>
+                    <td className="px-4 py-6">
                       <span className="font-black text-blue-600">{formatPrice(admin.totalPaid)}</span>
                     </td>
-                    <td className="px-8 py-6">
+                    <td className="px-4 py-6">
                       <span className={`font-black text-lg ${admin.totalRemaining > 0 ? 'text-[#ff85ba]' : 'text-gray-300'}`}>
                         {formatPrice(admin.totalRemaining)}
                       </span>
                     </td>
-                    <td className="px-8 py-6 text-center">
+                    <td className="px-4 py-6 text-center">
                       {admin.totalRemaining <= 0 ? (
                         <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-green-50 text-green-600 font-black text-[10px] uppercase tracking-wider border border-green-100">
                           تمت التسوية ✅
