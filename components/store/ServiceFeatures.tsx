@@ -2,7 +2,7 @@ import { Truck, RefreshCw, Shield, Headphones } from "lucide-react";
 
 const features = [
   { icon: Truck, title: "شحن لجميع المدن", desc: "نغطي كافة مناطق ليبيا بسرعة" },
-  { icon: RefreshCw, title: "إرجاع مرن", desc: "سياسة إرجاع مريحة للعملاء" },
+  { icon: RefreshCw, title: "إرجاع مرن", desc: "إرجاع واستبدال خلال يومين" },
   { icon: Shield, title: "دفع آمن", desc: "خيارات دفع موثوقة وآمنة" },
   { icon: Headphones, title: "دعم فني", desc: "متواجدون دائماً لمساعدتك" },
 ];

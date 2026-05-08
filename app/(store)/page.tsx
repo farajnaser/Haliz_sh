@@ -21,7 +21,7 @@ export default async function StoreHomePage() {
     featuredProducts = await prisma.product.findMany({
       where: { status: "ACTIVE" },
       include: { category: true },
-      take: 4,
+      take: 12,
       orderBy: { createdAt: "desc" },
     });
   }
@@ -127,16 +127,16 @@ export default async function StoreHomePage() {
         <section>
           <ShowcaseBanners banners={[
             {
-              title: "عطور نادرة",
-              subtitle: "اكتشفي تشكيلتنا الحصرية من العطور العالمية التي تأسر الحواس",
-              image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80",
-              href: "/products?cat=perfumes"
+              title: "عالم المكياج",
+              subtitle: "اكتشفي أحدث صيحات الجمال والمنتجات العالمية الأكثر طلباً",
+              image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80",
+              href: "/products?cat=makeup"
             },
             {
-              title: "إكسسوارات راقية",
-              subtitle: "لمسات نهائية تكتمل بها أناقتك في كل مناسبة",
-              image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80",
-              href: "/products?cat=accessories"
+              title: "روتين العناية",
+              subtitle: "دللي نفسك بمجموعة مختارة من أفضل المنتجات الطبيعية لبشرتك",
+              image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&q=80",
+              href: "/products?cat=skincare"
             }
           ]} />
         </section>

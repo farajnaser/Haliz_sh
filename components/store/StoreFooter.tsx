@@ -19,9 +19,9 @@ export default function StoreFooter() {
         
         {/* Right Section - Logo and Description */}
         <div className="flex flex-col items-center md:items-start text-center md:text-right">
-          <h2 className="text-4xl font-black tracking-tighter mb-6 uppercase text-black">GLIMMER</h2>
+          <h2 className="text-4xl font-black tracking-tighter mb-6 uppercase text-black">HALIZ</h2>
           <p className="text-xs leading-relaxed max-w-xs text-gray-500 font-medium">
-            متجر يضم مستلزمات وشنط وأحذية واكسسوارات يمكن أن تكون مدخلا شاملا لكل ما تحتاجينه من أدوات أساسية وشخصية.
+            عالم من الجمال والأناقة يجمع لكِ أرقى مستحضرات التجميل، العناية بالبشرة، والإكسسوارات الفاخرة التي تبرز سحركِ الخاص.
           </p>
         </div>
 
@@ -67,7 +67,7 @@ export default function StoreFooter() {
 
       <div className="mt-16 pt-8 border-t border-pink-100/50 flex flex-col items-center justify-center text-center px-4">
         <p className="text-[10px] text-gray-400 font-bold mb-4 uppercase tracking-widest">
-          © {new Date().getFullYear()} GLIMMER. جميع الحقوق محفوظة
+          © {new Date().getFullYear()} HALIZ. جميع الحقوق محفوظة
         </p>
       </div>
     </footer>
