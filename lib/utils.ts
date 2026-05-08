@@ -5,13 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatPrice(price: number, currency = "LYD"): string {
-  return new Intl.NumberFormat("ar-LY", {
-    style: "currency",
-    currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(price);
+export function formatPrice(price: number): string {
+  return `${price.toLocaleString("ar-LY")} دينار ليبي`;
 }
 
 export function formatDate(date: Date | string): string {

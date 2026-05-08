@@ -61,7 +61,7 @@ export default function RevenueChart({ orders }: Props) {
               borderRadius: "8px",
               fontSize: "12px",
             }}
-            formatter={(value) => [`${value} ر.س`, "الإيرادات"]}
+            formatter={(value) => [`${value} دينار ليبي`, "الإيرادات"]}
           />
           <Bar dataKey="revenue" fill="#f59e0b" radius={[6, 6, 0, 0]} />
         </BarChart>

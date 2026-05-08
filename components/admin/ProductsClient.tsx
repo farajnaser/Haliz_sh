@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Plus, Search, Pencil, Trash2, Image as ImageIcon, Star, Package } from "lucide-react";
+import { Plus, Search, Pencil, Trash2, Image as ImageIcon, Star, Package, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +12,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,38 +33,14 @@ import { toast } from "sonner";
 import { formatPrice } from "@/lib/utils";
 import ProductForm from "@/components/admin/ProductForm";
 import Image from "next/image";
+import { Product, Category } from "@/types/admin";
 
-interface Category {
-  id: string;
-  name: string;
-  nameAr: string | null;
-}
 
-interface Product {
-  id: string;
-  name: string;
-  nameAr: string | null;
-  slug: string;
-  description: string | null;
-  descriptionAr: string | null;
-  retailPrice: number;
-  wholesalePrice: number;
-  profit: number;
-  stock: number;
-  sku: string | null;
-  barcode: string | null;
-  featured: boolean;
-  status: string;
-  images: string[];
-  categoryId: string | null;
-  category: Category | null;
-  createdBy: { name: string | null; email: string } | null;
-  createdAt: Date;
-}
 
 interface ProductsClientProps {
   initialProducts: Product[];
   categories: Category[];
+  partners: { id: string, name: string }[];
 }
 
 const statusLabels: Record<string, string> = {
@@ -72,20 +55,28 @@ const statusColors: Record<string, string> = {
   OUT_OF_STOCK: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
 };
 
-export default function ProductsClient({ initialProducts, categories }: ProductsClientProps) {
+export default function ProductsClient({ initialProducts, categories, partners }: ProductsClientProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [search, setSearch] = useState("");
+  const [partnerFilter, setPartnerFilter] = useState("ALL");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const filtered = products.filter(
-    (p) =>
+  const filtered = products.filter((p) => {
+    const matchesSearch = 
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       (p.nameAr && p.nameAr.includes(search)) ||
-      (p.sku && p.sku.toLowerCase().includes(search.toLowerCase()))
-  );
+      (p.sku && p.sku.toLowerCase().includes(search.toLowerCase()));
+    
+    let matchesPartner = true;
+    if (partnerFilter !== "ALL") {
+      matchesPartner = p.owners?.some(o => o.partnerId === partnerFilter) || false;
+    }
+
+    return matchesSearch && matchesPartner;
+  });
 
   const handleAdd = () => {
     setEditingProduct(null);
@@ -140,15 +131,30 @@ export default function ProductsClient({ initialProducts, categories }: Products
         </Button>
       </div>
 
-      {/* Search */}
-      <div className="relative">
-        <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input
-          placeholder="البحث بالاسم أو رقم SKU..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pr-10 bg-card border-0 shadow-sm"
-        />
+      {/* Search & Filter */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1">
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            placeholder="البحث بالاسم أو رقم SKU..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pr-10 bg-card border-0 shadow-sm"
+          />
+        </div>
+        
+        <Select value={partnerFilter} onValueChange={setPartnerFilter}>
+          <SelectTrigger className="w-full sm:w-48 bg-card border-0 shadow-sm">
+            <Users className="w-4 h-4 ml-2 text-pink-400" />
+            <SelectValue placeholder="بحث حسب الشريك" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="ALL">جميع الشركاء</SelectItem>
+            {partners.map(p => (
+              <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Products Table */}
@@ -165,14 +171,14 @@ export default function ProductsClient({ initialProducts, categories }: Products
                   <th className="text-right px-4 py-3 font-semibold text-muted-foreground">الربح</th>
                   <th className="text-right px-4 py-3 font-semibold text-muted-foreground">المخزون</th>
                   <th className="text-right px-4 py-3 font-semibold text-muted-foreground">الحالة</th>
-                  <th className="text-right px-4 py-3 font-semibold text-muted-foreground">المسؤول</th>
+                  <th className="text-right px-4 py-3 font-semibold text-muted-foreground">الشركاء</th>
                   <th className="text-right px-4 py-3 font-semibold text-muted-foreground">إجراءات</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="text-center py-12">
+                    <td colSpan={9} className="text-center py-12">
                       <div className="flex flex-col items-center gap-3 text-muted-foreground">
                         <Package className="w-12 h-12 opacity-30" />
                         <p className="font-medium">لا توجد منتجات</p>
@@ -238,11 +244,18 @@ export default function ProductsClient({ initialProducts, categories }: Products
                           {statusLabels[product.status]}
                         </span>
                       </td>
-                      {/* Created By */}
+                      {/* Partners */}
                       <td className="px-4 py-3">
-                        <div className="flex flex-col">
-                          <span className="text-xs font-bold text-pink-600">{product.createdBy?.name || "نظام"}</span>
-                          <span className="text-[10px] text-muted-foreground">{product.createdBy?.email || ""}</span>
+                        <div className="flex flex-col gap-1">
+                          {product.owners && product.owners.length > 0 ? (
+                            product.owners.map((o, idx) => (
+                              <span key={idx} className="text-xs font-bold text-pink-600 bg-pink-50 px-2 py-0.5 rounded-full w-fit">
+                                {o.partner?.name || "شريك"}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-[10px] text-muted-foreground italic">لا يوجد شركاء</span>
+                          )}
                         </div>
                       </td>
                       {/* Actions */}

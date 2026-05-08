@@ -29,32 +29,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
+import { Product, Category } from "@/types/admin";
 
-interface Category {
-  id: string;
-  name: string;
-  nameAr: string | null;
-}
 
-interface Product {
-  id: string;
-  name: string;
-  nameAr: string | null;
-  description: string | null;
-  descriptionAr: string | null;
-  retailPrice: number;
-  wholesalePrice: number;
-  profit: number;
-  stock: number;
-  sku: string | null;
-  barcode: string | null;
-  featured: boolean;
-  status: string;
-  images: string[];
-  categoryId: string | null;
-  createdBy?: { name: string | null; email: string } | null;
-  owners?: { partnerId: string; amount: number; partner?: { name: string | null; email: string } }[];
-}
 
 interface ProductFormProps {
   product?: Product | null;
@@ -354,7 +331,7 @@ export default function ProductForm({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="wholesalePrice">سعر الجملة (ر.س) *</Label>
+            <Label htmlFor="wholesalePrice">سعر الجملة (دينار ليبي) *</Label>
             <Input
               id="wholesalePrice"
               type="number"
@@ -369,7 +346,7 @@ export default function ProductForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="retailPrice">سعر البيع (ر.س) *</Label>
+            <Label htmlFor="retailPrice">سعر البيع (دينار ليبي) *</Label>
             <Input
               id="retailPrice"
               type="number"
@@ -401,7 +378,7 @@ export default function ProductForm({
           {wholesalePrice > 0 && retailPrice > wholesalePrice && (
             <div className="text-sm">
               <span className="text-muted-foreground">الربح: </span>
-              <span className="font-bold text-green-600">+{currentProfit.toFixed(2)} ر.س</span>
+              <span className="font-bold text-green-600">+{currentProfit.toFixed(2)} دينار ليبي</span>
               <span className="text-muted-foreground mr-1">
                 ({((currentProfit / wholesalePrice) * 100).toFixed(1)}%)
               </span>
@@ -456,7 +433,7 @@ export default function ProductForm({
                   </Select>
                 </div>
                 <div className="w-32 space-y-1.5">
-                  <Label className="text-[10px]">المساهمة (ر.س)</Label>
+                  <Label className="text-[10px]">المساهمة (دينار ليبي)</Label>
                   <Input
                     type="number"
                     className="h-9"
@@ -483,7 +460,7 @@ export default function ProductForm({
             {/* Calculation Hint */}
             <div className="pt-2 flex justify-between items-center text-xs">
               <div className="text-muted-foreground">
-                إجمالي المساهمات: <span className="font-bold text-foreground">{owners.reduce((acc, o) => acc + o.amount, 0)} ر.س</span>
+                إجمالي المساهمات: <span className="font-bold text-foreground">{owners.reduce((acc, o) => acc + o.amount, 0)} دينار ليبي</span>
               </div>
               {wholesalePrice > 0 && (
                 <div className="text-pink-600 font-medium">
