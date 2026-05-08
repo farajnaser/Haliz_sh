@@ -3,7 +3,6 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminTopbar from "@/components/admin/AdminTopbar";
-import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "HALIZ Admin",
@@ -25,7 +24,6 @@ export default async function AdminProtectedLayout({
         <AdminTopbar user={session.user} />
         <main className="flex-1 overflow-y-auto p-6 bg-muted/20">{children}</main>
       </div>
-      <Toaster position="top-right" richColors />
     </div>
   );
 }
