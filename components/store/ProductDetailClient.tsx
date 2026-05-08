@@ -145,7 +145,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
         <div className="p-4 bg-muted/50 rounded-2xl text-sm space-y-2">
           <p className="flex items-center gap-2">✅ شحن سريع</p>
-          <p className="flex items-center gap-2">🔄 إرجاع مجاني خلال 7 أيام</p>
+          <p className="flex items-center gap-2">🔄 إرجاع مجاني خلال يومين</p>
           <p className="flex items-center gap-2">💬 دعم فوري عبر واتساب</p>
         </div>
       </div>
