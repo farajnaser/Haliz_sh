@@ -250,8 +250,47 @@ export default function ProductForm({
           onClick={() => fileInputRef.current?.click()}
         >
           <Upload className="w-4 h-4" />
-          رفع صور ({images.length} صورة)
+          رفع من الجهاز ({images.length} صورة)
         </Button>
+
+        {/* Manual URL Input */}
+        <div className="pt-4 border-t border-dashed">
+          <Label className="text-sm font-medium mb-2 block">أو أضف رابط صورة مباشر (من فيسبوك أو أي موقع)</Label>
+          <div className="flex gap-2">
+            <Input 
+              placeholder="https://example.com/image.jpg" 
+              className="flex-1"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  const val = (e.target as HTMLInputElement).value;
+                  if (val) {
+                    setImages(prev => [...prev, val]);
+                    (e.target as HTMLInputElement).value = "";
+                    toast.success("تم إضافة الرابط بنجاح");
+                  }
+                }
+              }}
+            />
+            <Button 
+              type="button" 
+              variant="secondary"
+              onClick={(e) => {
+                const input = e.currentTarget.previousElementSibling as HTMLInputElement;
+                if (input.value) {
+                  setImages(prev => [...prev, input.value]);
+                  input.value = "";
+                  toast.success("تم إضافة الرابط بنجاح");
+                }
+              }}
+            >
+              إضافة رابط
+            </Button>
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-2">
+            انسخ رابط الصورة من أي موقع (مثل فيسبوك، انستغرام، أو ImgBB) وضعه هنا.
+          </p>
+        </div>
       </div>
 
       {/* ── Basic Info ── */}
