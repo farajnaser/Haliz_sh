@@ -21,6 +21,29 @@ model User {
   products  Product[]
 }
 
+model Partner {
+  id        String         @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  shares    ProductOwner[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model ProductOwner {
+  id          String  @id @default(cuid())
+  productId   String
+  partnerId   String
+  amount      Float   // المبلغ الذي دفعه الشخص (المساهمة)
+  paidProfit  Float   @default(0) // المبالغ التي استلمها الشريك من الأرباح حتى الآن
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  partner     Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([partnerId])
+}
+
 model Category {
   id          String    @id @default(cuid())
   name        String
@@ -104,27 +127,4 @@ model Settings {
   addressAr      String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-}
-
-model ProductOwner {
-  id          String  @id @default(cuid())
-  productId   String
-  partnerId   String
-  amount      Float   // المبلغ الذي دفعه الشخص (المساهمة)
-  paidProfit  Float   @default(0) // المبالغ التي استلمها الشريك من الأرباح حتى الآن
-  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  partner     Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
-
-  @@index([productId])
-  @@index([partnerId])
-}
-
-model Partner {
-  id        String         @id @default(cuid())
-  name      String
-  email     String?
-  phone     String?
-  shares    ProductOwner[]
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
 }

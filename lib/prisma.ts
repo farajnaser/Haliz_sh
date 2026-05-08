@@ -14,6 +14,21 @@ function createPrismaClient() {
   return new PrismaClient({ adapter });
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+let rawPrisma = createPrismaClient();
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+// Safeguard for model naming issues
+if (!(rawPrisma as any).partner && (rawPrisma as any).Partner) {
+  (rawPrisma as any).partner = (rawPrisma as any).Partner;
+}
+
+export const prisma = rawPrisma;
+
+// Debug available models
+if (process.env.NODE_ENV !== "production") {
+  console.log("Prisma Models:", Object.keys(prisma).filter(k => !k.startsWith('$') && !k.startsWith('_')));
+}
+
+// Debug available models
+if (process.env.NODE_ENV !== "production") {
+  console.log("Prisma Models:", Object.keys(rawPrisma).filter(k => !k.startsWith('$') && !k.startsWith('_')));
+}
