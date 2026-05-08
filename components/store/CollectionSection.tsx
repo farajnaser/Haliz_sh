@@ -43,7 +43,33 @@ const categories = [
   { id: "4", name: "عطور", slug: "perfumes", icon: FLOWER_ICON, badge: "قريباً" },
 ];
 
-export default function CollectionSection() {
+interface Category {
+  id: string;
+  name: string;
+  nameAr: string | null;
+  slug: string;
+}
+
+interface Props {
+  categories?: Category[];
+}
+
+export default function CollectionSection({ categories: dbCategories }: Props) {
+  // Use DB categories if available, otherwise fallback to hardcoded ones
+  // We match hardcoded icons to DB categories by slug
+  const displayCategories = dbCategories?.length 
+    ? dbCategories.map(dbCat => {
+        const hardcoded = categories.find(c => c.slug === dbCat.slug);
+        return {
+          id: dbCat.id,
+          name: dbCat.nameAr || dbCat.name,
+          slug: dbCat.slug,
+          icon: hardcoded?.icon || SPARKLES_ICON, // Default icon if not matched
+          badge: hardcoded?.badge
+        };
+      })
+    : categories;
+
   return (
     <section className="py-24 px-6 bg-white w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-pink-50" dir="rtl">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
@@ -59,7 +85,7 @@ export default function CollectionSection() {
 
         {/* Circular Grid */}
         <div className="flex flex-wrap justify-center gap-8 md:gap-16 w-full">
-          {categories.map((cat) => {
+          {displayCategories.map((cat) => {
             const isComingSoon = !!cat.badge;
             const content = (
               <>
