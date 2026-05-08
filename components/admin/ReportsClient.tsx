@@ -63,7 +63,7 @@ export default function ReportsClient({ initialData }: Props) {
             <Users className="w-5 h-5 text-pink-500" />
             أداء المسؤولين
           </CardTitle>
-        </Header>
+        </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
