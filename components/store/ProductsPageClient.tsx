@@ -76,7 +76,7 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
     <div className="container mx-auto px-4 py-16" dir="rtl">
       <div className="mb-12 text-center">
         <h1 className="text-4xl font-black text-pink-950 uppercase tracking-tighter mb-2">المتجر</h1>
-        <p className="text-pink-400 font-bold text-xs uppercase tracking-widest">اكتشفي {filtered.length} قطعة مختارة بعناية</p>
+        <p className="text-[#ff85ba] font-bold text-xs uppercase tracking-widest">اكتشفي {filtered.length} قطعة مختارة بعناية</p>
       </div>
 
       {/* Filters Bar */}
@@ -132,8 +132,8 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
           onClick={() => router.push("/products")} 
           className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border ${
             selectedCategory === "all" 
-              ? "bg-pink-500 text-white border-pink-500 shadow-lg shadow-pink-200" 
-              : "bg-white text-pink-900/60 border-pink-100 hover:border-pink-300 hover:text-pink-500"
+              ? "bg-[#ff9ecb] text-white border-[#ff9ecb] shadow-lg shadow-pink-100" 
+              : "bg-white text-pink-900/60 border-pink-100 hover:border-pink-300 hover:text-[#ff85ba]"
           }`}
         >
           الكل
@@ -146,8 +146,8 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
               onClick={() => router.push(`/products?cat=${cat.slug}`)} 
               className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border ${
                 isSelected 
-                  ? "bg-pink-500 text-white border-pink-500 shadow-lg shadow-pink-200" 
-                  : "bg-white text-pink-900/60 border-pink-100 hover:border-pink-300 hover:text-pink-500"
+                  ? "bg-[#ff9ecb] text-white border-[#ff9ecb] shadow-lg shadow-pink-100" 
+                  : "bg-white text-pink-900/60 border-pink-100 hover:border-pink-300 hover:text-[#ff85ba]"
               }`}
             >
               {cat.nameAr || cat.name}

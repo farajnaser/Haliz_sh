@@ -128,3 +128,29 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .bg-haliz-pink {
+    background-color: #ff9ecb;
+  }
+  .text-haliz-pink {
+    color: #ff9ecb;
+  }
+  .border-haliz-pink {
+    border-color: #ff9ecb;
+  }
+  .bg-haliz-dark-pink {
+    background-color: #f472b6;
+  }
+  .text-haliz-dark-pink {
+    color: #f472b6;
+  }
+  
+  .btn-haliz {
+    @apply bg-[#ff9ecb] text-white hover:bg-[#f472b6] transition-all duration-300 shadow-md shadow-pink-100;
+  }
+  
+  .btn-haliz-outline {
+    @apply bg-white border border-[#ff9ecb] text-[#ff9ecb] hover:bg-pink-50 transition-all duration-300;
+  }
+}

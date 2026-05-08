@@ -78,7 +78,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               <button
                 key={i}
                 onClick={() => setSelectedImage(i)}
-                className={`relative aspect-square rounded-xl overflow-hidden bg-muted border-2 transition-all ${i === selectedImage ? "border-pink-500" : "border-transparent hover:border-pink-300"}`}
+                className={`relative aspect-square rounded-xl overflow-hidden bg-muted border-2 transition-all ${i === selectedImage ? "border-[#ff9ecb]" : "border-transparent hover:border-pink-300"}`}
               >
                 <Image src={img} alt={`${i + 1}`} fill className="object-cover" sizes="80px" />
               </button>
@@ -90,7 +90,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       {/* Info */}
       <div className="space-y-6">
         {product.category && (
-          <p className="text-pink-600 text-sm font-medium">{product.category.nameAr || product.category.name}</p>
+          <p className="text-[#ff85ba] text-sm font-medium">{product.category.nameAr || product.category.name}</p>
         )}
         <div>
           <h1 className="text-3xl font-bold">{product.nameAr || product.name}</h1>
@@ -98,8 +98,8 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         </div>
 
         <div className="flex items-center gap-3">
-          <p className="text-4xl font-bold text-pink-600">{formatPrice(product.retailPrice)}</p>
-          {product.featured && <Badge className="bg-pink-500 text-white">مميز</Badge>}
+          <p className="text-4xl font-bold text-[#ff85ba]">{formatPrice(product.retailPrice)}</p>
+          {product.featured && <Badge className="bg-[#ff9ecb] text-white">مميز</Badge>}
         </div>
 
         {product.descriptionAr || product.description ? (
@@ -125,7 +125,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         <div className="flex flex-col sm:flex-row gap-3">
           <Button
             size="lg"
-            className="flex-1 bg-pink-500 text-white hover:bg-pink-600 rounded-2xl gap-2 py-6 text-base"
+            className="flex-1 btn-haliz rounded-2xl gap-2 py-6 text-base"
             disabled={product.stock === 0}
             onClick={handleAddToCart}
           >

@@ -36,7 +36,7 @@ export default function ProductCard({ product }: Props) {
       {/* Image Container */}
       <div className="relative aspect-[4/5] bg-[#f5f5f5] overflow-hidden mb-4 rounded-3xl">
         {/* HALIZ Tag - PINK */}
-        <div className="absolute top-4 left-4 z-20 bg-pink-500 px-3 py-1 text-[10px] font-black uppercase tracking-tighter text-white shadow-sm rounded-sm">
+        <div className="absolute top-4 left-4 z-20 bg-[#ff9ecb] px-3 py-1 text-[10px] font-black uppercase tracking-tighter text-white shadow-sm rounded-sm">
           HALIZ
         </div>
         
@@ -68,7 +68,7 @@ export default function ProductCard({ product }: Props) {
                 stock: 99,
               });
             }}
-            className="w-full bg-white/90 backdrop-blur-md text-black py-3 rounded-xl text-xs font-bold shadow-lg flex items-center justify-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 hover:bg-pink-500 hover:text-white pointer-events-auto"
+            className="w-full bg-white/90 backdrop-blur-md text-black py-3 rounded-xl text-xs font-bold shadow-lg flex items-center justify-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 hover:bg-[#ff9ecb] hover:text-white pointer-events-auto"
           >
             <ShoppingBag className="w-4 h-4" />
             أضيفي للسلة

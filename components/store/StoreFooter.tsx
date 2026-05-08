@@ -47,18 +47,21 @@ export default function StoreFooter() {
 
         {/* Left Section - Libya & Social */}
         <div className="flex flex-col items-center md:items-end justify-center h-full gap-6">
-          <div className="text-center md:text-left font-bold text-lg mb-2">
-            <span className="text-4xl font-black text-pink-300 drop-shadow-sm tracking-wider" style={{ fontFamily: "Impact, sans-serif" }}>Thank You!</span><br/>
-            <span className="text-sm mt-3 block text-pink-800/80 font-medium">شحن لجميع مدن<br/>دولة ليبيا 🇱🇾</span>
+          <div className="text-center md:text-right font-bold text-lg mb-2">
+            <span className="text-5xl font-black text-[#ff85ba] drop-shadow-md tracking-tighter" style={{ fontFamily: "Impact, sans-serif" }}>!Thank You</span><br/>
+            <div className="text-sm mt-3 block text-pink-700/80 font-bold leading-relaxed">
+              شحن لجميع مدن<br/>
+              دولة ليبيا 🇱🇾
+            </div>
           </div>
-          <div className="flex gap-4 text-pink-400">
-            <a href="https://wa.me/218922612675" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-pink-200 bg-white flex items-center justify-center hover:bg-pink-500 hover:text-white hover:border-pink-500 transition-all duration-300">
-              <MessageCircle className="w-4 h-4" />
+          <div className="flex gap-4">
+            <a href="https://wa.me/218922612675" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-pink-100 bg-white flex items-center justify-center text-[#ff85ba] hover:bg-[#ff85ba] hover:text-white transition-all duration-300 shadow-sm shadow-pink-50">
+              <MessageCircle className="w-5 h-5" />
             </a>
-            <a href="https://www.facebook.com/share/18Pwmj1cvH/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-pink-200 bg-white flex items-center justify-center hover:bg-pink-500 hover:text-white hover:border-pink-500 transition-all duration-300">
+            <a href="https://www.facebook.com/share/18Pwmj1cvH/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-pink-100 bg-white flex items-center justify-center text-[#ff85ba] hover:bg-[#ff85ba] hover:text-white transition-all duration-300 shadow-sm shadow-pink-50">
               {FACEBOOK_ICON}
             </a>
-            <a href="https://www.tiktok.com/@haliz.sh6?_r=1&_t=ZS-96B7G0VXPc1" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-pink-200 bg-white flex items-center justify-center hover:bg-pink-500 hover:text-white hover:border-pink-500 transition-all duration-300">
+            <a href="https://www.tiktok.com/@haliz.sh6?_r=1&_t=ZS-96B7G0VXPc1" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-pink-100 bg-white flex items-center justify-center text-[#ff85ba] hover:bg-[#ff85ba] hover:text-white transition-all duration-300 shadow-sm shadow-pink-50">
               {TIKTOK_ICON}
             </a>
           </div>

@@ -41,7 +41,7 @@ export default function HeroBanner({
           </p>
           <Link
             href={ctaHref}
-            className="inline-flex items-center justify-center bg-pink-500 text-white font-bold px-10 py-3.5 rounded-full hover:bg-pink-600 transition-all duration-300 shadow-lg shadow-pink-200 hover:shadow-pink-300 hover:-translate-y-1"
+            className="btn-haliz px-10 py-3.5 rounded-full hover:-translate-y-1"
           >
             {cta}
           </Link>

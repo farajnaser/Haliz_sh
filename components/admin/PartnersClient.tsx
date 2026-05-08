@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Plus, Trash2, User, Mail, Phone, Loader2 } from "lucide-react";
+import { Plus, Trash2, User, Mail, Phone, Loader2, Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -32,6 +32,8 @@ interface Props {
 export default function PartnersClient({ initialPartners }: Props) {
   const [partners, setPartners] = useState(initialPartners);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -52,12 +54,41 @@ export default function PartnersClient({ initialPartners }: Props) {
       
       toast.success("تم إضافة الشريك بنجاح");
       setIsAddOpen(false);
-      router.refresh();
       // Fetch updated list
       const updated = await fetch("/api/partners").then(r => r.json());
       setPartners(updated);
+      router.refresh();
     } catch (error) {
       toast.error("حدث خطأ ما");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!selectedPartner) return;
+    setIsSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
+
+    try {
+      const res = await fetch(`/api/partners/${selectedPartner.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error("Failed to update partner");
+      
+      toast.success("تم تحديث بيانات الشريك");
+      setIsEditOpen(false);
+      // Fetch updated list
+      const updated = await fetch("/api/partners").then(r => r.json());
+      setPartners(updated);
+      router.refresh();
+    } catch (error) {
+      toast.error("فشل التحديث");
     } finally {
       setIsSubmitting(false);
     }
@@ -68,7 +99,10 @@ export default function PartnersClient({ initialPartners }: Props) {
 
     try {
       const res = await fetch(`/api/partners/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed to delete");
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to delete");
+      }
       
       toast.success("تم حذف الشريك");
       setPartners(partners.filter(p => p.id !== id));
@@ -118,12 +152,23 @@ export default function PartnersClient({ initialPartners }: Props) {
                     </div>
                   </div>
                 </div>
-                <button 
-                  onClick={() => handleDelete(partner.id)}
-                  className="p-2 text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                  <button 
+                    onClick={() => {
+                      setSelectedPartner(partner);
+                      setIsEditOpen(true);
+                    }}
+                    className="p-2 text-muted-foreground hover:text-pink-600"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(partner.id)}
+                    className="p-2 text-muted-foreground hover:text-red-500"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
               <div className="mt-4 pt-4 border-t flex justify-between items-center text-sm">
                 <span className="text-muted-foreground">المنتجات المشارك فيها:</span>
@@ -144,6 +189,7 @@ export default function PartnersClient({ initialPartners }: Props) {
         </div>
       )}
 
+      {/* Add Dialog */}
       <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
         <DialogContent dir="rtl">
           <DialogHeader>
@@ -169,6 +215,37 @@ export default function PartnersClient({ initialPartners }: Props) {
               </Button>
             </div>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent dir="rtl">
+          <DialogHeader>
+            <DialogTitle>تعديل بيانات الشريك</DialogTitle>
+          </DialogHeader>
+          {selectedPartner && (
+            <form onSubmit={handleEdit} className="space-y-4 pt-4">
+              <div className="space-y-2">
+                <Label>اسم الشريك *</Label>
+                <Input name="name" defaultValue={selectedPartner.name} required />
+              </div>
+              <div className="space-y-2">
+                <Label>البريد الإلكتروني</Label>
+                <Input name="email" type="email" defaultValue={selectedPartner.email || ""} />
+              </div>
+              <div className="space-y-2">
+                <Label>رقم الهاتف</Label>
+                <Input name="phone" defaultValue={selectedPartner.phone || ""} />
+              </div>
+              <div className="flex gap-2 justify-end pt-4">
+                <Button type="button" variant="outline" onClick={() => setIsEditOpen(false)}>إلغاء</Button>
+                <Button type="submit" disabled={isSubmitting} className="bg-pink-500 hover:bg-pink-600 min-w-[100px]">
+                  {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "حفظ التغييرات"}
+                </Button>
+              </div>
+            </form>
+          )}
         </DialogContent>
       </Dialog>
     </div>

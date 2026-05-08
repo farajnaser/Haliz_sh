@@ -56,8 +56,8 @@ export default function AdminDashboard({ stats, lowStockProducts, recentOrders }
                 <p className="text-sm text-muted-foreground">إجمالي المنتجات</p>
                 <p className="text-3xl font-bold mt-1">{stats.productCount}</p>
               </div>
-              <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-2xl flex items-center justify-center">
-                <Package className="w-6 h-6 text-pink-600" />
+              <div className="w-12 h-12 bg-pink-50 dark:bg-pink-900/30 rounded-2xl flex items-center justify-center">
+                <Package className="w-6 h-6 text-[#ff85ba]" />
               </div>
             </div>
           </CardContent>
@@ -105,18 +105,18 @@ export default function AdminDashboard({ stats, lowStockProducts, recentOrders }
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Low Stock Alert */}
         {lowStockProducts.length > 0 && (
-          <Card className="border-0 shadow-sm border-l-4 border-l-pink-400">
+          <Card className="border-0 shadow-sm border-l-4 border-l-[#ff9ecb]">
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-pink-500" />
+                <AlertTriangle className="w-4 h-4 text-[#ff85ba]" />
                 منتجات تحتاج تجديد المخزون
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {lowStockProducts.map((product) => (
-                <div key={product.id} className="flex items-center justify-between p-3 bg-pink-50 dark:bg-pink-900/10 rounded-xl">
+                <div key={product.id} className="flex items-center justify-between p-3 bg-pink-50/50 dark:bg-pink-900/10 rounded-xl">
                   <p className="font-medium text-sm">{product.nameAr || product.name}</p>
-                  <span className="text-xs font-bold text-pink-600 bg-pink-100 dark:bg-pink-900/30 px-2 py-1 rounded-full">
+                  <span className="text-xs font-bold text-[#ff85ba] bg-white px-2 py-1 rounded-full border border-pink-100">
                     {product.stock} متبقي
                   </span>
                 </div>
