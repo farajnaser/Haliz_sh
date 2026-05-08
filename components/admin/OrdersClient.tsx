@@ -101,6 +101,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
           items: o.items.map(i => i.id === itemId ? { ...i, ...data } : i)
         };
       }));
+      toast.dismiss();
       toast.success("تم تحديث حالة المنتج");
     } catch { toast.error("حدث خطأ"); }
   };
@@ -113,6 +114,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
         body: JSON.stringify({ status }) 
       });
       setOrders(prev => prev.map(o => o.id === id ? { ...o, status } : o));
+      toast.dismiss();
       toast.success("تم تحديث حالة الطلب");
     } catch { toast.error("حدث خطأ"); }
   };
@@ -137,6 +139,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
       setOrders(prev => [createdOrder, ...prev]);
       setIsAddDialogOpen(false);
       resetForm();
+      toast.dismiss();
       toast.success("تم إضافة الطلب بنجاح");
     } catch {
       toast.error("حدث خطأ أثناء إضافة الطلب");
@@ -166,6 +169,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
       setOrders(prev => prev.map(o => o.id === editingOrderId ? updatedOrder : o));
       setIsEditDialogOpen(false);
       resetForm();
+      toast.dismiss();
       toast.success("تم تحديث الطلب بنجاح");
     } catch {
       toast.error("حدث خطأ أثناء تحديث الطلب");
