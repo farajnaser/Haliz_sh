@@ -27,12 +27,12 @@ const RING_ICON = (
 );
 
 const FLOWER_ICON = (
-  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="text-gray-300">
-    <path d="M12 22C12 22 9 17 9 14C9 12 11 11 12 11C13 11 15 12 15 14C15 17 12 22 12 22Z" fill="currentColor"/>
-    <path d="M12 2C12 2 9 7 9 10C9 12 11 13 12 13C13 13 15 12 15 10C15 7 12 2 12 2Z" fill="currentColor"/>
-    <path d="M2 12C2 12 7 9 10 9C12 9 13 11 13 12C13 13 12 15 10 15C7 15 2 12 2 12Z" fill="currentColor"/>
-    <path d="M22 12C22 12 17 9 14 9C12 9 11 11 11 12C11 13 12 15 14 15C17 15 22 12 22 12Z" fill="currentColor"/>
-    <circle cx="12" cy="12" r="2" fill="#e5e7eb"/>
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="text-[#a78bfa]">
+    <path d="M12 22C12 22 9 17 9 14C9 12 11 11 12 11C13 11 15 12 15 14C15 17 12 22 12 22Z" fill="currentColor" fillOpacity="0.5"/>
+    <path d="M12 2C12 2 9 7 9 10C9 12 11 13 12 13C13 13 15 12 15 10C15 7 12 2 12 2Z" fill="currentColor" fillOpacity="0.5"/>
+    <path d="M2 12C2 12 7 9 10 9C12 9 13 11 13 12C13 13 12 15 10 15C7 15 2 12 2 12Z" fill="currentColor" fillOpacity="0.5"/>
+    <path d="M22 12C22 12 17 9 14 9C12 9 11 11 11 12C11 13 12 15 14 15C17 15 22 12 22 12Z" fill="currentColor" fillOpacity="0.5"/>
+    <circle cx="12" cy="12" r="3" fill="#ff9ecb"/>
   </svg>
 );
 
@@ -56,18 +56,26 @@ interface Props {
 
 export default function CollectionSection({ categories: dbCategories }: Props) {
   // Use DB categories if available, otherwise fallback to hardcoded ones
-  // We match hardcoded icons to DB categories by slug
-  const displayCategories = dbCategories?.length 
+  const dbDisplayCategories = dbCategories?.length 
     ? dbCategories.map(dbCat => {
         const hardcoded = categories.find(c => c.slug === dbCat.slug);
         return {
           id: dbCat.id,
           name: dbCat.nameAr || dbCat.name,
           slug: dbCat.slug,
-          icon: hardcoded?.icon || SPARKLES_ICON, // Default icon if not matched
+          icon: hardcoded?.icon || SPARKLES_ICON,
           badge: hardcoded?.badge
         };
       })
+    : [];
+
+  // Always include hardcoded categories that have a badge (like "Coming Soon") 
+  // if they aren't already represented in the DB categories
+  const comingSoonCategories = categories
+    .filter(c => c.badge && !dbDisplayCategories.some(dbCat => dbCat.slug === c.slug));
+
+  const displayCategories = dbCategories?.length 
+    ? [...dbDisplayCategories, ...comingSoonCategories]
     : categories;
 
   return (
