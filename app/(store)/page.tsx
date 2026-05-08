@@ -25,10 +25,10 @@ export default async function StoreHomePage() {
   return (
     <div className="bg-[#fafafa] min-h-screen">
       {/* 1. Hero Section */}
-      <HeroBanner 
+      <HeroBanner
         title="تألقي بجمالك الخاص"
         subtitle="اكتشفي مجموعتنا الحصرية من أرقى منتجات التجميل والعناية بالبشرة المصممة خصيصاً لإبراز أنوثتك"
-        cta="تسوقي التشكيلة"
+        cta="تسوقي الآن"
         ctaHref="/products"
         image="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&q=80"
       />
@@ -49,9 +49,9 @@ export default async function StoreHomePage() {
             { id: "accessories", name: "إكسسوار", icon: "💍" },
             { id: "perfumes", name: "عطور", icon: "🌸", soon: true },
           ].map((cat) => (
-            <Link 
-              key={cat.id} 
-              href={cat.soon ? "#" : `/products?cat=${cat.id}`} 
+            <Link
+              key={cat.id}
+              href={cat.soon ? "#" : `/products?cat=${cat.id}`}
               className={`group flex flex-col items-center gap-4 relative ${cat.soon ? 'cursor-default opacity-60 pointer-events-none' : ''}`}
             >
               {cat.soon && (
@@ -70,7 +70,7 @@ export default async function StoreHomePage() {
       </section>
 
       <div className="max-w-7xl mx-auto px-6 py-12 space-y-24">
-        
+
         {/* 3. Showcase Banners */}
         <section>
           <ShowcaseBanners banners={[
@@ -95,7 +95,7 @@ export default async function StoreHomePage() {
             <h2 className="text-3xl font-bold text-[#111] mb-4">الأحذية والحقائب</h2>
             <p className="text-[#999] text-sm font-medium">تصاميم عصرية، جودة عالية، أناقة، تنوع، راحة</p>
           </div>
-          
+
           {featuredProducts.length > 0 ? (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {featuredProducts.map((product) => (
@@ -108,10 +108,10 @@ export default async function StoreHomePage() {
               <p className="text-pink-800/60 font-medium">قريباً سيتم توفير أحدث المنتجات</p>
             </div>
           )}
-          
+
           <div className="mt-12 text-center">
-            <Link 
-              href="/products" 
+            <Link
+              href="/products"
               className="inline-flex items-center justify-center border border-[#eee] text-[#222] hover:bg-black hover:text-white font-bold px-12 py-3 rounded-full text-xs transition-all duration-300"
             >
               تحميل المزيد من المنتجات
