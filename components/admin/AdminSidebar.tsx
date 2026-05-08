@@ -11,6 +11,7 @@ import {
   Store,
   ChevronLeft,
   BarChart3,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -20,6 +21,7 @@ const navItems = [
   { href: "/admin/products", label: "المنتجات", icon: Package },
   { href: "/admin/categories", label: "الفئات", icon: Tag },
   { href: "/admin/orders", label: "الطلبات", icon: ShoppingCart },
+  { href: "/admin/partners", label: "الشركاء", icon: Users },
   { href: "/admin/reports", label: "التقارير المالية", icon: BarChart3 },
   { href: "/admin/settings", label: "الإعدادات", icon: Settings },
 ];

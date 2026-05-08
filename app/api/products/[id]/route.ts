@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     include: { 
       category: true, 
       createdBy: { select: { name: true, email: true } },
-      owners: { include: { user: { select: { name: true, email: true } } } }
+      owners: { include: { partner: { select: { name: true, email: true } } } }
     },
   });
 
@@ -56,7 +56,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       owners: {
         deleteMany: {},
         create: (owners || []).map((o: any) => ({
-          userId: o.userId,
+          partnerId: o.partnerId,
           amount: o.amount
         }))
       }
@@ -64,7 +64,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     include: { 
       category: true, 
       createdBy: { select: { name: true, email: true } },
-      owners: { include: { user: { select: { name: true, email: true } } } }
+      owners: { include: { partner: { select: { name: true, email: true } } } }
     },
   });
 

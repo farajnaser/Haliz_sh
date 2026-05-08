@@ -53,7 +53,7 @@ interface Product {
   images: string[];
   categoryId: string | null;
   createdBy?: { name: string | null; email: string } | null;
-  owners?: { userId: string; amount: number; user?: { name: string | null; email: string } }[];
+  owners?: { partnerId: string; amount: number; partner?: { name: string | null; email: string } }[];
 }
 
 interface ProductFormProps {
@@ -73,17 +73,17 @@ export default function ProductForm({
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [marginInput, setMarginInput] = useState("");
-  const [admins, setAdmins] = useState<{ id: string; name: string | null; email: string }[]>([]);
-  const [owners, setOwners] = useState<{ userId: string; amount: number }[]>(
-    product?.owners?.map(o => ({ userId: o.userId, amount: o.amount })) || []
+  const [partners, setPartners] = useState<{ id: string; name: string; email: string | null }[]>([]);
+  const [owners, setOwners] = useState<{ partnerId: string; amount: number }[]>(
+    product?.owners?.map(o => ({ partnerId: o.partnerId, amount: o.amount })) || []
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fetch("/api/admins")
+    fetch("/api/partners")
       .then(res => res.json())
-      .then(data => setAdmins(data))
-      .catch(err => console.error("Failed to fetch admins:", err));
+      .then(data => setPartners(data))
+      .catch(err => console.error("Failed to fetch partners:", err));
   }, []);
 
   const {
@@ -422,7 +422,7 @@ export default function ProductForm({
             variant="outline" 
             size="sm" 
             className="text-pink-600 border-pink-200 hover:bg-pink-50 gap-1"
-            onClick={() => setOwners([...owners, { userId: "", amount: 0 }])}
+            onClick={() => setOwners([...owners, { partnerId: "", amount: 0 }])}
           >
             <UserPlus className="w-3 h-3" />
             إضافة شريك
@@ -436,12 +436,12 @@ export default function ProductForm({
             {owners.map((owner, idx) => (
               <div key={idx} className="flex gap-3 items-end bg-white/50 p-3 rounded-lg border border-pink-100">
                 <div className="flex-1 space-y-1.5">
-                  <Label className="text-[10px]">المسؤول الشريك</Label>
+                  <Label className="text-[10px]">الشريك</Label>
                   <Select
-                    value={owner.userId}
+                    value={owner.partnerId}
                     onValueChange={(val) => {
                       const newOwners = [...owners];
-                      newOwners[idx].userId = val;
+                      newOwners[idx].partnerId = val;
                       setOwners(newOwners);
                     }}
                   >
@@ -449,8 +449,8 @@ export default function ProductForm({
                       <SelectValue placeholder="اختر الشريك..." />
                     </SelectTrigger>
                     <SelectContent>
-                      {admins.map(admin => (
-                        <SelectItem key={admin.id} value={admin.id}>{admin.name || admin.email}</SelectItem>
+                      {partners.map(partner => (
+                        <SelectItem key={partner.id} value={partner.id}>{partner.name}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>

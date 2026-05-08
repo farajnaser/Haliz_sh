@@ -2,9 +2,8 @@ import { prisma } from "@/lib/prisma";
 import ReportsClient from "@/components/admin/ReportsClient";
 
 export default async function ReportsPage() {
-  // 1. Fetch all admins
-  const admins = await prisma.user.findMany({
-    where: { role: "ADMIN" },
+  // 1. Fetch all partners
+  const partners = await prisma.partner.findMany({
     select: { id: true, name: true, email: true }
   });
 
@@ -26,11 +25,11 @@ export default async function ReportsPage() {
 
   // 3. Initialize report structure
   const reportMap: Record<string, any> = {};
-  admins.forEach(admin => {
-    reportMap[admin.id] = {
-      id: admin.id,
-      name: admin.name || "مسؤول غير مسمى",
-      email: admin.email,
+  partners.forEach(partner => {
+    reportMap[partner.id] = {
+      id: partner.id,
+      name: partner.name,
+      email: partner.email || "بدون بريد",
       totalRevenue: 0,
       totalProfit: 0,
       totalSalesCount: 0,
@@ -38,7 +37,7 @@ export default async function ReportsPage() {
     };
   });
 
-  // 4. Calculate stats per admin
+  // 4. Calculate stats per partner
   orders.forEach(order => {
     order.items.forEach(item => {
       const product = item.product;
@@ -52,23 +51,18 @@ export default async function ReportsPage() {
         const totalAmountPaid = product.owners.reduce((acc, o) => acc + o.amount, 0);
         
         product.owners.forEach(owner => {
-          if (reportMap[owner.userId]) {
+          if (reportMap[owner.partnerId]) {
             const sharePercentage = totalAmountPaid > 0 ? (owner.amount / totalAmountPaid) : 0;
-            reportMap[owner.userId].totalRevenue += revenue * sharePercentage;
-            reportMap[owner.userId].totalProfit += profit * sharePercentage;
-            reportMap[owner.userId].totalSalesCount += item.quantity * sharePercentage;
+            reportMap[owner.partnerId].totalRevenue += revenue * sharePercentage;
+            reportMap[owner.partnerId].totalProfit += profit * sharePercentage;
+            reportMap[owner.partnerId].totalSalesCount += item.quantity * sharePercentage;
           }
         });
-      } else if (product.createdById && reportMap[product.createdById]) {
-        // Single ownership: Default to creator
-        reportMap[product.createdById].totalRevenue += revenue;
-        reportMap[product.createdById].totalProfit += profit;
-        reportMap[product.createdById].totalSalesCount += item.quantity;
       }
     });
   });
 
-  // Count products per admin
+  // Count products per partner
   const products = await prisma.product.findMany({
     include: { owners: true }
   });
@@ -76,10 +70,8 @@ export default async function ReportsPage() {
   products.forEach(p => {
     if (p.owners && p.owners.length > 0) {
       p.owners.forEach(o => {
-        if (reportMap[o.userId]) reportMap[o.userId].productCount++;
+        if (reportMap[o.partnerId]) reportMap[o.partnerId].productCount++;
       });
-    } else if (p.createdById && reportMap[p.createdById]) {
-      reportMap[p.createdById].productCount++;
     }
   });
 

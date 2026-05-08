@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
       include: { 
         category: true, 
         createdBy: { select: { name: true, email: true } },
-        owners: { include: { user: { select: { name: true, email: true } } } }
+        owners: { include: { partner: { select: { name: true, email: true } } } }
       },
       orderBy,
       skip,
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
       ...rest,
       owners: {
         create: (owners || []).map((o: any) => ({
-          userId: o.userId,
+          partnerId: o.partnerId,
           amount: o.amount
         }))
       }
@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
     include: { 
       category: true, 
       createdBy: { select: { name: true, email: true } },
-      owners: { include: { user: { select: { name: true, email: true } } } }
+      owners: { include: { partner: { select: { name: true, email: true } } } }
     },
   });
 
