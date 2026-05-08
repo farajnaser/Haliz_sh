@@ -3,14 +3,15 @@ import { prisma } from "@/lib/prisma";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { orderId: string; itemId: string } }
+  { params }: { params: Promise<{ orderId: string; itemId: string }> }
 ) {
   try {
+    const { itemId } = await params;
     const body = await req.json();
     const { isDiscounted, soldStatus } = body;
 
     const item = await prisma.orderItem.update({
-      where: { id: params.itemId },
+      where: { id: itemId },
       data: {
         isDiscounted: isDiscounted !== undefined ? isDiscounted : undefined,
         soldStatus: soldStatus !== undefined ? soldStatus : undefined,
