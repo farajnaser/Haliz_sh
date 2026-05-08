@@ -24,6 +24,7 @@ interface OrderItem {
   discountAmount: number;
   soldStatus: string;
   product: { 
+    id: string;
     name: string; 
     nameAr: string | null;
     owners: { partner: Partner }[];
