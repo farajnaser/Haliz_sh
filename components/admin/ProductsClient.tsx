@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Plus, Search, Pencil, Trash2, Image as ImageIcon, Star, Package, Users } from "lucide-react";
+import { Plus, Search, Pencil, Trash2, Image as ImageIcon, Star, Package, Users, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -101,6 +101,33 @@ export default function ProductsClient({ initialProducts, categories, partners }
       toast.error("حدث خطأ أثناء تسجيل الدفعة");
     } finally {
       setIsPayoutSubmitting(false);
+    }
+  };
+
+  const handleSettleFull = async (productId: string, partnerId: string, earned: number) => {
+    const product = products.find(p => p.id === productId);
+    const owner = product?.owners?.find(o => o.partnerId === partnerId);
+    if (!owner) return;
+
+    const remaining = earned - (owner.paidProfit || 0);
+    if (remaining <= 0) return;
+
+    if (!confirm(`هل أنت متأكد من تسوية كامل المبلغ المتبقي (${formatPrice(remaining)})؟`)) return;
+
+    try {
+      const res = await fetch(`/api/products/${productId}/payout`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ partnerId, amount: remaining })
+      });
+
+      if (!res.ok) throw new Error();
+      
+      const updatedProduct = await res.json();
+      setProducts((prev) => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
+      toast.success("تمت التسوية الكاملة بنجاح");
+    } catch {
+      toast.error("حدث خطأ أثناء التسوية");
     }
   };
 
@@ -300,22 +327,34 @@ export default function ProductsClient({ initialProducts, categories, partners }
                                   <div key={idx} className="flex flex-col bg-white p-3 rounded-2xl border border-pink-100/50 soft-shadow min-w-[160px]">
                                     <div className="flex justify-between items-center mb-2">
                                       <span className="text-xs font-black text-pink-700">{o.partner?.name || "شريك"}</span>
-                                      <button 
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setPayoutData({
-                                            productId: product.id,
-                                            partnerId: o.partnerId,
-                                            partnerName: o.partner?.name || "الشريك",
-                                            currentPaid: partnerPaid,
-                                            earned: partnerEarned
-                                          });
-                                          setIsPayoutDialogOpen(true);
-                                        }}
-                                        className="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full hover:bg-pink-500 hover:text-white transition-all font-bold"
-                                      >
-                                        تسجيل دفعة
-                                      </button>
+                                      <div className="flex gap-1">
+                                        <button 
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleSettleFull(product.id, o.partnerId, partnerEarned);
+                                          }}
+                                          title={partnerRemaining <= 0 ? "تمت التسوية بالكامل" : "تسوية كاملة"}
+                                          className={`text-[10px] p-1 rounded-full transition-all border ${partnerRemaining <= 0 ? 'bg-green-500 text-white border-green-500' : 'bg-white text-green-600 border-green-200 hover:bg-green-500 hover:text-white'}`}
+                                        >
+                                          <Check className="w-3 h-3" />
+                                        </button>
+                                        <button 
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setPayoutData({
+                                              productId: product.id,
+                                              partnerId: o.partnerId,
+                                              partnerName: o.partner?.name || "الشريك",
+                                              currentPaid: partnerPaid,
+                                              earned: partnerEarned
+                                            });
+                                            setIsPayoutDialogOpen(true);
+                                          }}
+                                          className="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full hover:bg-pink-500 hover:text-white transition-all font-bold"
+                                        >
+                                          دفعة
+                                        </button>
+                                      </div>
                                     </div>
                                     <div className="flex flex-col text-[10px] gap-1">
                                       <div className="flex justify-between">
