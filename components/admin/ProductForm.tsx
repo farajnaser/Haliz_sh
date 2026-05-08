@@ -24,8 +24,11 @@ import {
   Loader2,
   ImagePlus,
   Calculator,
+  Users,
+  UserPlus,
 } from "lucide-react";
 import Image from "next/image";
+import { useEffect } from "react";
 
 interface Category {
   id: string;
@@ -50,6 +53,7 @@ interface Product {
   images: string[];
   categoryId: string | null;
   createdBy?: { name: string | null; email: string } | null;
+  owners?: { userId: string; amount: number; user?: { name: string | null; email: string } }[];
 }
 
 interface ProductFormProps {
@@ -69,7 +73,18 @@ export default function ProductForm({
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [marginInput, setMarginInput] = useState("");
+  const [admins, setAdmins] = useState<{ id: string; name: string | null; email: string }[]>([]);
+  const [owners, setOwners] = useState<{ userId: string; amount: number }[]>(
+    product?.owners?.map(o => ({ userId: o.userId, amount: o.amount })) || []
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    fetch("/api/admins")
+      .then(res => res.json())
+      .then(data => setAdmins(data))
+      .catch(err => console.error("Failed to fetch admins:", err));
+  }, []);
 
   const {
     register,
@@ -162,7 +177,7 @@ export default function ProductForm({
   const onSubmit = async (data: ProductInput) => {
     setIsSubmitting(true);
     try {
-      const payload = { ...data, images };
+      const payload = { ...data, images, owners };
       const url = product ? `/api/products/${product.id}` : "/api/products";
       const method = product ? "PUT" : "POST";
 
@@ -393,6 +408,91 @@ export default function ProductForm({
             </div>
           )}
         </div>
+      </div>
+
+      {/* ── Owners/Partners Section ── */}
+      <div className="p-4 bg-pink-50/30 rounded-xl space-y-4 border border-dashed border-pink-200">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4 text-pink-500" />
+            <Label className="font-semibold text-pink-700">شركاء المنتج (المساهمين)</Label>
+          </div>
+          <Button 
+            type="button" 
+            variant="outline" 
+            size="sm" 
+            className="text-pink-600 border-pink-200 hover:bg-pink-50 gap-1"
+            onClick={() => setOwners([...owners, { userId: "", amount: 0 }])}
+          >
+            <UserPlus className="w-3 h-3" />
+            إضافة شريك
+          </Button>
+        </div>
+
+        {owners.length === 0 ? (
+          <p className="text-xs text-muted-foreground text-center py-2">لا يوجد شركاء محددين. الربح سيحسب للمسؤول الحالي فقط.</p>
+        ) : (
+          <div className="space-y-3">
+            {owners.map((owner, idx) => (
+              <div key={idx} className="flex gap-3 items-end bg-white/50 p-3 rounded-lg border border-pink-100">
+                <div className="flex-1 space-y-1.5">
+                  <Label className="text-[10px]">المسؤول الشريك</Label>
+                  <Select
+                    value={owner.userId}
+                    onValueChange={(val) => {
+                      const newOwners = [...owners];
+                      newOwners[idx].userId = val;
+                      setOwners(newOwners);
+                    }}
+                  >
+                    <SelectTrigger className="h-9">
+                      <SelectValue placeholder="اختر الشريك..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {admins.map(admin => (
+                        <SelectItem key={admin.id} value={admin.id}>{admin.name || admin.email}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="w-32 space-y-1.5">
+                  <Label className="text-[10px]">المساهمة (ر.س)</Label>
+                  <Input
+                    type="number"
+                    className="h-9"
+                    value={owner.amount}
+                    onChange={(e) => {
+                      const newOwners = [...owners];
+                      newOwners[idx].amount = parseFloat(e.target.value) || 0;
+                      setOwners(newOwners);
+                    }}
+                  />
+                </div>
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-9 w-9 text-red-400 hover:text-red-600"
+                  onClick={() => setOwners(owners.filter((_, i) => i !== idx))}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            ))}
+            
+            {/* Calculation Hint */}
+            <div className="pt-2 flex justify-between items-center text-xs">
+              <div className="text-muted-foreground">
+                إجمالي المساهمات: <span className="font-bold text-foreground">{owners.reduce((acc, o) => acc + o.amount, 0)} ر.س</span>
+              </div>
+              {wholesalePrice > 0 && (
+                <div className="text-pink-600 font-medium">
+                  {owners.reduce((acc, o) => acc + o.amount, 0) < wholesalePrice && "⚠️ إجمالي المساهمات أقل من سعر الجملة"}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ── Inventory ── */}

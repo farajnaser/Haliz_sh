@@ -6,7 +6,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const product = await prisma.product.findUnique({
     where: { id },
-    include: { category: true, createdBy: { select: { name: true, email: true } } },
+    include: { 
+      category: true, 
+      createdBy: { select: { name: true, email: true } },
+      owners: { include: { user: { select: { name: true, email: true } } } }
+    },
   });
 
   if (!product) {
@@ -19,7 +23,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const body = await req.json();
-  const { name, ...rest } = body;
+  const { name, owners, ...rest } = body;
 
   const profit = (rest.retailPrice || 0) - (rest.wholesalePrice || 0);
 
@@ -49,8 +53,19 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       ...(slug && { slug }),
       profit,
       ...rest,
+      owners: {
+        deleteMany: {},
+        create: (owners || []).map((o: any) => ({
+          userId: o.userId,
+          amount: o.amount
+        }))
+      }
     },
-    include: { category: true, createdBy: { select: { name: true, email: true } } },
+    include: { 
+      category: true, 
+      createdBy: { select: { name: true, email: true } },
+      owners: { include: { user: { select: { name: true, email: true } } } }
+    },
   });
 
   return NextResponse.json(product);

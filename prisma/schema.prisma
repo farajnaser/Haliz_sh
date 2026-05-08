@@ -19,6 +19,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   products  Product[]
+  shares    ProductOwner[]
 }
 
 model Category {
@@ -53,9 +54,10 @@ model Product {
   category       Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   orderItems     OrderItem[]
   createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
+  updatedAt      DateTime       @updatedAt
   createdById    String?
-  createdBy      User?       @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdBy      User?          @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  owners         ProductOwner[]
 
   @@index([categoryId])
   @@index([featured])
@@ -103,4 +105,16 @@ model Settings {
   addressAr      String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+}
+
+model ProductOwner {
+  id        String  @id @default(cuid())
+  productId String
+  userId    String
+  amount    Float // المبلغ الذي دفعه الشخص
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([userId])
 }

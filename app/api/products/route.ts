@@ -37,7 +37,11 @@ export async function GET(req: NextRequest) {
   const [products, total] = await Promise.all([
     prisma.product.findMany({
       where,
-      include: { category: true, createdBy: { select: { name: true, email: true } } },
+      include: { 
+        category: true, 
+        createdBy: { select: { name: true, email: true } },
+        owners: { include: { user: { select: { name: true, email: true } } } }
+      },
       orderBy,
       skip,
       take: limit,
@@ -52,7 +56,7 @@ export async function POST(req: NextRequest) {
   const { auth } = await import("@/lib/auth");
   const session = await auth();
   const body = await req.json();
-  const { name, nameAr, ...rest } = body;
+  const { name, nameAr, owners, ...rest } = body;
 
   const slug = slugify(name);
   let uniqueSlug = slug;
@@ -72,8 +76,18 @@ export async function POST(req: NextRequest) {
       profit,
       createdById: session?.user?.id || null,
       ...rest,
+      owners: {
+        create: (owners || []).map((o: any) => ({
+          userId: o.userId,
+          amount: o.amount
+        }))
+      }
     },
-    include: { category: true, createdBy: { select: { name: true, email: true } } },
+    include: { 
+      category: true, 
+      createdBy: { select: { name: true, email: true } },
+      owners: { include: { user: { select: { name: true, email: true } } } }
+    },
   });
 
   return NextResponse.json(product, { status: 201 });
