@@ -16,6 +16,7 @@ interface Partner {
 interface OrderItem {
   id: string;
   quantity: number;
+  price: number;
   isDiscounted: boolean;
   soldStatus: string;
   product: { 
