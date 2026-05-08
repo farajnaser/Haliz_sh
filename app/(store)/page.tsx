@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
 import HeroBanner from "@/components/store/HeroBanner";
 import ShowcaseBanners from "@/components/store/ShowcaseBanners";
