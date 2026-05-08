@@ -57,7 +57,7 @@ export async function PATCH(
     const p = product as any;
 
     // Re-calculate the stats for the UI
-    const totalSalesRevenue = p.orderItems.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0) || 0;
+    const totalSalesRevenue = p.orderItems.reduce((acc: number, item: any) => acc + ((item.price - (item.discountAmount || 0)) * item.quantity), 0) || 0;
     const totalSalesProfit = p.orderItems.reduce((acc: number, item: any) => acc + (((item.price - (item.discountAmount || 0)) - (p.wholesalePrice || 0)) * item.quantity), 0) || 0;
 
     const productsWithRevenue = {

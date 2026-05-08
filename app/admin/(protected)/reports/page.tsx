@@ -67,7 +67,8 @@ export default async function ReportsPage() {
       const product = item.product;
       if (!product) return;
 
-      const revenue = item.price * item.quantity;
+      // Revenue = (Retail - Discount) * Quantity
+      const revenue = (item.price - (item.discountAmount || 0)) * item.quantity;
       const discount = (item.discountAmount || 0) * item.quantity;
       const wholesale = product.wholesalePrice * item.quantity;
       // Net Profit = (Retail - Discount - Wholesale)

@@ -26,7 +26,7 @@ export default async function AdminProductsPage() {
 
   // Calculate revenue per product to pass to client
   const productsWithRevenue = products.map((product: any) => {
-    const totalSalesRevenue = product.orderItems.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0);
+    const totalSalesRevenue = product.orderItems.reduce((acc: number, item: any) => acc + ((item.price - (item.discountAmount || 0)) * item.quantity), 0);
     const totalSalesProfit = product.orderItems.reduce((acc: number, item: any) => acc + (((item.price - (item.discountAmount || 0)) - product.wholesalePrice) * item.quantity), 0);
     
     return {
