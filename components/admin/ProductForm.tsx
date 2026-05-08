@@ -49,6 +49,7 @@ interface Product {
   status: string;
   images: string[];
   categoryId: string | null;
+  createdBy?: { name: string | null; email: string } | null;
 }
 
 interface ProductFormProps {

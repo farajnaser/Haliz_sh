@@ -51,7 +51,7 @@ interface Product {
   images: string[];
   categoryId: string | null;
   category: Category | null;
-  createdBy: { name: string; email: string } | null;
+  createdBy: { name: string | null; email: string } | null;
   createdAt: Date;
 }
 
