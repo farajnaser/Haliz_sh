@@ -2,9 +2,20 @@ import { prisma } from "@/lib/prisma";
 import ReportsClient from "@/components/admin/ReportsClient";
 
 export default async function ReportsPage() {
-  // 1. Fetch all partners
+  // 1. Fetch all partners with their shares and the paidProfit
   const partners = await prisma.partner.findMany({
-    select: { id: true, name: true, email: true }
+    select: { 
+      id: true, 
+      name: true, 
+      email: true,
+      shares: {
+        select: {
+          productId: true,
+          paidProfit: true,
+          amount: true // contribution
+        }
+      }
+    }
   });
 
   // 2. Fetch all orders (except cancelled) with product details and owners
@@ -26,18 +37,23 @@ export default async function ReportsPage() {
   // 3. Initialize report structure
   const reportMap: Record<string, any> = {};
   partners.forEach(partner => {
+    // Total amount the partner has already received across all products
+    const totalAlreadyPaid = partner.shares.reduce((acc, s) => acc + s.paidProfit, 0);
+
     reportMap[partner.id] = {
       id: partner.id,
       name: partner.name,
       email: partner.email || "بدون بريد",
       totalRevenue: 0,
       totalProfit: 0,
+      totalPaid: totalAlreadyPaid,
+      totalRemaining: 0,
       totalSalesCount: 0,
       productCount: 0
     };
   });
 
-  // 4. Calculate stats per partner
+  // 4. Calculate stats per partner based on sales
   orders.forEach(order => {
     order.items.forEach(item => {
       const product = item.product;
@@ -60,6 +76,12 @@ export default async function ReportsPage() {
         });
       }
     });
+  });
+
+  // 5. Final calculation: Remaining = Total Profit - Total Already Paid
+  Object.keys(reportMap).forEach(partnerId => {
+    const data = reportMap[partnerId];
+    data.totalRemaining = Math.max(0, data.totalProfit - data.totalPaid);
   });
 
   // Count products per partner
