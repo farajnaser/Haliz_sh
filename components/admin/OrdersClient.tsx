@@ -177,6 +177,21 @@ export default function OrdersClient({ initialOrders, partners, products }: {
       setIsSubmitting(false);
     }
   };
+  
+  const handleDeleteOrder = async (id: string) => {
+    if (!window.confirm("هل أنت متأكد من حذف هذا الطلب نهائياً؟")) return;
+
+    try {
+      const res = await fetch(`/api/orders/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      
+      setOrders(prev => prev.filter(o => o.id !== id));
+      toast.dismiss();
+      toast.success("تم حذف الطلب بنجاح");
+    } catch {
+      toast.error("حدث خطأ أثناء حذف الطلب");
+    }
+  };
 
   const resetForm = () => {
     setOrderForm({
@@ -562,6 +577,10 @@ export default function OrdersClient({ initialOrders, partners, products }: {
                       </Select>
                       <Button variant="outline" size="sm" className="w-full h-10 rounded-full border-pink-100 text-pink-600 hover:bg-pink-50" onClick={() => startEditing(order)}>
                         تعديل الطلب
+                      </Button>
+                      <Button variant="ghost" size="sm" className="w-full h-10 rounded-full text-red-400 hover:text-red-500 hover:bg-red-50 gap-2" onClick={() => handleDeleteOrder(order.id)}>
+                        <Trash2 className="w-4 h-4" />
+                        حذف الطلب
                       </Button>
                     </div>
                   </div>
