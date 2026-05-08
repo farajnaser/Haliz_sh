@@ -157,9 +157,6 @@ export default function OrdersClient({ initialOrders, partners }: { initialOrder
                           <p className="text-xs text-muted-foreground">{formatDate(order.createdAt)}</p>
                         </div>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-bold ${statusColors[order.status]}`}>
-                        {statusLabels[order.status]}
-                      </span>
                     </div>
 
                     <div className="flex items-center gap-4 text-xs text-muted-foreground border-t border-pink-50 pt-3">
