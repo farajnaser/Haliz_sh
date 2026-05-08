@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { ShoppingCart, Phone, User } from "lucide-react";
+import { ShoppingCart, Phone, User, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { formatPrice, formatDate } from "@/lib/utils";
 
@@ -48,10 +51,26 @@ const statusColors: Record<string, string> = {
   CANCELLED: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
 };
 
-export default function OrdersClient({ initialOrders, partners }: { initialOrders: Order[], partners: Partner[] }) {
+export default function OrdersClient({ initialOrders, partners, products }: { 
+  initialOrders: Order[], 
+  partners: Partner[],
+  products: any[]
+}) {
   const [orders, setOrders] = useState(initialOrders);
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [partnerFilter, setPartnerFilter] = useState("ALL");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingOrderId, setEditingOrderId] = useState<string | null>(null);
+
+  // New/Edit Order State
+  const [orderForm, setOrderForm] = useState({
+    customerName: "",
+    customerPhone: "",
+    notes: "",
+    items: [{ productId: "", quantity: 1, price: 0 }]
+  });
 
   const filtered = orders.filter(order => {
     const matchesStatus = statusFilter === "ALL" || order.status === statusFilter;
@@ -97,6 +116,117 @@ export default function OrdersClient({ initialOrders, partners }: { initialOrder
     } catch { toast.error("حدث خطأ"); }
   };
 
+  const handleCreateOrder = async () => {
+    if (!orderForm.customerName || !orderForm.customerPhone || orderForm.items.some(i => !i.productId)) {
+      toast.error("يرجى إكمال جميع البيانات المطلوبة");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderForm)
+      });
+
+      if (!res.ok) throw new Error();
+      const createdOrder = await res.json();
+      
+      setOrders(prev => [createdOrder, ...prev]);
+      setIsAddDialogOpen(false);
+      resetForm();
+      toast.success("تم إضافة الطلب بنجاح");
+    } catch {
+      toast.error("حدث خطأ أثناء إضافة الطلب");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleUpdateOrder = async () => {
+    if (!editingOrderId) return;
+    if (!orderForm.customerName || !orderForm.customerPhone || orderForm.items.some(i => !i.productId)) {
+      toast.error("يرجى إكمال جميع البيانات المطلوبة");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`/api/orders/${editingOrderId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderForm)
+      });
+
+      if (!res.ok) throw new Error();
+      const updatedOrder = await res.json();
+      
+      setOrders(prev => prev.map(o => o.id === editingOrderId ? updatedOrder : o));
+      setIsEditDialogOpen(false);
+      resetForm();
+      toast.success("تم تحديث الطلب بنجاح");
+    } catch {
+      toast.error("حدث خطأ أثناء تحديث الطلب");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const resetForm = () => {
+    setOrderForm({
+      customerName: "",
+      customerPhone: "",
+      notes: "",
+      items: [{ productId: "", quantity: 1, price: 0 }]
+    });
+    setEditingOrderId(null);
+  };
+
+  const startEditing = (order: Order) => {
+    setOrderForm({
+      customerName: order.customerName,
+      customerPhone: order.customerPhone,
+      notes: order.notes || "",
+      items: order.items.map(i => ({
+        productId: i.product.id,
+        quantity: i.quantity,
+        price: i.price
+      }))
+    });
+    setEditingOrderId(order.id);
+    setIsEditDialogOpen(true);
+  };
+
+  const addItemRow = () => {
+    setOrderForm(prev => ({
+      ...prev,
+      items: [...prev.items, { productId: "", quantity: 1, price: 0 }]
+    }));
+  };
+
+  const removeItemRow = (index: number) => {
+    setOrderForm(prev => ({
+      ...prev,
+      items: prev.items.filter((_, i) => i !== index)
+    }));
+  };
+
+  const updateItemRow = (index: number, field: string, value: any) => {
+    setOrderForm(prev => {
+      const newItems = [...prev.items];
+      newItems[index] = { ...newItems[index], [field]: value };
+      
+      // Auto-set price if product changed
+      if (field === "productId") {
+        const product = products.find(p => p.id === value);
+        if (product) newItems[index].price = product.retailPrice;
+      }
+      
+      return { ...prev, items: newItems };
+    });
+  };
+
   return (
     <div className="space-y-6" dir="rtl">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -106,8 +236,196 @@ export default function OrdersClient({ initialOrders, partners }: { initialOrder
         </div>
         
         <div className="flex flex-wrap gap-2">
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-pink-600 hover:bg-pink-700 text-white rounded-full gap-2">
+                <Plus className="w-4 h-4" />
+                إضافة طلب جديد
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" dir="rtl">
+              <DialogHeader>
+                <DialogTitle>إضافة طلب جديد يدوياً</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-6 py-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>اسم الزبون</Label>
+                        <Input 
+                          value={orderForm.customerName}
+                          onChange={e => setOrderForm(p => ({ ...p, customerName: e.target.value }))}
+                          placeholder="الاسم الثلاثي"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>رقم الهاتف</Label>
+                        <Input 
+                          value={orderForm.customerPhone}
+                          onChange={e => setOrderForm(p => ({ ...p, customerPhone: e.target.value }))}
+                          placeholder="091XXXXXXX"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>ملاحظات</Label>
+                      <Textarea 
+                        value={orderForm.notes}
+                        onChange={e => setOrderForm(p => ({ ...p, notes: e.target.value }))}
+                        placeholder="ملاحظات إضافية..."
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-pink-600 font-bold">المنتجات المختارة</Label>
+                        <Button type="button" variant="outline" size="sm" onClick={addItemRow} className="h-8 rounded-full">
+                          <Plus className="w-3 h-3 ml-1" /> إضافة منتج
+                        </Button>
+                      </div>
+                      
+                      {orderForm.items.map((item, idx) => (
+                        <div key={idx} className="flex gap-2 items-end bg-pink-50/30 p-3 rounded-xl border border-pink-100">
+                          <div className="flex-1 space-y-2">
+                            <Label className="text-[10px]">المنتج</Label>
+                            <Select value={item.productId} onValueChange={v => updateItemRow(idx, "productId", v)}>
+                              <SelectTrigger className="h-9 text-xs">
+                                <SelectValue placeholder="اختر المنتج" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {products.map(p => (
+                                  <SelectItem key={p.id} value={p.id}>{p.nameAr || p.name}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="w-20 space-y-2">
+                            <Label className="text-[10px]">الكمية</Label>
+                            <Input 
+                              type="number" 
+                              className="h-9 text-xs"
+                              value={item.quantity}
+                              onChange={e => updateItemRow(idx, "quantity", parseInt(e.target.value) || 1)}
+                            />
+                          </div>
+                          <div className="w-28 space-y-2">
+                            <Label className="text-[10px]">السعر</Label>
+                            <Input 
+                              type="number" 
+                              className="h-9 text-xs"
+                              value={item.price}
+                              onChange={e => updateItemRow(idx, "price", parseFloat(e.target.value) || 0)}
+                            />
+                          </div>
+                          {orderForm.items.length > 1 && (
+                            <Button variant="ghost" size="icon" className="h-9 w-9 text-red-400 hover:text-red-500" onClick={() => removeItemRow(idx)}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} disabled={isSubmitting}>إلغاء</Button>
+                    <Button onClick={handleCreateOrder} className="bg-pink-600 hover:bg-pink-700 text-white" disabled={isSubmitting}>
+                      {isSubmitting ? "جاري الإضافة..." : "حفظ الطلب"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+
+              {/* Edit Order Dialog */}
+              <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" dir="rtl">
+                  <DialogHeader>
+                    <DialogTitle>تعديل الطلب</DialogTitle>
+                  </DialogHeader>
+                  <div className="grid gap-6 py-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>اسم الزبون</Label>
+                        <Input 
+                          value={orderForm.customerName}
+                          onChange={e => setOrderForm(p => ({ ...p, customerName: e.target.value }))}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>رقم الهاتف</Label>
+                        <Input 
+                          value={orderForm.customerPhone}
+                          onChange={e => setOrderForm(p => ({ ...p, customerPhone: e.target.value }))}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>ملاحظات</Label>
+                      <Textarea 
+                        value={orderForm.notes}
+                        onChange={e => setOrderForm(p => ({ ...p, notes: e.target.value }))}
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-pink-600 font-bold">المنتجات</Label>
+                        <Button type="button" variant="outline" size="sm" onClick={addItemRow} className="h-8 rounded-full">
+                          <Plus className="w-3 h-3 ml-1" /> إضافة منتج
+                        </Button>
+                      </div>
+                      
+                      {orderForm.items.map((item, idx) => (
+                        <div key={idx} className="flex gap-2 items-end bg-pink-50/30 p-3 rounded-xl border border-pink-100">
+                          <div className="flex-1 space-y-2">
+                            <Label className="text-[10px]">المنتج</Label>
+                            <Select value={item.productId} onValueChange={v => updateItemRow(idx, "productId", v)}>
+                              <SelectTrigger className="h-9 text-xs">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {products.map(p => (
+                                  <SelectItem key={p.id} value={p.id}>{p.nameAr || p.name}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="w-20 space-y-2">
+                            <Label className="text-[10px]">الكمية</Label>
+                            <Input 
+                              type="number" 
+                              className="h-9 text-xs"
+                              value={item.quantity}
+                              onChange={e => updateItemRow(idx, "quantity", parseInt(e.target.value) || 1)}
+                            />
+                          </div>
+                          <div className="w-28 space-y-2">
+                            <Label className="text-[10px]">السعر</Label>
+                            <Input 
+                              type="number" 
+                              className="h-9 text-xs"
+                              value={item.price}
+                              onChange={e => updateItemRow(idx, "price", parseFloat(e.target.value) || 0)}
+                            />
+                          </div>
+                          <Button variant="ghost" size="icon" className="h-9 w-9 text-red-400" onClick={() => removeItemRow(idx)}>
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} disabled={isSubmitting}>إلغاء</Button>
+                    <Button onClick={handleUpdateOrder} className="bg-pink-600 hover:bg-pink-700 text-white" disabled={isSubmitting}>
+                      {isSubmitting ? "جاري الحفظ..." : "حفظ التعديلات"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+
           <Select value={partnerFilter} onValueChange={setPartnerFilter}>
-            <SelectTrigger className="w-44 bg-white border-pink-100 shadow-sm">
+            <SelectTrigger className="w-44 bg-white border-pink-100 shadow-sm rounded-full">
               <User className="w-4 h-4 ml-2 text-pink-400" />
               <SelectValue placeholder="بحث حسب الشريك" />
             </SelectTrigger>
@@ -225,17 +543,22 @@ export default function OrdersClient({ initialOrders, partners }: { initialOrder
                       <p className="text-xs text-muted-foreground mb-1">إجمالي الطلب</p>
                       <p className="text-2xl font-black text-pink-900">{formatPrice(order.total)}</p>
                     </div>
-                    <Select value={order.status} onValueChange={v => updateStatus(order.id, v)}>
-                      <SelectTrigger className="w-full h-10 text-xs bg-white border-pink-100 rounded-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="PENDING">معلق</SelectItem>
-                        <SelectItem value="PROCESSING">جاري المعالجة</SelectItem>
-                        <SelectItem value="COMPLETED">مكتمل</SelectItem>
-                        <SelectItem value="CANCELLED">ملغي</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="flex flex-col gap-2 w-full">
+                      <Select value={order.status} onValueChange={v => updateStatus(order.id, v)}>
+                        <SelectTrigger className="w-full h-10 text-xs bg-white border-pink-100 rounded-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="PENDING">معلق</SelectItem>
+                          <SelectItem value="PROCESSING">جاري المعالجة</SelectItem>
+                          <SelectItem value="COMPLETED">مكتمل</SelectItem>
+                          <SelectItem value="CANCELLED">ملغي</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Button variant="outline" size="sm" className="w-full h-10 rounded-full border-pink-100 text-pink-600 hover:bg-pink-50" onClick={() => startEditing(order)}>
+                        تعديل الطلب
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>

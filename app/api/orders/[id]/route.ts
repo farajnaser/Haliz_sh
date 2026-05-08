@@ -14,7 +14,46 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const body = await req.json();
-  const order = await prisma.order.update({ where: { id }, data: body });
+  const { customerName, customerPhone, notes, status, items } = body;
+
+  const updateData: any = {};
+  if (customerName) updateData.customerName = customerName;
+  if (customerPhone) updateData.customerPhone = customerPhone;
+  if (notes !== undefined) updateData.notes = notes;
+  if (status) updateData.status = status;
+
+  if (items && items.length > 0) {
+    const total = items.reduce(
+      (sum: number, item: { price: number; quantity: number }) =>
+        sum + item.price * item.quantity,
+      0
+    );
+    updateData.total = total;
+    updateData.items = {
+      deleteMany: {},
+      create: items.map((item: { productId: string; quantity: number; price: number }) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+    };
+  }
+
+  const order = await prisma.order.update({
+    where: { id },
+    data: updateData,
+    include: { 
+      items: { 
+        include: { 
+          product: { 
+            include: { 
+              owners: { include: { partner: true } } 
+            } 
+          } 
+        } 
+      } 
+    },
+  });
   return NextResponse.json(order);
 }
 
