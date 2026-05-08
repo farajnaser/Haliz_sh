@@ -51,6 +51,7 @@ interface Product {
   images: string[];
   categoryId: string | null;
   category: Category | null;
+  createdBy: { name: string; email: string } | null;
   createdAt: Date;
 }
 
@@ -164,6 +165,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
                   <th className="text-right px-4 py-3 font-semibold text-muted-foreground">الربح</th>
                   <th className="text-right px-4 py-3 font-semibold text-muted-foreground">المخزون</th>
                   <th className="text-right px-4 py-3 font-semibold text-muted-foreground">الحالة</th>
+                  <th className="text-right px-4 py-3 font-semibold text-muted-foreground">المسؤول</th>
                   <th className="text-right px-4 py-3 font-semibold text-muted-foreground">إجراءات</th>
                 </tr>
               </thead>
@@ -235,6 +237,13 @@ export default function ProductsClient({ initialProducts, categories }: Products
                         >
                           {statusLabels[product.status]}
                         </span>
+                      </td>
+                      {/* Created By */}
+                      <td className="px-4 py-3">
+                        <div className="flex flex-col">
+                          <span className="text-xs font-bold text-pink-600">{product.createdBy?.name || "نظام"}</span>
+                          <span className="text-[10px] text-muted-foreground">{product.createdBy?.email || ""}</span>
+                        </div>
                       </td>
                       {/* Actions */}
                       <td className="px-4 py-3">

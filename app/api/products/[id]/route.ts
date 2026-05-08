@@ -6,7 +6,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const product = await prisma.product.findUnique({
     where: { id },
-    include: { category: true },
+    include: { category: true, createdBy: { select: { name: true, email: true } } },
   });
 
   if (!product) {
@@ -50,7 +50,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       profit,
       ...rest,
     },
-    include: { category: true },
+    include: { category: true, createdBy: { select: { name: true, email: true } } },
   });
 
   return NextResponse.json(product);

@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
   const [products, total] = await Promise.all([
     prisma.product.findMany({
       where,
-      include: { category: true },
+      include: { category: true, createdBy: { select: { name: true, email: true } } },
       orderBy,
       skip,
       take: limit,
@@ -49,6 +49,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const { auth } = await import("@/lib/auth");
+  const session = await auth();
   const body = await req.json();
   const { name, nameAr, ...rest } = body;
 
@@ -68,9 +70,10 @@ export async function POST(req: NextRequest) {
       nameAr,
       slug: uniqueSlug,
       profit,
+      createdById: session?.user?.id || null,
       ...rest,
     },
-    include: { category: true },
+    include: { category: true, createdBy: { select: { name: true, email: true } } },
   });
 
   return NextResponse.json(product, { status: 201 });
