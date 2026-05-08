@@ -8,22 +8,68 @@ import { Minus, Plus, Trash2, ShoppingCart, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import { formatPrice, generateWhatsAppMessage } from "@/lib/utils";
 
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { toast } from "sonner";
+
 export default function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice, clearCart } =
     useCartStore();
 
-  const handleWhatsAppCheckout = () => {
-    const whatsappUrl = generateWhatsAppMessage(
-      items.map((i) => ({
-        name: i.name,
-        nameAr: i.nameAr,
-        quantity: i.quantity,
-        price: i.price,
-      })),
-      "HALIZ",
-      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "966500000000"
-    );
-    window.open(whatsappUrl, "_blank");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleWhatsAppCheckout = async () => {
+    if (!customerName || !customerPhone) {
+      toast.error("يرجى إدخال الاسم ورقم الهاتف لإتمام الطلب");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // 1. Save order to database
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName,
+          customerPhone,
+          items: items.map(i => ({
+            productId: i.id,
+            quantity: i.quantity,
+            price: i.price
+          }))
+        })
+      });
+
+      if (!response.ok) throw new Error("Failed to save order");
+
+      // 2. Open WhatsApp
+      const whatsappUrl = generateWhatsAppMessage(
+        items.map((i) => ({
+          name: i.name,
+          nameAr: i.nameAr,
+          quantity: i.quantity,
+          price: i.price,
+        })),
+        "HALIZ",
+        process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "218922612675"
+      );
+
+      // 3. Clear cart and close
+      clearCart();
+      closeCart();
+      toast.success("تم تسجيل طلبك بنجاح!");
+      
+      window.open(whatsappUrl, "_blank");
+    } catch (error) {
+      console.error("Order error:", error);
+      toast.error("حدث خطأ أثناء تسجيل الطلب. يرجى المحاولة مرة أخرى.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -96,21 +142,49 @@ export default function CartDrawer() {
             <Separator />
 
             {/* Summary */}
-            <div className="space-y-4 pt-4">
-              <div className="flex items-center justify-between text-lg font-bold">
+            <div className="space-y-6 pt-4">
+              {/* Customer Info Form */}
+              <div className="space-y-4 bg-pink-50/50 p-4 rounded-2xl border border-pink-100">
+                <p className="text-sm font-black text-[#603b4b]">معلومات الشحن</p>
+                <div className="space-y-3">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="name" className="text-xs font-bold text-[#a0848f]">الاسم بالكامل</Label>
+                    <Input 
+                      id="name" 
+                      placeholder="اسم المستلم" 
+                      className="rounded-xl border-pink-100 focus-visible:ring-pink-300"
+                      value={customerName}
+                      onChange={(e) => setCustomerName(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="phone" className="text-xs font-bold text-[#a0848f]">رقم الهاتف</Label>
+                    <Input 
+                      id="phone" 
+                      placeholder="09X-XXXXXXX" 
+                      className="rounded-xl border-pink-100 focus-visible:ring-pink-300"
+                      value={customerPhone}
+                      onChange={(e) => setCustomerPhone(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-lg font-bold px-2">
                 <span>الإجمالي</span>
                 <span className="text-pink-600">{formatPrice(totalPrice())}</span>
               </div>
 
               <Button
-                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-5 text-base font-semibold rounded-2xl shadow-lg shadow-green-200 dark:shadow-none gap-2"
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-6 text-base font-semibold rounded-2xl shadow-lg shadow-green-200 dark:shadow-none gap-2"
                 onClick={handleWhatsAppCheckout}
+                disabled={isSubmitting}
               >
                 <MessageCircle className="w-5 h-5" />
-                اطلب عبر واتساب
+                {isSubmitting ? "جاري تسجيل الطلب..." : "تأكيد الطلب عبر واتساب"}
               </Button>
 
-              <Button variant="outline" className="w-full" onClick={clearCart}>
+              <Button variant="outline" className="w-full rounded-2xl border-pink-100 text-[#a0848f]" onClick={clearCart}>
                 إفراغ السلة
               </Button>
             </div>
