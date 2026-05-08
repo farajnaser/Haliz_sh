@@ -11,20 +11,16 @@ import Link from "next/link";
 import { Sparkles } from "lucide-react";
 
 export default async function StoreHomePage() {
+  // Fetch products: prioritizes featured ones, but fills with latest arrivals to ensure a full grid
   let featuredProducts = await prisma.product.findMany({
-    where: { featured: true, status: "ACTIVE" },
+    where: { status: "ACTIVE" },
     include: { category: true },
-    take: 8,
+    orderBy: [
+      { featured: "desc" }, // Featured first
+      { createdAt: "desc" } // Then newest
+    ],
+    take: 12,
   });
-
-  if (featuredProducts.length === 0) {
-    featuredProducts = await prisma.product.findMany({
-      where: { status: "ACTIVE" },
-      include: { category: true },
-      take: 12,
-      orderBy: { createdAt: "desc" },
-    });
-  }
 
   return (
     <div className="bg-[#fafafa] min-h-screen">

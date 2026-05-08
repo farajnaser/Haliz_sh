@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,35 +9,43 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    // Create unique filename
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.]/g, "")}`;
+    // Use ImgBB API for production-ready uploads
+    const apiKey = process.env.IMGBB_API_KEY;
     
-    // Ensure uploads directory exists
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (err) {
-      // Ignore if directory already exists
+    if (!apiKey) {
+      console.error("IMGBB_API_KEY is missing");
+      return NextResponse.json({ error: "Upload service not configured" }, { status: 500 });
     }
 
-    // Write file to public/uploads
-    const filepath = path.join(uploadDir, filename);
-    await writeFile(filepath, buffer);
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const base64Image = buffer.toString("base64");
 
-    // Return the local URL
-    const url = `/uploads/${filename}`;
-    return NextResponse.json({ url, publicId: filename });
+    const imgbbFormData = new FormData();
+    imgbbFormData.append("image", base64Image);
+
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+      method: "POST",
+      body: imgbbFormData,
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      throw new Error(data.error?.message || "ImgBB upload failed");
+    }
+
+    return NextResponse.json({ 
+      url: data.data.url, 
+      publicId: data.data.id 
+    });
+    
   } catch (error) {
     console.error("Upload error:", error);
-    return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
 
 export async function DELETE(req: NextRequest) {
-  // Local delete is not fully implemented for safety, just return success
   return NextResponse.json({ success: true });
 }
