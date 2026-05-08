@@ -1,0 +1,103 @@
+// Database schema for HALIZ Gift Store
+// Tables are created automatically in the database — no data is stored here.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  nameAr      String?
+  slug        String    @unique
+  description String?
+  image       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model Product {
+  id             String      @id @default(cuid())
+  name           String
+  nameAr         String?
+  slug           String      @unique
+  description    String?
+  descriptionAr  String?
+  retailPrice    Float
+  wholesalePrice Float
+  profit         Float       @default(0)
+  stock          Int         @default(0)
+  sku            String?     @unique
+  barcode        String?
+  featured       Boolean     @default(false)
+  status         String      @default("ACTIVE")
+  images         String[]    @default([])
+  categoryId     String?
+  category       Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  orderItems     OrderItem[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@index([categoryId])
+  @@index([featured])
+  @@index([status])
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  customerName  String
+  customerPhone String
+  notes         String?
+  status        String      @default("PENDING")
+  total         Float
+  items         OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model Settings {
+  id             String   @id @default(cuid())
+  storeName      String   @default("HALIZ")
+  storeNameAr    String   @default("هاليز")
+  description    String?
+  descriptionAr  String?
+  logo           String?
+  whatsappNumber String   @default("966500000000")
+  instagram      String?
+  twitter        String?
+  facebook       String?
+  tiktok         String?
+  address        String?
+  addressAr      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
