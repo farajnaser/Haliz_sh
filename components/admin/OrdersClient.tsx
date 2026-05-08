@@ -16,7 +16,8 @@ interface Partner {
 interface OrderItem {
   id: string;
   quantity: number;
-  price: number;
+  isDiscounted: boolean;
+  soldStatus: string;
   product: { 
     name: string; 
     nameAr: string | null;
@@ -63,6 +64,24 @@ export default function OrdersClient({ initialOrders, partners }: { initialOrder
     
     return matchesStatus && matchesPartner;
   });
+
+  const updateItemStatus = async (orderId: string, itemId: string, data: any) => {
+    try {
+      await fetch(`/api/orders/${orderId}/items/${itemId}`, { 
+        method: "PUT", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify(data) 
+      });
+      setOrders(prev => prev.map(o => {
+        if (o.id !== orderId) return o;
+        return {
+          ...o,
+          items: o.items.map(i => i.id === itemId ? { ...i, ...data } : i)
+        };
+      }));
+      toast.success("تم تحديث حالة المنتج");
+    } catch { toast.error("حدث خطأ"); }
+  };
 
   const updateStatus = async (id: string, status: string) => {
     try {
@@ -145,21 +164,53 @@ export default function OrdersClient({ initialOrders, partners }: { initialOrder
                       <span className="flex items-center gap-1.5"><Phone className="w-3 h-3" />{order.customerPhone}</span>
                     </div>
 
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {order.items.map(item => {
                         const productPartners = item.product.owners.map(o => o.partner.name).join(" + ");
                         return (
-                          <div key={item.id} className="bg-muted/30 p-3 rounded-xl">
-                            <div className="flex justify-between items-start mb-1">
-                              <span className="text-sm font-medium">{item.product.nameAr || item.product.name} × {item.quantity}</span>
-                              <span className="text-sm font-bold">{formatPrice(item.price * item.quantity)}</span>
-                            </div>
-                            {productPartners && (
-                              <div className="flex items-center gap-1.5 text-[10px] text-pink-600 font-medium">
-                                <User className="w-3 h-3" />
-                                الشريك: {productPartners}
+                          <div key={item.id} className={`bg-muted/30 p-4 rounded-2xl border ${item.soldStatus === 'SOLD' ? 'border-green-100' : 'border-pink-50'}`}>
+                            <div className="flex justify-between items-start mb-3">
+                              <div className="flex-1">
+                                <span className="text-sm font-black block text-[#603b4b]">{item.product.nameAr || item.product.name} × {item.quantity}</span>
+                                {productPartners && (
+                                  <div className="flex items-center gap-1.5 text-[10px] text-pink-500 font-bold mt-1">
+                                    <User className="w-3 h-3" />
+                                    الشريك: {productPartners}
+                                  </div>
+                                )}
                               </div>
-                            )}
+                              <div className="text-left">
+                                <span className="text-sm font-black block text-pink-600">{formatPrice(item.price * item.quantity)}</span>
+                                {item.isDiscounted && (
+                                  <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">خصم</span>
+                                )}
+                              </div>
+                            </div>
+                            
+                            {/* Item Actions */}
+                            <div className="flex items-center gap-3 pt-2 border-t border-pink-50/50">
+                              <div className="flex items-center gap-2">
+                                <input 
+                                  type="checkbox" 
+                                  id={`discount-${item.id}`}
+                                  checked={item.isDiscounted}
+                                  onChange={(e) => updateItemStatus(order.id, item.id, { isDiscounted: e.target.checked })}
+                                  className="w-4 h-4 accent-pink-500"
+                                />
+                                <label htmlFor={`discount-${item.id}`} className="text-[10px] font-bold text-[#a0848f]">بيع بتخفيض</label>
+                              </div>
+                              
+                              <div className="mr-auto flex gap-1">
+                                <Button 
+                                  size="sm" 
+                                  variant={item.soldStatus === 'SOLD' ? 'default' : 'outline'}
+                                  className={`h-7 px-3 text-[10px] font-bold rounded-full ${item.soldStatus === 'SOLD' ? 'bg-green-500 hover:bg-green-600' : 'border-pink-100'}`}
+                                  onClick={() => updateItemStatus(order.id, item.id, { soldStatus: item.soldStatus === 'SOLD' ? 'PENDING' : 'SOLD' })}
+                                >
+                                  {item.soldStatus === 'SOLD' ? 'تم البيع' : 'تحديد كـ مباع'}
+                                </Button>
+                              </div>
+                            </div>
                           </div>
                         );
                       })}
