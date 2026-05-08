@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ShoppingBag } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
@@ -19,15 +19,20 @@ interface Props {
 }
 
 export default function ProductCard({ product }: Props) {
+  const router = useRouter();
   const { addItem } = useCartStore();
   const displayName = product.nameAr || product.name;
   const image = product.images?.[0];
 
-  return (
-    <div className="group relative flex flex-col bg-white transition-all duration-300">
-      {/* The entire card as a link */}
-      <Link href={`/products/${product.slug}`} className="absolute inset-0 z-10" aria-label={displayName} />
+  const handleCardClick = () => {
+    router.push(`/products/${product.slug}`);
+  };
 
+  return (
+    <div 
+      onClick={handleCardClick}
+      className="group relative flex flex-col bg-white transition-all duration-300 cursor-pointer"
+    >
       {/* Image Container */}
       <div className="relative aspect-[4/5] bg-[#f5f5f5] overflow-hidden mb-4 rounded-3xl">
         {/* HALIZ Tag - PINK */}
@@ -49,12 +54,12 @@ export default function ProductCard({ product }: Props) {
           </div>
         )}
 
-        {/* Quick Add Button - Higher Z-index to be clickable over the main link */}
+        {/* Quick Add Button */}
         <div className="absolute inset-0 flex items-end justify-center p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-30">
           <button
             onClick={(e) => {
               e.preventDefault();
-              e.stopPropagation();
+              e.stopPropagation(); // CRITICAL: Stop the card click from firing
               addItem({
                 id: product.id,
                 name: displayName,
@@ -62,9 +67,8 @@ export default function ProductCard({ product }: Props) {
                 image: image || "",
                 stock: 99,
               });
-              // toast.success("تم الإضافة للسلة");
             }}
-            className="w-full bg-white/90 backdrop-blur-md text-black py-3 rounded-xl text-xs font-bold shadow-lg flex items-center justify-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 hover:bg-pink-500 hover:text-white"
+            className="w-full bg-white/90 backdrop-blur-md text-black py-3 rounded-xl text-xs font-bold shadow-lg flex items-center justify-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 hover:bg-pink-500 hover:text-white pointer-events-auto"
           >
             <ShoppingBag className="w-4 h-4" />
             أضيفي للسلة
@@ -73,7 +77,7 @@ export default function ProductCard({ product }: Props) {
       </div>
 
       {/* Info Container */}
-      <div className="flex flex-col text-center items-center px-2 relative z-20 pointer-events-none">
+      <div className="flex flex-col text-center items-center px-2">
         <h3 className="text-[13px] font-medium text-[#222] group-hover:text-pink-600 transition-colors leading-tight mb-1 line-clamp-1">
           {displayName}
         </h3>
