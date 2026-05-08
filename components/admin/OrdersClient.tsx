@@ -5,6 +5,7 @@ import { ShoppingCart, Phone, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { formatPrice, formatDate } from "@/lib/utils";
 
@@ -198,7 +199,7 @@ export default function OrdersClient({ initialOrders, partners }: { initialOrder
                                   type="number"
                                   className="h-7 text-[10px] px-2 border-pink-100 rounded-lg focus:ring-pink-200"
                                   value={item.discountAmount || ""}
-                                  onChange={(e) => updateItemStatus(order.id, item.id, { discountAmount: parseFloat(e.target.value) || 0 })}
+                                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateItemStatus(order.id, item.id, { discountAmount: parseFloat(e.target.value) || 0 })}
                                   placeholder="0"
                                 />
                               </div>
