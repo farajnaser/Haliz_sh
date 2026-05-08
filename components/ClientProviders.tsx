@@ -17,10 +17,8 @@ export default function ClientProviders({ children }: { children: React.ReactNod
         attribute="class" 
         defaultTheme="light" 
         enableSystem={false}
-        disableTransitionOnChange
       >
-        {/* Only render children after mounting to avoid hydration script issues */}
-        {mounted ? children : <div className="contents">{children}</div>}
+        {children}
       </NextThemesProvider>
     </SessionProvider>
   );
