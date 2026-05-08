@@ -12,6 +12,7 @@ export default async function AdminProductsPage() {
         },
         orderItems: {
           where: {
+            // @ts-ignore
             soldStatus: "SOLD",
             order: {
               status: { not: "CANCELLED" }
