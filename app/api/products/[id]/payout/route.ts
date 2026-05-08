@@ -50,12 +50,19 @@ export async function PATCH(
       }
     });
 
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    // Explicitly cast to include the relations for TS
+    const p = product as any;
+
     // Re-calculate the stats for the UI
-    const totalSalesRevenue = product?.orderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0) || 0;
-    const totalSalesProfit = product?.orderItems.reduce((acc, item) => acc + (((item.price - (item.discountAmount || 0)) - (product?.wholesalePrice || 0)) * item.quantity), 0) || 0;
+    const totalSalesRevenue = p.orderItems.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0) || 0;
+    const totalSalesProfit = p.orderItems.reduce((acc: number, item: any) => acc + (((item.price - (item.discountAmount || 0)) - (p.wholesalePrice || 0)) * item.quantity), 0) || 0;
 
     const productsWithRevenue = {
-      ...product,
+      ...p,
       totalSalesRevenue,
       totalSalesProfit
     };
