@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
-import { Search, Heart, ShoppingBag, Menu, X, MessageCircle } from "lucide-react";
+import { Search, Heart, ShoppingBag, Menu, X, MessageCircle, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useCartStore } from "@/store/cartStore";
 import CartDrawer from "@/components/store/CartDrawer";
 
@@ -22,10 +23,16 @@ function NavbarContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { items, openCart } = useCartStore();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -76,6 +83,13 @@ function NavbarContent() {
             </button>
             <button className="hover:text-[#ff9ecb] transition-all duration-300 hidden sm:block hover:scale-110">
               <Heart className="w-6 h-6 stroke-[1.5]" />
+            </button>
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="hover:text-[#ff9ecb] transition-all duration-300 hover:scale-110 flex items-center justify-center w-6 h-6"
+            >
+              {mounted && (theme === "dark" ? <Sun className="w-6 h-6 stroke-[1.5]" /> : <Moon className="w-6 h-6 stroke-[1.5]" />)}
+              {!mounted && <div className="w-6 h-6" />}
             </button>
           </div>
 
