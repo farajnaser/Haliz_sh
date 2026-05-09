@@ -105,7 +105,14 @@ export default function CartDrawer() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-sm line-clamp-2">{item.nameAr || item.name}</p>
-                    <p className="text-pink-600 font-bold mt-1">{formatPrice(item.price)}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      {item.originalPrice && item.originalPrice > item.price && (
+                        <span className="text-gray-400 text-xs line-through font-bold">
+                          {formatPrice(item.originalPrice)}
+                        </span>
+                      )}
+                      <p className="text-pink-600 font-bold">{formatPrice(item.price)}</p>
+                    </div>
                     <div className="flex items-center gap-2 mt-2">
                       <Button
                         variant="outline"

@@ -49,6 +49,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         name: product.name,
         nameAr: product.nameAr,
         price: sellingPrice,
+        originalPrice: product.retailPrice,
         image: product.images[0] || "",
         stock: product.stock,
       });

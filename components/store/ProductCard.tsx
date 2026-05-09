@@ -93,6 +93,7 @@ export default function ProductCard({ product }: Props) {
                 id: product.id,
                 name: displayName,
                 price: sellingPrice,
+                originalPrice: product.retailPrice,
                 image: image || "",
                 stock: 99,
               });
