@@ -140,11 +140,11 @@ export default function ProductsClient({ initialProducts, categories, partners }
   };
 
   const filtered = products.filter((p) => {
-    const matchesSearch = 
+    const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       (p.nameAr && p.nameAr.includes(search)) ||
       (p.sku && p.sku.toLowerCase().includes(search.toLowerCase()));
-    
+
     let matchesPartner = true;
     if (partnerFilter !== "ALL") {
       matchesPartner = p.owners?.some(o => o.partnerId === partnerFilter) || false;
@@ -228,7 +228,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
             className="pr-10 bg-card border-0 shadow-sm"
           />
         </div>
-        
+
         <Select value={partnerFilter} onValueChange={setPartnerFilter}>
           <SelectTrigger className="w-full sm:w-48 bg-card border-0 shadow-sm">
             <Users className="w-4 h-4 ml-2 text-pink-400" />
@@ -244,11 +244,10 @@ export default function ProductsClient({ initialProducts, categories, partners }
 
         <button
           onClick={() => setShowRemainingOnly(!showRemainingOnly)}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all border ${
-            showRemainingOnly 
-              ? "bg-pink-500 text-white border-pink-500 shadow-md shadow-pink-200" 
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all border ${showRemainingOnly
+              ? "bg-pink-500 text-white border-pink-500 shadow-md shadow-pink-200"
               : "bg-background text-muted-foreground border-border hover:border-pink-200 dark:hover:border-pink-800"
-          }`}
+            }`}
         >
           <Calculator className="w-4 h-4" />
           ديون الشركاء متبقية
@@ -363,7 +362,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
                                 // Amount due = (Capital per item * Qty sold) + Share of Net Profit
                                 const partnerCapitalEarned = (product.wholesalePrice * sharePercent) * totalQtySold;
                                 const partnerProfitEarned = (product.totalSalesProfit || 0) * sharePercent;
-                                
+
                                 const partnerEarned = partnerCapitalEarned + partnerProfitEarned;
                                 const partnerPaid = o.paidProfit || 0;
                                 const partnerRemaining = partnerEarned - partnerPaid;
@@ -373,7 +372,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
                                     <div className="flex justify-between items-center mb-2">
                                       <span className="text-xs font-black text-pink-700">{o.partner?.name || "شريك"}</span>
                                       <div className="flex gap-1">
-                                        <button 
+                                        <button
                                           onClick={(e) => {
                                             e.stopPropagation();
                                             handleSettleFull(product.id, o.partnerId, partnerEarned);
@@ -383,7 +382,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
                                         >
                                           <Check className="w-3 h-3" />
                                         </button>
-                                        <button 
+                                        <button
                                           onClick={(e) => {
                                             e.stopPropagation();
                                             setPayoutData({
@@ -533,7 +532,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
               </p>
             </div>
 
-            <Button 
+            <Button
               onClick={handlePayout}
               disabled={isPayoutSubmitting || !payoutAmount}
               className="w-full btn-haliz"
