@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
 import { Bell, LogOut, Moon, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -19,6 +20,11 @@ interface AdminTopbarProps {
 
 export default function AdminTopbar({ user }: AdminTopbarProps) {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className="h-16 border-b bg-card px-6 flex items-center justify-between shrink-0">
@@ -32,9 +38,10 @@ export default function AdminTopbar({ user }: AdminTopbarProps) {
           variant="ghost"
           size="icon"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="rounded-full"
+          className="rounded-full w-9 h-9"
         >
-          {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          {mounted && (theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
+          {!mounted && <div className="w-4 h-4" />}
         </Button>
 
         {/* Notifications */}
