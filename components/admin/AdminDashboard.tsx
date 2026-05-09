@@ -136,7 +136,7 @@ export default function AdminDashboard({ stats, lowStockProducts, recentOrders, 
               {lowStockProducts.map((product) => (
                 <div key={product.id} className="flex items-center justify-between p-3 bg-pink-50/50 dark:bg-pink-900/10 rounded-xl">
                   <p className="font-medium text-sm">{product.nameAr || product.name}</p>
-                  <span className="text-xs font-bold text-[#ff85ba] bg-white px-2 py-1 rounded-full border border-pink-100">
+                  <span className="text-xs font-bold text-[#ff85ba] bg-background dark:bg-pink-900/30 px-2 py-1 rounded-full border border-pink-100 dark:border-pink-800/50">
                     {product.stock} متبقي
                   </span>
                 </div>

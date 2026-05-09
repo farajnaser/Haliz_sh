@@ -247,7 +247,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all border ${
             showRemainingOnly 
               ? "bg-pink-500 text-white border-pink-500 shadow-md shadow-pink-200" 
-              : "bg-white text-gray-500 border-gray-100 hover:border-pink-200"
+              : "bg-background text-muted-foreground border-border hover:border-pink-200 dark:hover:border-pink-800"
           }`}
         >
           <Calculator className="w-4 h-4" />
@@ -369,7 +369,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
                                 const partnerRemaining = partnerEarned - partnerPaid;
 
                                 return (
-                                  <div key={idx} className="flex flex-col bg-white p-3 rounded-2xl border border-pink-100/50 soft-shadow min-w-[160px]">
+                                  <div key={idx} className="flex flex-col bg-background dark:bg-card p-3 rounded-2xl border border-border soft-shadow min-w-[160px]">
                                     <div className="flex justify-between items-center mb-2">
                                       <span className="text-xs font-black text-pink-700">{o.partner?.name || "شريك"}</span>
                                       <div className="flex gap-1">
@@ -379,7 +379,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
                                             handleSettleFull(product.id, o.partnerId, partnerEarned);
                                           }}
                                           title={partnerRemaining <= 0 ? "تمت التسوية بالكامل" : "تسوية كاملة"}
-                                          className={`text-[10px] p-1 rounded-full transition-all border ${partnerRemaining <= 0 ? 'bg-green-500 text-white border-green-500' : 'bg-white text-green-600 border-green-200 hover:bg-green-500 hover:text-white'}`}
+                                          className={`text-[10px] p-1 rounded-full transition-all border ${partnerRemaining <= 0 ? 'bg-green-500 text-white border-green-500' : 'bg-background text-green-600 dark:text-green-400 border-green-200 dark:border-green-900/50 hover:bg-green-500 hover:text-white'}`}
                                         >
                                           <Check className="w-3 h-3" />
                                         </button>
@@ -395,7 +395,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
                                             });
                                             setIsPayoutDialogOpen(true);
                                           }}
-                                          className="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full hover:bg-pink-500 hover:text-white transition-all font-bold"
+                                          className="text-[10px] bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 px-2 py-0.5 rounded-full hover:bg-pink-500 hover:text-white dark:hover:bg-pink-600 transition-all font-bold"
                                         >
                                           دفعة
                                         </button>
@@ -403,16 +403,16 @@ export default function ProductsClient({ initialProducts, categories, partners }
                                     </div>
                                     <div className="flex flex-col text-[10px] gap-1">
                                       <div className="flex justify-between">
-                                        <span className="text-gray-400">إجمالي الربح:</span>
+                                        <span className="text-muted-foreground">إجمالي الربح:</span>
                                         <span className="font-bold">{formatPrice(partnerEarned)}</span>
                                       </div>
                                       <div className="flex justify-between">
                                         <span className="text-blue-400">المستلم:</span>
                                         <span className="font-bold text-blue-600">{formatPrice(partnerPaid)}</span>
                                       </div>
-                                      <div className="flex justify-between pt-1 border-t border-pink-50 mt-1">
-                                        <span className="text-pink-400">المتبقي:</span>
-                                        <span className={`font-black ${partnerRemaining > 0 ? 'text-green-600' : 'text-gray-300'}`}>
+                                      <div className="flex justify-between pt-1 border-t border-border mt-1">
+                                        <span className="text-pink-500 dark:text-pink-400">المتبقي:</span>
+                                        <span className={`font-black ${partnerRemaining > 0 ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground'}`}>
                                           {formatPrice(partnerRemaining)}
                                         </span>
                                       </div>
@@ -504,23 +504,23 @@ export default function ProductsClient({ initialProducts, categories, partners }
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-6 py-4">
-            <div className="bg-pink-50/50 p-4 rounded-2xl border border-pink-100">
+            <div className="bg-muted p-4 rounded-2xl border border-border">
               <div className="flex justify-between items-center mb-1">
-                <span className="text-sm font-bold text-gray-500">الشريك:</span>
-                <span className="text-sm font-black text-pink-900">{payoutData?.partnerName}</span>
+                <span className="text-sm font-bold text-muted-foreground">الشريك:</span>
+                <span className="text-sm font-black text-foreground">{payoutData?.partnerName}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-bold text-gray-500">إجمالي الأرباح المستحقة:</span>
-                <span className="text-sm font-black text-green-600">{formatPrice(payoutData?.earned || 0)}</span>
+                <span className="text-sm font-bold text-muted-foreground">إجمالي الأرباح المستحقة:</span>
+                <span className="text-sm font-black text-green-600 dark:text-green-400">{formatPrice(payoutData?.earned || 0)}</span>
               </div>
-              <div className="flex justify-between items-center mt-1 pt-1 border-t border-pink-100/50">
-                <span className="text-sm font-bold text-gray-500">تم استلام سابقاً:</span>
-                <span className="text-sm font-black text-blue-600">{formatPrice(payoutData?.currentPaid || 0)}</span>
+              <div className="flex justify-between items-center mt-1 pt-1 border-t border-border">
+                <span className="text-sm font-bold text-muted-foreground">تم استلام سابقاً:</span>
+                <span className="text-sm font-black text-blue-600 dark:text-blue-400">{formatPrice(payoutData?.currentPaid || 0)}</span>
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-black text-pink-900">المبلغ المراد تسجيله كمدفوع (دينار ليبي):</label>
+              <label className="text-sm font-black text-foreground">المبلغ المراد تسجيله كمدفوع (دينار ليبي):</label>
               <Input
                 type="number"
                 placeholder="أدخل المبلغ..."
@@ -528,7 +528,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
                 onChange={(e) => setPayoutAmount(e.target.value)}
                 className="rounded-xl border-pink-100 focus:ring-pink-200"
               />
-              <p className="text-[10px] text-gray-400 font-bold italic">
+              <p className="text-[10px] text-muted-foreground font-bold italic">
                 * سيتم تحديث إجمالي المبلغ المستلم بإضافة هذا المبلغ.
               </p>
             </div>

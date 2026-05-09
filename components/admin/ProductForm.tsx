@@ -417,17 +417,17 @@ export default function ProductForm({
       </div>
 
       {/* ── Owners/Partners Section ── */}
-      <div className="p-4 bg-pink-50/30 rounded-xl space-y-4 border border-dashed border-pink-200">
+      <div className="p-4 bg-pink-50/30 dark:bg-pink-900/10 rounded-xl space-y-4 border border-dashed border-pink-200 dark:border-pink-900/30">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-pink-500" />
-            <Label className="font-semibold text-pink-700">شركاء المنتج (المساهمين)</Label>
+            <Label className="font-semibold text-pink-700 dark:text-pink-400">شركاء المنتج (المساهمين)</Label>
           </div>
           <Button 
             type="button" 
             variant="outline" 
             size="sm" 
-            className="text-pink-600 border-pink-200 hover:bg-pink-50 gap-1"
+            className="text-pink-600 dark:text-pink-400 border-pink-200 dark:border-pink-900/30 hover:bg-pink-50 dark:hover:bg-pink-900/20 gap-1"
             onClick={() => setOwners([...owners, { partnerId: "", amount: 0 }])}
           >
             <UserPlus className="w-3 h-3" />
@@ -440,7 +440,7 @@ export default function ProductForm({
         ) : (
           <div className="space-y-3">
             {owners.map((owner, idx) => (
-              <div key={idx} className="flex gap-3 items-end bg-white/50 p-3 rounded-lg border border-pink-100">
+              <div key={idx} className="flex gap-3 items-end bg-background dark:bg-card p-3 rounded-lg border border-border">
                 <div className="flex-1 space-y-1.5">
                   <Label className="text-[10px]">الشريك</Label>
                   <Select

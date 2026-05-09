@@ -28,11 +28,11 @@ interface Expense {
 }
 
 const CATEGORIES = [
-  { value: "MARKETING", label: "تسويق وإعلانات", icon: Megaphone, color: "text-blue-500 bg-blue-50" },
-  { value: "SHIPPING", label: "شحن وتوصيل", icon: Truck, color: "text-orange-500 bg-orange-50" },
-  { value: "RENT", label: "إيجار ومرافق", icon: Home, color: "text-purple-500 bg-purple-50" },
-  { value: "SALARIES", label: "رواتب ومكافآت", icon: Briefcase, color: "text-green-500 bg-green-50" },
-  { value: "OTHER", label: "مصاريف أخرى", icon: HelpCircle, color: "text-gray-500 bg-gray-50" },
+  { value: "MARKETING", label: "تسويق وإعلانات", icon: Megaphone, color: "text-blue-500 bg-blue-50 dark:bg-blue-900/20" },
+  { value: "SHIPPING", label: "شحن وتوصيل", icon: Truck, color: "text-orange-500 bg-orange-50 dark:bg-orange-900/20" },
+  { value: "RENT", label: "إيجار ومرافق", icon: Home, color: "text-purple-500 bg-purple-50 dark:bg-purple-900/20" },
+  { value: "SALARIES", label: "رواتب ومكافآت", icon: Briefcase, color: "text-green-500 bg-green-50 dark:bg-green-900/20" },
+  { value: "OTHER", label: "مصاريف أخرى", icon: HelpCircle, color: "text-gray-500 bg-gray-50 dark:bg-gray-800/50 dark:text-gray-400" },
 ];
 
 export default function ExpensesClient({ initialExpenses, partners = [] }: { initialExpenses: Expense[], partners?: { id: string, name: string }[] }) {
@@ -151,10 +151,10 @@ export default function ExpensesClient({ initialExpenses, partners = [] }: { ini
                       <Icon className="w-6 h-6" />
                     </div>
                     <div className="flex gap-1">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-pink-50 text-muted-foreground hover:text-pink-600" onClick={() => openEdit(exp)}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-pink-50 dark:hover:bg-pink-900/20 text-muted-foreground hover:text-pink-600 dark:hover:text-pink-400" onClick={() => openEdit(exp)}>
                         <Pencil className="w-4 h-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-red-50 text-muted-foreground hover:text-red-500" onClick={() => setDeletingId(exp.id)}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 text-muted-foreground hover:text-red-500 dark:hover:text-red-400" onClick={() => setDeletingId(exp.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -166,7 +166,7 @@ export default function ExpensesClient({ initialExpenses, partners = [] }: { ini
                       <span className="text-xs text-muted-foreground font-bold">{cat.label}</span>
                       <div className="flex items-center gap-2">
                         {exp.paidBy && (
-                           <span className="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full font-bold">بواسطة: {exp.paidBy.name}</span>
+                           <span className="text-[10px] bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 px-2 py-0.5 rounded-full font-bold">بواسطة: {exp.paidBy.name}</span>
                         )}
                         <span className="text-xs text-muted-foreground">{new Date(exp.date).toLocaleDateString('ar-LY')}</span>
                       </div>

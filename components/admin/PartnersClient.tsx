@@ -127,11 +127,11 @@ export default function PartnersClient({ initialPartners }: Props) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {partners.map((partner) => (
-          <Card key={partner.id} className="group hover:border-pink-200 transition-colors shadow-sm border-0 bg-white/50">
+          <Card key={partner.id} className="group hover:border-pink-200 transition-colors shadow-sm border border-border bg-card">
             <CardContent className="p-5">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600">
+                  <div className="w-10 h-10 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center text-pink-600 dark:text-pink-400">
                     <User className="w-5 h-5" />
                   </div>
                   <div>
@@ -170,9 +170,9 @@ export default function PartnersClient({ initialPartners }: Props) {
                   </button>
                 </div>
               </div>
-              <div className="mt-4 pt-4 border-t flex justify-between items-center text-sm">
+              <div className="mt-4 pt-4 border-t border-border flex justify-between items-center text-sm">
                 <span className="text-muted-foreground">المنتجات المشارك فيها:</span>
-                <span className="font-bold text-pink-600">{partner._count?.shares || 0}</span>
+                <span className="font-bold text-pink-600 dark:text-pink-400">{partner._count?.shares || 0}</span>
               </div>
             </CardContent>
           </Card>

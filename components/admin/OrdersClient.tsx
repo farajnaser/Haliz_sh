@@ -437,7 +437,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
               </Dialog>
 
           <Select value={partnerFilter} onValueChange={setPartnerFilter}>
-            <SelectTrigger className="w-44 bg-white border-pink-100 shadow-sm rounded-full">
+            <SelectTrigger className="w-44 bg-background dark:bg-card border-border shadow-sm rounded-full">
               <User className="w-4 h-4 ml-2 text-pink-400" />
               <SelectValue placeholder="بحث حسب الشريك" />
             </SelectTrigger>
@@ -450,7 +450,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
           </Select>
 
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-40 bg-white border-pink-100 shadow-sm">
+            <SelectTrigger className="w-40 bg-background dark:bg-card border-border shadow-sm">
               <SelectValue placeholder="الحالة" />
             </SelectTrigger>
             <SelectContent>
@@ -465,7 +465,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-3xl border border-pink-50">
+        <div className="text-center py-20 bg-muted/30 dark:bg-card rounded-3xl border border-border">
           <ShoppingCart className="w-12 h-12 mx-auto opacity-10 mb-4" />
           <p className="text-muted-foreground">لا توجد طلبات تطابق اختياراتك</p>
         </div>
@@ -557,7 +557,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                       <Select value={order.status} onValueChange={v => updateStatus(order.id, v)}>
-                        <SelectTrigger className="w-full h-10 text-xs bg-white border-pink-100 rounded-full">
+                        <SelectTrigger className="w-full h-10 text-xs bg-background dark:bg-card border-border rounded-full">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
