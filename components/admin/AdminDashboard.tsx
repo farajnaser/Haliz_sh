@@ -24,6 +24,7 @@ interface Props {
     createdAt: Date;
     items: { id: string }[];
   }[];
+  yearlyOrders: { total: number; createdAt: Date }[];
 }
 
 const statusLabels: Record<string, string> = {
@@ -39,7 +40,7 @@ const statusColors: Record<string, string> = {
   CANCELLED: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
 };
 
-export default function AdminDashboard({ stats, lowStockProducts, recentOrders }: Props) {
+export default function AdminDashboard({ stats, lowStockProducts, recentOrders, yearlyOrders }: Props) {
   return (
     <div className="space-y-6" dir="rtl">
       <div>
@@ -98,7 +99,7 @@ export default function AdminDashboard({ stats, lowStockProducts, recentOrders }
           <CardTitle className="text-base">الإيرادات الشهرية</CardTitle>
         </CardHeader>
         <CardContent>
-          <RevenueChart orders={recentOrders.map(o => ({ total: o.total, createdAt: o.createdAt }))} />
+          <RevenueChart orders={yearlyOrders} />
         </CardContent>
       </Card>
 

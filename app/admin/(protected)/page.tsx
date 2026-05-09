@@ -2,7 +2,10 @@ import { prisma } from "@/lib/prisma";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 
 export default async function AdminPage() {
-  const [productCount, orderCount, totalRevenue, lowStockProducts, recentOrders] =
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);
+
+  const [productCount, orderCount, totalRevenue, lowStockProducts, recentOrders, yearlyOrders] =
     await Promise.all([
       prisma.product.count({ where: { status: "ACTIVE" } }),
       prisma.order.count(),
@@ -17,6 +20,10 @@ export default async function AdminPage() {
         orderBy: { createdAt: "desc" },
         take: 5,
       }),
+      prisma.order.findMany({
+        where: { createdAt: { gte: startOfYear }, status: "COMPLETED" },
+        select: { total: true, createdAt: true },
+      }),
     ]);
 
   return (
@@ -28,6 +35,7 @@ export default async function AdminPage() {
       }}
       lowStockProducts={lowStockProducts}
       recentOrders={recentOrders}
+      yearlyOrders={yearlyOrders}
     />
   );
 }
