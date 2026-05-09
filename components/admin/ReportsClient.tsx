@@ -61,7 +61,7 @@ export default function ReportsClient({ initialData }: Props) {
         </Card>
         <Card className="border-0 shadow-sm bg-card rounded-[2rem] soft-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-black text-muted-foreground uppercase tracking-widest">إجمالي الأرباح المستحقة</CardTitle>
+            <CardTitle className="text-xs font-black text-muted-foreground uppercase tracking-widest">إجمالي الأرباح</CardTitle>
             <DollarSign className="w-5 h-5 text-green-400" />
           </CardHeader>
           <CardContent>
