@@ -79,13 +79,13 @@ export default function CollectionSection({ categories: dbCategories }: Props) {
     : categories;
 
   return (
-    <section className="py-24 px-6 bg-white w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-pink-50" dir="rtl">
+    <section className="py-24 px-6 bg-card w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-border" dir="rtl">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         
         {/* Title */}
         <div className="flex items-center gap-4 mb-16">
           <Sparkles className="w-6 h-6 text-[#ff9ecb]" strokeWidth={1.5} />
-          <h2 className="text-3xl md:text-4xl font-black text-[#603b4b] tracking-tighter">
+          <h2 className="text-3xl md:text-4xl font-black text-pink-900 dark:text-pink-300 tracking-tighter">
             اكتشفي الأقسام
           </h2>
           <Sparkles className="w-6 h-6 text-[#ff9ecb]" strokeWidth={1.5} />
@@ -98,7 +98,7 @@ export default function CollectionSection({ categories: dbCategories }: Props) {
             const content = (
               <>
                 {/* Circle */}
-                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full bg-white flex items-center justify-center transition-all duration-500 shadow-[0_0_40px_rgba(255,158,203,0.15)] group-hover:shadow-[0_0_60px_rgba(255,158,203,0.4)] group-hover:-translate-y-3 group-hover:scale-105 border border-transparent group-hover:border-pink-100">
+                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full bg-background dark:bg-card flex items-center justify-center transition-all duration-500 shadow-[0_0_40px_rgba(255,158,203,0.15)] group-hover:shadow-[0_0_60px_rgba(255,158,203,0.4)] group-hover:-translate-y-3 group-hover:scale-105 border border-border group-hover:border-pink-300">
                   
                   {/* Badge */}
                   {cat.badge && (
@@ -114,7 +114,7 @@ export default function CollectionSection({ categories: dbCategories }: Props) {
                 </div>
 
                 {/* Label */}
-                <span className="text-[#603b4b] text-xl font-black group-hover:text-[#ff9ecb] transition-colors">
+                <span className="text-pink-900 dark:text-pink-300 text-xl font-black group-hover:text-[#ff9ecb] transition-colors">
                   {cat.name}
                 </span>
               </>

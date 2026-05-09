@@ -9,20 +9,35 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     const { id } = await params;
     const body = await req.json();
-    const { title, amount, category, date, description, paidById } = body;
+    const { title, amount, category, date, description, contributors } = body;
+
+    const expenseAmount = parseFloat(amount);
+
+    if (contributors && contributors.length > 0) {
+      const totalContributions = contributors.reduce((acc: number, c: any) => acc + (c.amount || 0), 0);
+      if (totalContributions > expenseAmount) {
+        return NextResponse.json({ error: "Total contributions cannot exceed expense amount" }, { status: 400 });
+      }
+    }
 
     const expense = await prisma.expense.update({
       where: { id },
       data: {
         title,
-        amount: parseFloat(amount),
+        amount: expenseAmount,
         category,
         date: date ? new Date(date) : undefined,
         description,
-        paidById: paidById || null,
+        contributors: {
+          deleteMany: {},
+          create: (contributors || []).map((c: any) => ({
+            partnerId: c.partnerId,
+            amount: c.amount
+          }))
+        }
       },
       include: {
-        paidBy: { select: { id: true, name: true } }
+        contributors: { include: { partner: { select: { id: true, name: true } } } }
       }
     });
 

@@ -5,7 +5,11 @@ export default async function ExpensesPage() {
   const [expenses, partners] = await Promise.all([
     prisma.expense.findMany({
       orderBy: { date: "desc" },
-      include: { paidBy: { select: { id: true, name: true } } }
+      include: { 
+        contributors: { 
+          include: { partner: { select: { id: true, name: true } } } 
+        } 
+      }
     }),
     prisma.partner.findMany({ select: { id: true, name: true } })
   ]);

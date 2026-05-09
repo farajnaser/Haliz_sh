@@ -81,11 +81,11 @@ export default function EverydayStyleSection() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
             {/* Floating White Box */}
-            <div className="absolute top-6 left-6 right-6 bg-white/90 backdrop-blur-sm p-4 text-center rounded-2xl">
-              <span className="text-[#1a1a1a] text-sm font-black uppercase tracking-widest block mb-1">
+            <div className="absolute top-6 left-6 right-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm p-4 text-center rounded-2xl">
+              <span className="text-foreground text-sm font-black uppercase tracking-widest block mb-1">
                 شعارنا
               </span>
-              <h3 className="text-xl font-bold text-gray-600">
+              <h3 className="text-xl font-bold text-muted-foreground">
                 الأصالة هي توقيعنا
               </h3>
             </div>

@@ -20,16 +20,16 @@ interface Props {
 
 export default function ForYouSection({ products }: Props) {
   return (
-    <section className="py-24 px-6 bg-white w-full" dir="rtl">
+    <section className="py-24 px-6 bg-background w-full" dir="rtl">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-end mb-12 pb-4 border-b border-gray-100">
-          <h2 className="text-4xl md:text-5xl font-black text-[#1a1a1a] tracking-tighter">
+        <div className="flex flex-col sm:flex-row justify-between items-end mb-12 pb-4 border-b border-border">
+          <h2 className="text-4xl md:text-5xl font-black text-foreground tracking-tighter">
             مختاراتنا لكِ
           </h2>
           <Link 
             href="/products" 
-            className="group flex items-center gap-2 text-sm font-black uppercase tracking-wider text-gray-500 hover:text-[#1a1a1a] transition-colors mt-4 sm:mt-0"
+            className="group flex items-center gap-2 text-sm font-black uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors mt-4 sm:mt-0"
           >
             عرض الكل
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />

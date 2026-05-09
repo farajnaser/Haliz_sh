@@ -39,13 +39,13 @@ export default function FeaturedProductsSection({ products }: Props) {
       });
 
   return (
-    <section className="py-24 px-6 bg-gradient-to-b from-[#fffafa] to-[#fff0f6] w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-pink-50" dir="rtl">
+    <section className="py-24 px-6 bg-gradient-to-b from-pink-50 to-pink-100/60 dark:from-pink-900/10 dark:to-pink-900/20 w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-pink-100 dark:border-pink-900/20" dir="rtl">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center mb-16 space-y-6">
-          <h2 className="text-4xl md:text-5xl font-black text-[#1a1a1a] tracking-tighter">
+          <h2 className="text-4xl md:text-5xl font-black text-foreground tracking-tighter">
             منتجات متميزة
           </h2>
-          <p className="text-gray-400 font-bold max-w-xl text-center">
+          <p className="text-muted-foreground font-bold max-w-xl text-center">
             تصفحي أحدث المنتجات وأرقى صيحات الموضة المختارة بعناية.
           </p>
           
@@ -58,7 +58,7 @@ export default function FeaturedProductsSection({ products }: Props) {
                 className={`px-6 py-2 rounded-full text-sm font-black transition-all duration-300 ${
                   activeTab === tab 
                     ? "bg-[#ff9ecb] text-white shadow-lg shadow-pink-100" 
-                    : "bg-white border border-pink-100 text-gray-500 hover:bg-pink-50"
+                    : "bg-background dark:bg-card border border-border text-muted-foreground hover:bg-pink-50 dark:hover:bg-pink-900/20 hover:text-[#ff85ba]"
                 }`}
               >
                 {tab}

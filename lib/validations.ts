@@ -61,7 +61,10 @@ export const expenseSchema = z.object({
   category: z.string().min(1, "الفئة مطلوبة"),
   date: z.string().optional(),
   description: z.string().optional(),
-  paidById: z.string().optional().nullable(),
+  contributors: z.array(z.object({
+    partnerId: z.string(),
+    amount: z.number().min(0)
+  })).optional(),
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;

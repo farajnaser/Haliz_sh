@@ -23,8 +23,7 @@ interface Expense {
   category: string;
   date: string;
   description: string | null;
-  paidById: string | null;
-  paidBy?: { id: string, name: string } | null;
+  contributors?: { partnerId: string, amount: number, partner?: { id: string, name: string } }[];
 }
 
 const CATEGORIES = [
@@ -41,6 +40,7 @@ export default function ExpensesClient({ initialExpenses, partners = [] }: { ini
   const [editing, setEditing] = useState<Expense | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [contributors, setContributors] = useState<{ partnerId: string, amount: number }[]>([]);
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<ExpenseInput>({
     resolver: zodResolver(expenseSchema) as any,
@@ -59,20 +59,21 @@ export default function ExpensesClient({ initialExpenses, partners = [] }: { ini
       category: exp.category, 
       date: exp.date.split('T')[0], 
       description: exp.description || "",
-      paidById: exp.paidById || ""
     });
+    setContributors(exp.contributors?.map(c => ({ partnerId: c.partnerId, amount: c.amount })) || []);
     setIsFormOpen(true);
   };
 
   const onSubmit = async (data: ExpenseInput) => {
     setIsSubmitting(true);
     try {
+      const payload = { ...data, contributors };
       const url = editing ? `/api/expenses/${editing.id}` : "/api/expenses";
       const method = editing ? "PUT" : "POST";
       const res = await fetch(url, { 
         method, 
         headers: { "Content-Type": "application/json" }, 
-        body: JSON.stringify(data) 
+        body: JSON.stringify(payload) 
       });
       
       const contentType = res.headers.get("content-type");
@@ -165,8 +166,14 @@ export default function ExpensesClient({ initialExpenses, partners = [] }: { ini
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-muted-foreground font-bold">{cat.label}</span>
                       <div className="flex items-center gap-2">
-                        {exp.paidBy && (
-                           <span className="text-[10px] bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 px-2 py-0.5 rounded-full font-bold">بواسطة: {exp.paidBy.name}</span>
+                        {exp.contributors && exp.contributors.length > 0 && (
+                           <div className="flex gap-1 flex-wrap">
+                             {exp.contributors.map(c => (
+                               <span key={c.partnerId} className="text-[10px] bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 px-2 py-0.5 rounded-full font-bold">
+                                 {c.partner?.name}: {formatPrice(c.amount)}
+                               </span>
+                             ))}
+                           </div>
                         )}
                         <span className="text-xs text-muted-foreground">{new Date(exp.date).toLocaleDateString('ar-LY')}</span>
                       </div>
@@ -228,19 +235,76 @@ export default function ExpensesClient({ initialExpenses, partners = [] }: { ini
               {errors.category && <p className="text-xs text-red-500">{errors.category.message}</p>}
             </div>
 
-            <div className="space-y-2">
-              <Label className="font-bold">من قام بالدفع؟ (اختياري)</Label>
-              <Select defaultValue={watch("paidById") || "none"} onValueChange={(v) => setValue("paidById", v === "none" ? null : v)}>
-                <SelectTrigger className="rounded-xl">
-                  <SelectValue placeholder="اختر الشريك أو دعه فارغاً..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">بدون تحديد (من المتجر)</SelectItem>
-                  {partners.map(p => (
-                    <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="font-bold text-pink-700 dark:text-pink-400">الشركاء المساهمين في الدفع (اختياري)</Label>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="sm" 
+                  className="text-pink-600 dark:text-pink-400 border-pink-200 dark:border-pink-900/30 hover:bg-pink-50 dark:hover:bg-pink-900/20 gap-1"
+                  onClick={() => setContributors([...contributors, { partnerId: "", amount: 0 }])}
+                >
+                  <Plus className="w-3 h-3" />
+                  إضافة مساهم
+                </Button>
+              </div>
+
+              {contributors.length > 0 && (
+                <div className="space-y-3">
+                  {contributors.map((contributor, idx) => (
+                    <div key={idx} className="flex gap-3 items-end bg-background dark:bg-card p-3 rounded-lg border border-border">
+                      <div className="flex-1 space-y-1.5">
+                        <Label className="text-[10px]">الشريك</Label>
+                        <Select
+                          value={contributor.partnerId}
+                          onValueChange={(val) => {
+                            const newContributors = [...contributors];
+                            newContributors[idx].partnerId = val;
+                            setContributors(newContributors);
+                          }}
+                        >
+                          <SelectTrigger className="h-9">
+                            <SelectValue placeholder="اختر الشريك..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {partners.map(partner => (
+                              <SelectItem key={partner.id} value={partner.id}>{partner.name}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="w-32 space-y-1.5">
+                        <Label className="text-[10px]">المبلغ (دينار ليبي)</Label>
+                        <Input
+                          type="number"
+                          className="h-9"
+                          value={contributor.amount}
+                          onChange={(e) => {
+                            const newContributors = [...contributors];
+                            newContributors[idx].amount = parseFloat(e.target.value) || 0;
+                            setContributors(newContributors);
+                          }}
+                        />
+                      </div>
+                      <Button 
+                        type="button" 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-9 w-9 text-red-400 hover:text-red-600"
+                        onClick={() => setContributors(contributors.filter((_, i) => i !== idx))}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   ))}
-                </SelectContent>
-              </Select>
+                  <div className="pt-2 flex justify-between items-center text-xs">
+                    <div className="text-muted-foreground">
+                      إجمالي المساهمات: <span className="font-bold text-foreground">{contributors.reduce((acc, o) => acc + o.amount, 0)} د.ل</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">

@@ -24,8 +24,8 @@ model Partner {
   phone     String?
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
-  shares    ProductOwner[]
-  expenses  Expense[]
+  shares             ProductOwner[]
+  expenseContributions ExpenseContributor[]
 }
 
 model ProductOwner {
@@ -129,19 +129,29 @@ model Settings {
   tiktok         String?
 }
 
+model ExpenseContributor {
+  id        String   @id @default(cuid())
+  expenseId String
+  partnerId String
+  amount    Float
+  expense   Expense  @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  partner   Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@index([expenseId])
+  @@index([partnerId])
+}
+
 model Expense {
-  id          String   @id @default(cuid())
-  title       String
-  amount      Float
-  category    String   @default("OTHER") // MARKETING, SHIPPING, RENT, SALARIES, OTHER
-  date        DateTime @default(now())
-  description String?
-  paidById    String?
-  paidBy      Partner? @relation(fields: [paidById], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String               @id @default(cuid())
+  title        String
+  amount       Float
+  category     String               @default("OTHER") // MARKETING, SHIPPING, RENT, SALARIES, OTHER
+  date         DateTime             @default(now())
+  description  String?
+  contributors ExpenseContributor[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
 
   @@index([category])
   @@index([date])
-  @@index([paidById])
 }

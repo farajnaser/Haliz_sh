@@ -23,23 +23,37 @@ export async function POST(req: NextRequest) {
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
-    const { title, amount, category, date, description, paidById } = body;
+    const { title, amount, category, date, description, contributors } = body;
 
-    if (!title || !amount) {
+    const expenseAmount = parseFloat(amount);
+
+    if (!title || !expenseAmount) {
       return NextResponse.json({ error: "Title and amount are required" }, { status: 400 });
+    }
+
+    if (contributors && contributors.length > 0) {
+      const totalContributions = contributors.reduce((acc: number, c: any) => acc + (c.amount || 0), 0);
+      if (totalContributions > expenseAmount) {
+        return NextResponse.json({ error: "Total contributions cannot exceed expense amount" }, { status: 400 });
+      }
     }
 
     const expense = await prisma.expense.create({
       data: {
         title,
-        amount: parseFloat(amount),
+        amount: expenseAmount,
         category: category || "OTHER",
         date: date ? new Date(date) : new Date(),
         description,
-        paidById: paidById || null,
+        contributors: {
+          create: (contributors || []).map((c: any) => ({
+            partnerId: c.partnerId,
+            amount: c.amount
+          }))
+        }
       },
       include: {
-        paidBy: { select: { id: true, name: true } }
+        contributors: { include: { partner: { select: { id: true, name: true } } } }
       }
     });
 

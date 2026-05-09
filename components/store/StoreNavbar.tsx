@@ -228,7 +228,7 @@ function NavbarContent() {
 export default function StoreNavbar() {
   return (
     <>
-      <Suspense fallback={<div className="h-20 bg-white" />}>
+      <Suspense fallback={<div className="h-20 bg-background" />}>
         <NavbarContent />
       </Suspense>
       <CartDrawer />

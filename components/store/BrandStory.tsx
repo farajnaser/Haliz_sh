@@ -4,13 +4,13 @@ import Image from "next/image";
 
 export default function BrandStory() {
   return (
-    <section className="py-24 px-6 bg-white w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-pink-50 flex flex-col items-center text-center overflow-hidden" dir="rtl">
+    <section className="py-24 px-6 bg-card w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-border flex flex-col items-center text-center overflow-hidden" dir="rtl">
       <div className="max-w-4xl mx-auto space-y-8 relative z-10">
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1a1a1a] leading-tight tracking-tight">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground leading-tight tracking-tight">
           من العناية اليومية <br className="hidden md:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-gray-200">إلى لمسات الجمال الساحرة،</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-gray-600 dark:from-gray-300 dark:to-gray-500">إلى لمسات الجمال الساحرة،</span>
           <br className="hidden md:block" />
-          <span className="text-gray-400 font-bold text-2xl md:text-3xl lg:text-4xl block mt-4 tracking-normal">
+          <span className="text-muted-foreground font-bold text-2xl md:text-3xl lg:text-4xl block mt-4 tracking-normal">
             نوفر لكِ كل ما يبرز أنوثتك <br className="hidden md:block" />
             ويمنحك الثقة التي تستحقينها.
           </span>
