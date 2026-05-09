@@ -26,10 +26,16 @@ export default function FeaturedProductsSection({ products }: Props) {
   const filteredProducts = activeTab === "الكل" 
     ? products 
     : products.filter(p => {
-        const catName = (p.category?.nameAr || p.category?.name || "").toLowerCase();
-        // Since tab might be "عطور (قريباً)", let's just check if catName includes the main word
-        const keyword = activeTab.replace(" (قريباً)", "").trim();
-        return catName.includes(keyword);
+        const catName = (p.category?.name || "").toLowerCase();
+        const catNameAr = (p.category?.nameAr || "").toLowerCase();
+        const keyword = activeTab.replace(" (قريباً)", "").trim().toLowerCase();
+        
+        // Robust matching for skincare
+        if (keyword.includes("عناية") || keyword.includes("بشرة")) {
+          return catName.includes("skin") || catNameAr.includes("عناية") || catNameAr.includes("بشرة");
+        }
+        
+        return catName.includes(keyword) || catNameAr.includes(keyword);
       });
 
   return (
