@@ -23,13 +23,16 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const body = await req.json();
+  const existingProduct = await prisma.product.findUnique({ where: { id } });
+  if (!existingProduct) return NextResponse.json({ error: "Product not found" }, { status: 404 });
+  
   const { name, owners, ...rest } = body;
 
   // Sanitize rest to avoid Prisma errors with relations or non-existent fields
   const allowedFields = [
     "nameAr", "description", "descriptionAr", "retailPrice", 
     "wholesalePrice", "stock", "sku", "barcode", "featured", 
-    "images", "categoryId", "status"
+    "images", "categoryId", "status", "salePrice"
   ];
   const updateData: any = {};
   allowedFields.forEach(f => {
@@ -50,7 +53,14 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     }
   }
 
-  const profit = (updateData.retailPrice || 0) - (updateData.wholesalePrice || 0);
+  const sellingPrice = (updateData.salePrice !== undefined ? updateData.salePrice : existingProduct.salePrice)
+    ? (updateData.salePrice !== undefined ? updateData.salePrice : existingProduct.salePrice)
+    : (updateData.retailPrice !== undefined ? updateData.retailPrice : existingProduct.retailPrice);
+  
+  // Note: if salePrice is set but higher than retail, we should probably ignore it or use it anyway.
+  // The UI will handle displaying it only if it's lower.
+  
+  const profit = (sellingPrice || 0) - (updateData.wholesalePrice !== undefined ? updateData.wholesalePrice : existingProduct.wholesalePrice);
 
   // Generate new slug if name changed
   let slug: string | undefined;

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ShoppingCart, Phone, User, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -42,15 +42,7 @@ interface Order {
   createdAt: Date;
 }
 
-const statusLabels: Record<string, string> = {
-  PENDING: "معلق", PROCESSING: "جاري", COMPLETED: "مكتمل", CANCELLED: "ملغي",
-};
-const statusColors: Record<string, string> = {
-  PENDING: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
-  PROCESSING: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
-  COMPLETED: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
-  CANCELLED: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
-};
+
 
 export default function OrdersClient({ initialOrders, partners, products }: { 
   initialOrders: Order[], 
@@ -552,7 +544,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
 
                     {order.notes && (
                       <div className="bg-yellow-50 p-3 rounded-xl border border-yellow-100/50">
-                        <p className="text-xs text-yellow-800 italic">" {order.notes} "</p>
+                        <p className="text-xs text-yellow-800 italic">&quot; {order.notes} &quot;</p>
                       </div>
                     )}
                   </div>

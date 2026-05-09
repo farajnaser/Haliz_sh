@@ -69,7 +69,7 @@ export default function ProductForm({
     watch,
     setValue,
     formState: { errors },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
   } = useForm<ProductInput>({
     resolver: zodResolver(productSchema) as any,
     defaultValues: {
@@ -83,6 +83,7 @@ export default function ProductForm({
       sku: product?.sku || "",
       barcode: product?.barcode || "",
       featured: product?.featured || false,
+      salePrice: product?.salePrice || null,
       status: (product?.status as ProductInput["status"]) || "ACTIVE",
       categoryId: product?.categoryId || "",
       images: product?.images || [],
@@ -91,7 +92,10 @@ export default function ProductForm({
 
   const wholesalePrice = watch("wholesalePrice");
   const retailPrice = watch("retailPrice");
-  const currentProfit = calculateProfit(retailPrice || 0, wholesalePrice || 0);
+  const salePrice = watch("salePrice");
+  
+  const sellingPrice = (salePrice && salePrice < retailPrice) ? salePrice : (retailPrice || 0);
+  const currentProfit = calculateProfit(sellingPrice, wholesalePrice || 0);
 
   // Apply profit margin calculator
   const applyMargin = () => {
@@ -346,7 +350,7 @@ export default function ProductForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="retailPrice">سعر البيع (دينار ليبي) *</Label>
+            <Label htmlFor="retailPrice">سعر البيع الأصلي (دينار ليبي) *</Label>
             <Input
               id="retailPrice"
               type="number"
@@ -358,6 +362,19 @@ export default function ProductForm({
             {errors.retailPrice && (
               <p className="text-xs text-red-500">{errors.retailPrice.message}</p>
             )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="salePrice" className="text-pink-600 font-bold">سعر التخفيض (اختياري)</Label>
+            <Input
+              id="salePrice"
+              type="number"
+              step="0.01"
+              min="0"
+              {...register("salePrice")}
+              placeholder="اتركه فارغاً إذا لم يكن هناك تخفيض"
+              className="border-pink-200 focus:ring-pink-300"
+            />
           </div>
         </div>
 

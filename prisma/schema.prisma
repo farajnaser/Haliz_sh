@@ -1,6 +1,5 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -60,6 +59,7 @@ model Product {
   slug           String         @unique
   description    String?
   descriptionAr  String?
+  salePrice      Float?
   retailPrice    Float
   wholesalePrice Float
   profit         Float          @default(0)

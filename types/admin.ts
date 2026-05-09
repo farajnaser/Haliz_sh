@@ -11,6 +11,7 @@ export interface Product {
   slug: string;
   description: string | null;
   descriptionAr: string | null;
+  salePrice: number | null;
   retailPrice: number;
   wholesalePrice: number;
   profit: number;

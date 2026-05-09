@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import ProductCard from "@/components/store/ProductCard";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, SlidersHorizontal, Package } from "lucide-react";
+import { Search, Package } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 interface Product {
@@ -14,6 +14,7 @@ interface Product {
   nameAr: string | null;
   slug: string;
   retailPrice: number;
+  salePrice: number | null;
   stock: number;
   featured: boolean;
   status: string;
@@ -29,11 +30,13 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
   
   const search = searchParams.get("q") || searchParams.get("search") || "";
   const selectedCategory = searchParams.get("cat") || "all";
+  const onSale = searchParams.get("onSale") === "true";
   const sort = searchParams.get("sort") || "newest";
-  const showFilters = false; // Simplified for now
+
 
   const filtered = useMemo(() => {
     let result = [...initialProducts];
+    if (onSale) result = result.filter(p => p.salePrice && p.salePrice < p.retailPrice);
     if (search) result = result.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || (p.nameAr && p.nameAr.includes(search)));
     if (selectedCategory !== "all") {
       result = result.filter(p => {
@@ -66,11 +69,11 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
         return catName.includes(searchCat) || catNameAr.includes(searchCat) || searchCat.includes(catName) || searchCat.includes(catNameAr);
       });
     }
-    if (sort === "newest") result.sort((a, b) => 0);
+    if (sort === "newest") result.sort(() => 0);
     else if (sort === "price-asc") result.sort((a, b) => a.retailPrice - b.retailPrice);
     else if (sort === "price-desc") result.sort((a, b) => b.retailPrice - a.retailPrice);
     return result;
-  }, [initialProducts, search, selectedCategory, sort]);
+  }, [initialProducts, search, selectedCategory, sort, onSale]);
 
   return (
     <div className="container mx-auto px-4 py-16" dir="rtl">

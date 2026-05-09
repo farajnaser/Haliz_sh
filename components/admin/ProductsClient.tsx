@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { Plus, Search, Pencil, Trash2, Image as ImageIcon, Star, Package, Users, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
@@ -249,7 +249,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
                       <div className="flex flex-col items-center gap-3 text-muted-foreground">
                         <Package className="w-12 h-12 opacity-30" />
                         <p className="font-medium">لا توجد منتجات</p>
-                        <p className="text-xs">اضغط "إضافة منتج" للبدء</p>
+                        <p className="text-xs">اضغط &quot;إضافة منتج&quot; للبدء</p>
                       </div>
                     </td>
                   </tr>
@@ -290,7 +290,16 @@ export default function ProductsClient({ initialProducts, categories, partners }
                         {product.category?.nameAr || product.category?.name || "—"}
                       </td>
                       {/* Retail Price */}
-                      <td className="px-4 py-3 font-semibold">{formatPrice(product.retailPrice)}</td>
+                      <td className="px-4 py-3 font-semibold">
+                        {product.salePrice && product.salePrice < product.retailPrice ? (
+                          <div className="flex flex-col">
+                            <span className="text-pink-600">{formatPrice(product.salePrice)}</span>
+                            <span className="text-[10px] text-muted-foreground line-through">{formatPrice(product.retailPrice)}</span>
+                          </div>
+                        ) : (
+                          formatPrice(product.retailPrice)
+                        )}
+                      </td>
                       {/* Wholesale Price */}
                       <td className="px-4 py-3 text-muted-foreground">{formatPrice(product.wholesalePrice)}</td>
                       {/* Profit */}

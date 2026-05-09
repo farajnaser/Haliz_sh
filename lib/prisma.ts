@@ -14,7 +14,7 @@ function createPrismaClient() {
   return new PrismaClient({ adapter });
 }
 
-let rawPrisma = createPrismaClient();
+const rawPrisma = createPrismaClient();
 
 // Safeguard for model naming issues
 if (!(rawPrisma as any).partner && (rawPrisma as any).Partner) {

@@ -13,6 +13,7 @@ interface Props {
     nameAr?: string | null;
     slug: string;
     retailPrice: number;
+    salePrice?: number | null;
     images: string[];
     category?: { nameAr?: string | null; name: string } | null;
   };
@@ -23,6 +24,8 @@ export default function ProductCard({ product }: Props) {
   const { addItem } = useCartStore();
   const displayName = product.nameAr || product.name;
   const image = product.images?.[0];
+  const isOnSale = product.salePrice && product.salePrice < product.retailPrice;
+  const sellingPrice = isOnSale ? product.salePrice! : product.retailPrice;
 
   return (
     <div 
@@ -33,7 +36,12 @@ export default function ProductCard({ product }: Props) {
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-[#f8f9fa] rounded-t-[3rem]">
         {/* Badge Example (Optional) */}
-        <div className="absolute top-6 right-6 z-10 flex gap-2">
+        <div className="absolute top-6 right-6 z-10 flex flex-col gap-2">
+           {isOnSale && (
+             <span className="bg-[#ff4d94] text-white text-[10px] font-black px-3 py-1 uppercase tracking-widest rounded-full shadow-lg">
+               تخفيض
+             </span>
+           )}
            <span className="bg-[#1a1a1a] text-white text-[10px] font-black px-3 py-1 uppercase tracking-widest rounded-full">
              جديد
            </span>
@@ -68,8 +76,13 @@ export default function ProductCard({ product }: Props) {
 
         <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-2">
           <div className="flex flex-col">
-            <span className="text-[#1a1a1a] font-black text-xl leading-none">
-              {formatPrice(product.retailPrice)}
+            {isOnSale && (
+              <span className="text-gray-400 text-[10px] line-through font-bold mb-1">
+                {formatPrice(product.retailPrice)}
+              </span>
+            )}
+            <span className={`${isOnSale ? 'text-[#ff4d94]' : 'text-[#1a1a1a]'} font-black text-xl leading-none`}>
+              {formatPrice(sellingPrice)}
             </span>
           </div>
           
@@ -79,7 +92,7 @@ export default function ProductCard({ product }: Props) {
               addItem({
                 id: product.id,
                 name: displayName,
-                price: product.retailPrice,
+                price: sellingPrice,
                 image: image || "",
                 stock: 99,
               });

@@ -6,14 +6,26 @@ import CollectionSection from "@/components/store/CollectionSection";
 import FeaturedProductsSection from "@/components/store/FeaturedProductsSection";
 import EverydayStyleSection from "@/components/store/EverydayStyleSection";
 import ForYouSection from "@/components/store/ForYouSection";
+import OffersSection from "@/components/store/OffersSection";
 import InstagramGallery from "@/components/store/InstagramGallery";
-import StoreFooter from "@/components/store/StoreFooter";
+
 
 export default async function Home() {
   // Fetch categories
   const categories = await prisma.category.findMany({
     take: 6,
     orderBy: { createdAt: "desc" },
+  });
+
+  // Fetch products on sale
+  const saleProducts = await prisma.product.findMany({
+    where: { 
+      status: "ACTIVE",
+      salePrice: { not: null }
+    },
+    include: { category: true },
+    orderBy: { updatedAt: "desc" },
+    take: 4,
   });
 
   // Fetch featured products
@@ -46,16 +58,19 @@ export default async function Home() {
       {/* 3. Collection Section */}
       <CollectionSection categories={categories} />
 
-      {/* 4. Featured Products Section */}
+      {/* 4. Offers Section */}
+      <OffersSection products={saleProducts} />
+
+      {/* 5. Featured Products Section */}
       <FeaturedProductsSection products={featuredProducts} />
 
-      {/* 5. Everyday Style Section */}
+      {/* 6. Everyday Style Section */}
       <EverydayStyleSection />
 
-      {/* 6. For You Section */}
+      {/* 7. For You Section */}
       <ForYouSection products={forYouProducts} />
 
-      {/* 7. Instagram Gallery */}
+      {/* 8. Instagram Gallery */}
       <InstagramGallery />
     </main>
   );

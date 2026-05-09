@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const profit = (rest.retailPrice || 0) - (rest.wholesalePrice || 0);
+  const profit = ((rest.salePrice && rest.salePrice < rest.retailPrice) ? rest.salePrice : (rest.retailPrice || 0)) - (rest.wholesalePrice || 0);
 
   const product = await prisma.product.create({
     data: {

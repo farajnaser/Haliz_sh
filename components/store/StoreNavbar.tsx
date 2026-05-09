@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/products?cat=skincare", label: "عناية بالبشرة" },
   { href: "/products?cat=accessories", label: "إكسسوارات" },
   { href: "/products?cat=perfumes", label: "عطور" },
+  { href: "/products?onSale=true", label: "التخفيضات" },
 ];
 
 function NavbarContent() {
