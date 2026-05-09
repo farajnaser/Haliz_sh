@@ -57,7 +57,7 @@ export default function ProductCard({ product }: Props) {
             className="object-cover object-top group-hover:scale-110 transition-transform duration-700"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+          <div className="w-full h-full flex items-center justify-center bg-muted">
             <span className="text-4xl opacity-10">✨</span>
           </div>
         )}
@@ -69,7 +69,7 @@ export default function ProductCard({ product }: Props) {
           <h3 className="text-foreground font-black text-lg tracking-tight mb-1 truncate">
             {displayName}
           </h3>
-          <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">
+          <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">
             {product.category?.nameAr || product.category?.name || "مجموعة حصرية"}
           </p>
         </div>
@@ -77,7 +77,7 @@ export default function ProductCard({ product }: Props) {
         <div className="flex items-center justify-between pt-4 border-t border-border mt-2">
           <div className="flex flex-col">
             {isOnSale && (
-              <span className="text-gray-400 text-[10px] line-through font-bold mb-1">
+              <span className="text-muted-foreground text-[10px] line-through font-bold mb-1">
                 {formatPrice(product.retailPrice)}
               </span>
             )}

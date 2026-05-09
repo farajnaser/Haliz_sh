@@ -14,11 +14,11 @@ const gallery = [
 
 export default function InstagramGallery() {
   return (
-    <section className="py-24 px-6 bg-[#f8f9fa] w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-pink-50" dir="rtl">
+    <section className="py-24 px-6 bg-muted/40 dark:bg-card w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-border" dir="rtl">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center mb-12">
-          <span className="text-[#ff9ecb] font-bold tracking-[0.2em] text-xs uppercase mb-3">انستغرام & تيك توك</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#1a1a1a] tracking-tighter">
+          <span className="text-[#ff9ecb] font-bold tracking-[0.2em] text-xs uppercase mb-3">انستغرام &amp; تيك توك</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tighter">
             إلهام HALIZ اليومي
           </h2>
         </div>
@@ -34,7 +34,7 @@ export default function InstagramGallery() {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-white/10 transition-all duration-500 flex items-center justify-center">
-                <div className="transition-all duration-500 p-4 bg-white rounded-full text-[#ff9ecb] opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 shadow-[0_0_30px_rgba(255,158,203,0.3)]">
+                <div className="transition-all duration-500 p-4 bg-white/90 rounded-full text-[#ff9ecb] opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 shadow-[0_0_30px_rgba(255,158,203,0.3)]">
                   {INSTAGRAM_ICON}
                 </div>
               </div>

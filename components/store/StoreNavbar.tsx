@@ -205,14 +205,14 @@ function NavbarContent() {
             </form>
             
             <div className="flex flex-wrap gap-4 justify-center pt-8">
-              <span className="text-pink-900/40 text-sm font-bold w-full text-center mb-2">كلمات البحث الشائعة:</span>
+              <span className="text-muted-foreground text-sm font-bold w-full text-center mb-2">كلمات البحث الشائعة:</span>
               {["مكياج", "سيروم", "عطر", "إكسسوارات"].map(tag => (
                 <button 
                   key={tag}
                   onClick={() => {
                     setSearchQuery(tag);
                   }}
-                  className="px-6 py-2 rounded-full bg-pink-50 text-pink-600 text-sm font-bold hover:bg-pink-500 hover:text-white transition-all"
+                  className="px-6 py-2 rounded-full bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-300 text-sm font-bold hover:bg-pink-500 hover:text-white transition-all"
                 >
                   {tag}
                 </button>

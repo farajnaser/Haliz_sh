@@ -19,22 +19,22 @@ export default function OurStory() {
             <div className="absolute inset-0 bg-gradient-to-t from-pink-900/40 to-transparent" />
           </div>
           {/* Floating detail */}
-          <div className="absolute -bottom-8 -left-8 bg-white/80 backdrop-blur-md p-8 rounded-[2rem] shadow-xl border border-pink-50 max-w-[200px] hidden sm:block">
+          <div className="absolute -bottom-8 -left-8 bg-white/90 dark:bg-card/90 backdrop-blur-md p-8 rounded-[2rem] shadow-xl border border-border max-w-[200px] hidden sm:block">
             <Sparkles className="w-8 h-8 text-pink-400 mb-3" />
-            <p className="text-pink-950 font-bold text-lg leading-tight">منتجات مختارة بعناية فائقة</p>
+            <p className="text-foreground font-bold text-lg leading-tight">منتجات مختارة بعناية فائقة</p>
           </div>
         </div>
 
         <div className="space-y-8 order-1 md:order-2">
           <div className="space-y-4">
             <span className="text-pink-400 font-bold tracking-widest text-sm uppercase">قصتنا</span>
-            <h2 className="text-4xl sm:text-5xl font-light text-pink-950 leading-tight">
+            <h2 className="text-4xl sm:text-5xl font-light text-foreground leading-tight">
               أكثر من مجرد متجر، <br />
               <span className="text-pink-500 font-medium italic">إنه عالمكِ الخاص</span>
             </h2>
           </div>
           
-          <div className="space-y-6 text-pink-900/70 text-lg leading-relaxed font-medium">
+          <div className="space-y-6 text-muted-foreground text-lg leading-relaxed font-medium">
             <p>
               بدأت رحلة HALIZ بشغف بسيط: توفير أرقى منتجات التجميل والعناية بالبشرة التي تجمع بين الجودة العالمية والأسعار المناسبة لكل سيدة في ليبيا.
             </p>
