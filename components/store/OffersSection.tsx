@@ -22,7 +22,7 @@ export default function OffersSection({ products }: Props) {
   if (products.length === 0) return null;
 
   return (
-    <section className="py-24 px-6 w-full max-w-[95%] mx-auto my-12 rounded-[3.5rem] bg-[#1a1a1a] relative overflow-hidden group/section shadow-2xl" dir="rtl">
+    <section className="py-24 px-6 w-full max-w-[95%] mx-auto my-12 rounded-[3.5rem] bg-zinc-950 dark:bg-card/50 relative overflow-hidden group/section shadow-2xl" dir="rtl">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#ff4d94]/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#ff4d94]/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
@@ -43,7 +43,7 @@ export default function OffersSection({ products }: Props) {
           </div>
           
           <div className="flex gap-4">
-             <button className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-500">
+             <button className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-foreground hover:text-background transition-all duration-500">
                <ChevronRight className="w-6 h-6" />
              </button>
              <button className="w-14 h-14 rounded-full bg-[#ff4d94] flex items-center justify-center text-white hover:bg-[#ff85ba] transition-all duration-500 shadow-lg shadow-[#ff4d94]/20">
@@ -63,7 +63,7 @@ export default function OffersSection({ products }: Props) {
         
         {/* Footer Link */}
         <div className="mt-20 text-center">
-          <button className="group/btn relative px-12 py-5 bg-white text-black font-black text-sm uppercase tracking-[0.2em] rounded-full hover:bg-[#ff4d94] hover:text-white transition-all duration-500 shadow-xl overflow-hidden">
+          <button className="group/btn relative px-12 py-5 bg-foreground text-background font-black text-sm uppercase tracking-[0.2em] rounded-full hover:bg-[#ff4d94] hover:text-white transition-all duration-500 shadow-xl overflow-hidden">
              <span className="relative z-10">استكشفي جميع العروض</span>
              <div className="absolute inset-0 bg-gradient-to-r from-[#ff4d94] to-[#ff85ba] translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" />
           </button>

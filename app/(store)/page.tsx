@@ -48,7 +48,7 @@ export default async function Home() {
   });
 
   return (
-    <main className="min-h-screen bg-white overflow-hidden flex flex-col items-center">
+    <main className="min-h-screen bg-background overflow-hidden flex flex-col items-center">
       {/* 1. Hero Section */}
       <HeroBanner featuredProducts={featuredProducts.slice(0, 3)} />
 

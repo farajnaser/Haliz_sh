@@ -23,7 +23,7 @@ const WHATSAPP_ICON = (
 
 export default function StoreFooter() {
   return (
-    <footer className="bg-[#fff0f6] text-[#603b4b] py-20 px-6 w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-pink-100" dir="rtl">
+    <footer className="bg-secondary text-foreground py-20 px-6 w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-border" dir="rtl">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start gap-16 md:gap-8">
           
@@ -32,7 +32,7 @@ export default function StoreFooter() {
             <Link href="/" className="text-3xl font-black tracking-tighter text-[#ff9ecb] hover:text-[#ff85ba] transition-colors">
               HALIZ
             </Link>
-            <p className="text-[#a0848f] text-sm font-bold leading-relaxed">
+            <p className="text-muted-foreground text-sm font-bold leading-relaxed">
               وجهتك الأولى للأناقة والجمال. نقدم لكِ أرقى المجموعات المختارة بعناية لتناسب ذوقك الرفيع.
             </p>
             <div className="flex gap-6 pt-2 items-center">
@@ -53,24 +53,24 @@ export default function StoreFooter() {
             {/* Shop Column */}
             <div>
               <h4 className="text-xs font-black uppercase tracking-[0.2em] mb-6 text-[#ff85ba]">التسوق</h4>
-              <ul className="space-y-4 text-[#a0848f] font-bold text-sm">
-                <li><Link href="/products" className="hover:text-[#ff9ecb] transition-colors">جميع المنتجات</Link></li>
-                <li><Link href="/products?cat=makeup" className="hover:text-[#ff9ecb] transition-colors">المكياج</Link></li>
-                <li><Link href="/products?cat=skincare" className="hover:text-[#ff9ecb] transition-colors">العناية بالبشرة</Link></li>
-                <li><Link href="/products?cat=accessories" className="hover:text-[#ff9ecb] transition-colors">الإكسسوارات</Link></li>
+              <ul className="space-y-4 text-muted-foreground font-bold text-sm">
+                <li><Link href="/products" className="hover:text-primary transition-colors">جميع المنتجات</Link></li>
+                <li><Link href="/products?cat=makeup" className="hover:text-primary transition-colors">المكياج</Link></li>
+                <li><Link href="/products?cat=skincare" className="hover:text-primary transition-colors">العناية بالبشرة</Link></li>
+                <li><Link href="/products?cat=accessories" className="hover:text-primary transition-colors">الإكسسوارات</Link></li>
               </ul>
             </div>
 
             {/* Contact Info */}
             <div>
               <h4 className="text-xs font-black uppercase tracking-[0.2em] mb-6 text-[#ff85ba]">تواصل معنا</h4>
-              <ul className="space-y-4 text-[#a0848f] font-bold text-sm">
+              <ul className="space-y-4 text-muted-foreground font-bold text-sm">
                 <li className="flex items-center gap-3">
-                  <Phone className="w-4 h-4 text-[#ff9ecb]" />
-                  <span dir="ltr">+218 92 261 2675</span>
+                  <Phone className="w-4 h-4 text-primary" />
+                  <span dir="ltr">+218 92 261 3675</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-[#ff9ecb]" />
+                  <MapPin className="w-4 h-4 text-primary" />
                   <span>طرابلس، ليبيا</span>
                 </li>
               </ul>
@@ -79,7 +79,7 @@ export default function StoreFooter() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-center mt-20 pt-8 border-t border-pink-200/50 text-[#a0848f] text-xs font-bold gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-20 pt-8 border-t border-border text-muted-foreground text-xs font-bold gap-4">
           <p>&copy; {new Date().getFullYear()} جميع الحقوق محفوظة لمتجر هاليز</p>
           <div className="flex items-center gap-2" dir="ltr">
              <span>ARABIC</span>

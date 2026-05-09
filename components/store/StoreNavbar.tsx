@@ -56,14 +56,14 @@ function NavbarContent() {
     <>
       <header 
         className={`sticky top-0 z-50 transition-all duration-500 ${
-          scrolled ? "glass border-b border-pink-50 py-3 shadow-sm" : "bg-white py-6"
+          scrolled ? "glass border-b border-pink-50/10 py-3 shadow-sm" : "bg-background py-6"
         }`} 
         dir="rtl"
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between">
           
           {/* Right side - Icons */}
-          <div className="flex items-center gap-6 text-[#1a1a1a]">
+          <div className="flex items-center gap-6 text-foreground">
             <button 
               onClick={() => setSearchOpen(true)}
               className="hover:text-[#ff9ecb] transition-all duration-300 hidden sm:block hover:scale-110"
@@ -102,7 +102,7 @@ function NavbarContent() {
           </Link>
 
           {/* Left side - Mobile Menu */}
-          <div className="flex items-center gap-4 text-[#1a1a1a]">
+          <div className="flex items-center gap-4 text-foreground">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="hover:text-[#ff9ecb] transition-all duration-300 sm:hidden"
@@ -142,7 +142,7 @@ function NavbarContent() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <nav className="sm:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md shadow-lg shadow-pink-100/20 py-4 px-6 border-t border-pink-50">
+          <nav className="sm:hidden absolute top-full left-0 w-full bg-background/95 backdrop-blur-md shadow-lg shadow-pink-100/10 py-4 px-6 border-t border-pink-50/10">
             <ul className="flex flex-col gap-4">
               <li className="mb-2">
                 <form onSubmit={handleSearch} className="relative">
@@ -176,7 +176,7 @@ function NavbarContent() {
 
       {/* Search Overlay */}
       {searchOpen && (
-        <div className="fixed inset-0 z-[100] bg-white/95 backdrop-blur-md flex flex-col items-center justify-center p-6 animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-md flex flex-col items-center justify-center p-6 animate-in fade-in duration-300">
           <button 
             onClick={() => setSearchOpen(false)}
             className="absolute top-10 right-10 text-pink-950 hover:text-pink-500 transition-colors"
@@ -186,7 +186,7 @@ function NavbarContent() {
           
           <div className="w-full max-w-3xl space-y-8" dir="rtl">
             <div className="text-center space-y-2">
-              <h2 className="text-4xl font-light text-pink-950">ابحثي عن جمالك</h2>
+              <h2 className="text-4xl font-light text-foreground">ابحثي عن جمالك</h2>
               <p className="text-pink-500 font-medium">اكتشفي أرقى المنتجات في متجر HALIZ</p>
             </div>
             

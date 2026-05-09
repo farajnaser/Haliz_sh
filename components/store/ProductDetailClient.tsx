@@ -176,12 +176,12 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         </div>
 
         {product.descriptionAr || product.description ? (
-          <p className="text-gray-600 leading-relaxed text-lg">
+          <p className="text-muted-foreground leading-relaxed text-lg">
             {product.descriptionAr || product.description}
           </p>
         ) : null}
 
-        <div className="flex items-center gap-6 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+        <div className="flex items-center gap-6 p-4 bg-muted/30 rounded-2xl border border-border">
           <span className="text-sm font-black text-gray-500">الكمية المطلوبة:</span>
           <div className="flex items-center gap-4">
             <Button 
@@ -192,11 +192,11 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             >
               <Minus className="w-4 h-4" />
             </Button>
-            <span className="w-8 text-center text-xl font-black text-gray-800">{quantity}</span>
+            <span className="w-8 text-center text-xl font-black text-foreground">{quantity}</span>
             <Button 
               variant="outline" 
               size="icon" 
-              className="h-10 w-10 rounded-xl border-pink-100 hover:bg-pink-50 text-pink-600" 
+              className="h-10 w-10 rounded-xl border-primary/20 hover:bg-primary/10 text-primary" 
               onClick={() => setQuantity(Math.min(product.stock, quantity + 1))} 
               disabled={quantity >= product.stock}
             >
@@ -224,7 +224,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               <Button
                 size="lg"
                 variant="outline"
-                className="flex-1 btn-haliz-outline rounded-2xl gap-2 py-8 text-lg border-pink-200"
+                className="flex-1 btn-haliz-outline rounded-2xl gap-2 py-8 text-lg border-primary/20"
               >
                 <MessageCircle className="w-6 h-6" />
                 اطلب عبر واتساب
@@ -266,13 +266,13 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           </Dialog>
         </div>
 
-        <div className="p-6 bg-pink-50/50 rounded-[2rem] text-sm space-y-3 border border-pink-100/50">
-          <p className="flex items-center gap-3 text-pink-900 font-medium">
-            <span className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-[10px]">✅</span>
+        <div className="p-6 bg-primary/5 rounded-[2rem] text-sm space-y-3 border border-primary/10">
+          <p className="flex items-center gap-3 text-foreground font-medium">
+            <span className="w-6 h-6 rounded-full bg-card flex items-center justify-center text-[10px]">✅</span>
             شحن سريع لجميع المدن
           </p>
-          <p className="flex items-center gap-3 text-pink-900 font-medium">
-            <span className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-[10px]">💬</span>
+          <p className="flex items-center gap-3 text-foreground font-medium">
+            <span className="w-6 h-6 rounded-full bg-card flex items-center justify-center text-[10px]">💬</span>
             دعم فوري واستفسارات عبر واتساب
           </p>
         </div>

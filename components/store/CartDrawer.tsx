@@ -151,25 +151,25 @@ export default function CartDrawer() {
             {/* Summary */}
             <div className="space-y-6 pt-4">
               {/* Customer Info Form */}
-              <div className="space-y-4 bg-pink-50/50 p-4 rounded-2xl border border-pink-100">
-                <p className="text-sm font-black text-[#603b4b]">معلومات الشحن</p>
+              <div className="space-y-4 bg-primary/5 p-4 rounded-2xl border border-primary/10">
+                <p className="text-sm font-black text-foreground">معلومات الشحن</p>
                 <div className="space-y-3">
                   <div className="space-y-1.5">
-                    <Label htmlFor="name" className="text-xs font-bold text-[#a0848f]">الاسم بالكامل</Label>
+                    <Label htmlFor="name" className="text-xs font-bold text-muted-foreground">الاسم بالكامل</Label>
                     <Input 
                       id="name" 
                       placeholder="اسم المستلم" 
-                      className="rounded-xl border-pink-100 focus-visible:ring-pink-300"
+                      className="rounded-xl border-border focus-visible:ring-primary/30 bg-background"
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="phone" className="text-xs font-bold text-[#a0848f]">رقم الهاتف</Label>
+                    <Label htmlFor="phone" className="text-xs font-bold text-muted-foreground">رقم الهاتف</Label>
                     <Input 
                       id="phone" 
                       placeholder="09X-XXXXXXX" 
-                      className="rounded-xl border-pink-100 focus-visible:ring-pink-300"
+                      className="rounded-xl border-border focus-visible:ring-primary/30 bg-background"
                       value={customerPhone}
                       onChange={(e) => setCustomerPhone(e.target.value)}
                     />
@@ -191,7 +191,7 @@ export default function CartDrawer() {
                 {isSubmitting ? "جاري تسجيل الطلب..." : "تأكيد الطلب عبر واتساب"}
               </Button>
 
-              <Button variant="outline" className="w-full rounded-2xl border-pink-100 text-[#a0848f]" onClick={clearCart}>
+              <Button variant="outline" className="w-full rounded-2xl border-border text-muted-foreground hover:bg-muted" onClick={clearCart}>
                 إفراغ السلة
               </Button>
             </div>
