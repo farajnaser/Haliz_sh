@@ -16,6 +16,7 @@ interface Product {
   description: string | null;
   descriptionAr: string | null;
   retailPrice: number;
+  salePrice?: number | null;
   stock: number;
   featured: boolean;
   status: string;
@@ -29,13 +30,18 @@ export default function ProductDetailClient({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCartStore();
 
+  const isOnSale = product.salePrice && product.salePrice < product.retailPrice;
+  const sellingPrice = isOnSale ? product.salePrice! : product.retailPrice;
+
   const handleAddToCart = () => {
+    // Note: The store's addItem currently handles quantity by +1 each call
+    // We should call it 'quantity' times
     for (let i = 0; i < quantity; i++) {
       addItem({
         id: product.id,
         name: product.name,
         nameAr: product.nameAr,
-        price: product.retailPrice,
+        price: sellingPrice,
         image: product.images[0] || "",
         stock: product.stock,
       });
@@ -45,9 +51,9 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
   const handleWhatsApp = () => {
     const url = generateWhatsAppMessage(
-      [{ name: product.name, nameAr: product.nameAr, quantity, price: product.retailPrice }],
+      [{ name: product.name, nameAr: product.nameAr, quantity, price: sellingPrice }],
       "HALIZ",
-      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "966500000000"
+      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "218922612675"
     );
     window.open(url, "_blank");
   };
@@ -89,17 +95,31 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
       {/* Info */}
       <div className="space-y-6">
-        {product.category && (
-          <p className="text-[#ff85ba] text-sm font-medium">{product.category.nameAr || product.category.name}</p>
-        )}
+        <div className="flex justify-between items-start">
+          {product.category && (
+            <p className="text-[#ff85ba] text-sm font-medium">{product.category.nameAr || product.category.name}</p>
+          )}
+          {isOnSale && (
+             <Badge className="bg-[#ff4d94] text-white rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest shadow-lg">
+               تخفيض
+             </Badge>
+          )}
+        </div>
         <div>
           <h1 className="text-3xl font-bold">{product.nameAr || product.name}</h1>
           {product.sku && <p className="text-sm text-muted-foreground mt-1">SKU: {product.sku}</p>}
         </div>
 
-        <div className="flex items-center gap-3">
-          <p className="text-4xl font-bold text-[#ff85ba]">{formatPrice(product.retailPrice)}</p>
-          {product.featured && <Badge className="bg-[#ff9ecb] text-white">مميز</Badge>}
+        <div className="flex flex-col gap-1">
+          {isOnSale && (
+            <span className="text-gray-400 text-sm line-through font-bold">
+              {formatPrice(product.retailPrice)}
+            </span>
+          )}
+          <div className="flex items-center gap-3">
+            <p className="text-4xl font-black text-[#ff85ba]">{formatPrice(sellingPrice)}</p>
+            {product.featured && <Badge className="bg-[#ff9ecb] text-white">مميز</Badge>}
+          </div>
         </div>
 
         {product.descriptionAr || product.description ? (
