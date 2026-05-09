@@ -9,7 +9,7 @@ export async function GET() {
         id: "default", 
         storeName: "HALIZ", 
         storeNameAr: "هاليز", 
-        whatsappNumber: "218922612675",
+        whatsappNumber: "218922613675",
         facebook: "https://www.facebook.com/share/18Pwmj1cvH/",
         tiktok: "https://www.tiktok.com/@haliz.sh6?_r=1&_t=ZS-96B7G0VXPc1"
       },

@@ -1,7 +1,7 @@
 import { MessageCircle, Phone, Clock } from "lucide-react";
 
 export default function WhatsAppSection() {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "966500000000";
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "218922613675";
 
   return (
     <section className="container mx-auto px-4">

@@ -47,7 +47,7 @@ export function truncate(str: string, maxLength: number): string {
 export function generateWhatsAppMessage(
   items: { name: string; nameAr?: string | null; quantity: number; price: number }[],
   storeName = "HALIZ",
-  whatsappNumber = "966500000000"
+  whatsappNumber = "218922613675"
 ): string {
   const lines = items.map(
     (item) =>

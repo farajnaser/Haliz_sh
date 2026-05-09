@@ -36,7 +36,7 @@ export default function StoreFooter() {
               وجهتك الأولى للأناقة والجمال. نقدم لكِ أرقى المجموعات المختارة بعناية لتناسب ذوقك الرفيع.
             </p>
             <div className="flex gap-6 pt-2 items-center">
-              <a href="https://wa.me/218922612675" target="_blank" className="text-[#ff9ecb] hover:text-[#ff85ba] transition-all hover:scale-110">
+              <a href="https://wa.me/218922613675" target="_blank" className="text-[#ff9ecb] hover:text-[#ff85ba] transition-all hover:scale-110">
                 {WHATSAPP_ICON}
               </a>
               <a href="https://www.facebook.com/share/18Pwmj1cvH/" target="_blank" className="text-[#ff9ecb] hover:text-[#ff85ba] transition-all hover:scale-110">

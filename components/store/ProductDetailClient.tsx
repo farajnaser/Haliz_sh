@@ -86,7 +86,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       const url = generateWhatsAppMessage(
         [{ name: product.name, nameAr: product.nameAr, quantity, price: sellingPrice }],
         "HALIZ",
-        process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "218922612675"
+        process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "218922613675"
       );
       
       setIsDialogOpen(false);

@@ -55,7 +55,7 @@ export default function CartDrawer() {
           price: i.price,
         })),
         "HALIZ",
-        process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "218922612675"
+        process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "218922613675"
       );
 
       // 3. Clear cart and close
