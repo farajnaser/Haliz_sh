@@ -4,12 +4,12 @@ import { Truck, ShieldCheck, ArrowLeft } from "lucide-react";
 
 export default function EverydayStyleSection() {
   return (
-    <section className="py-24 px-6 bg-[#1e1319] w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-2xl overflow-hidden" dir="rtl">
+    <section className="py-24 px-6 bg-muted/30 dark:bg-card/50 w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-border overflow-hidden" dir="rtl">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         {/* Header */}
         <div className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
-            مصمم لجمالك <span className="text-gray-400 font-normal">اليومي</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight">
+            مصمم لجمالك <span className="text-muted-foreground font-normal">اليومي</span>
           </h2>
           <p className="text-gray-400 font-bold max-w-2xl mx-auto text-lg">
             من العناية الأساسية إلى القطع الفريدة، نوفر لكِ منتجات تبرز جمالك الطبيعي كل يوم.
@@ -23,24 +23,24 @@ export default function EverydayStyleSection() {
           <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
 
             {/* Top Left Box */}
-            <div className="bg-white p-10 flex flex-col items-center justify-center text-center space-y-6 hover:shadow-[0_0_40px_rgba(255,158,203,0.15)] transition-all duration-500 h-[280px] rounded-[3rem] border border-gray-50">
-              <div className="w-20 h-20 bg-pink-50 rounded-[2rem] flex items-center justify-center group-hover:bg-[#ff9ecb] transition-colors duration-500">
-                <ShieldCheck className="w-8 h-8 text-[#ff9ecb] group-hover:text-white transition-colors duration-500" />
+            <div className="bg-card p-10 flex flex-col items-center justify-center text-center space-y-6 hover:shadow-[0_0_40px_rgba(255,158,203,0.15)] transition-all duration-500 h-[280px] rounded-[3rem] border border-border">
+              <div className="w-20 h-20 bg-primary/10 rounded-[2rem] flex items-center justify-center group-hover:bg-primary transition-colors duration-500">
+                <ShieldCheck className="w-8 h-8 text-primary group-hover:text-white transition-colors duration-500" />
               </div>
               <div>
-                <h3 className="text-[#1a1a1a] text-xl font-black mb-2">جودة عالية</h3>
-                <p className="text-gray-400 text-sm font-bold">نضمن لك أصالة وجودة 100% لجميع منتجاتنا.</p>
+                <h3 className="text-foreground text-xl font-black mb-2">جودة عالية</h3>
+                <p className="text-muted-foreground text-sm font-bold">نضمن لك أصالة وجودة 100% لجميع منتجاتنا.</p>
               </div>
             </div>
 
             {/* Top Right Box */}
-            <div className="bg-white p-10 flex flex-col items-center justify-center text-center space-y-6 hover:shadow-[0_0_40px_rgba(255,158,203,0.15)] transition-all duration-500 h-[280px] rounded-[3rem] border border-gray-50">
-              <div className="w-20 h-20 bg-pink-50 rounded-[2rem] flex items-center justify-center group-hover:bg-[#ff9ecb] transition-colors duration-500">
-                <Truck className="w-8 h-8 text-[#ff9ecb] group-hover:text-white transition-colors duration-500" />
+            <div className="bg-card p-10 flex flex-col items-center justify-center text-center space-y-6 hover:shadow-[0_0_40px_rgba(255,158,203,0.15)] transition-all duration-500 h-[280px] rounded-[3rem] border border-border">
+              <div className="w-20 h-20 bg-primary/10 rounded-[2rem] flex items-center justify-center group-hover:bg-primary transition-colors duration-500">
+                <Truck className="w-8 h-8 text-primary group-hover:text-white transition-colors duration-500" />
               </div>
               <div>
-                <h3 className="text-[#1a1a1a] text-xl font-black mb-2">شحن لجميع المدن</h3>
-                <p className="text-gray-400 text-sm font-bold">نغطي كافة مناطق ليبيا مع توصيل مجاني عند تجاوز 500د.ل.</p>
+                <h3 className="text-foreground text-xl font-black mb-2">شحن لجميع المدن</h3>
+                <p className="text-muted-foreground text-sm font-bold">نغطي كافة مناطق ليبيا مع توصيل مجاني عند تجاوز 500د.ل.</p>
               </div>
             </div>
 
@@ -50,7 +50,7 @@ export default function EverydayStyleSection() {
                 <h3 className="text-[#1a1a1a] text-2xl md:text-3xl font-black leading-tight uppercase">
                   مجموعة العناية<br />الجديدة كلياً
                 </h3>
-                <Link href="/products" className="flex items-center gap-2 bg-[#1a1a1a] text-white px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest hover:bg-[#ff9ecb] transition-all w-fit shadow-xl">
+                <Link href="/products" className="flex items-center gap-2 bg-foreground text-background px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all w-fit shadow-xl">
                   تسوقي الآن
                   <ArrowLeft className="w-4 h-4" />
                 </Link>

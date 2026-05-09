@@ -104,7 +104,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
       {/* Images */}
       <div className="space-y-3">
-        <div className="group relative aspect-square rounded-3xl overflow-hidden bg-muted transition-all duration-700 hover:shadow-[0_0_80px_rgba(255,158,203,0.3)] border border-transparent hover:border-pink-200">
+        <div className="group relative aspect-square rounded-3xl overflow-hidden bg-muted transition-all duration-700 hover:shadow-[0_0_80px_rgba(255,158,203,0.3)] border border-border hover:border-primary/30">
           {product.images[selectedImage] ? (
             <Image
               src={product.images[selectedImage]}
@@ -152,10 +152,10 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           {product.sku && <p className="text-sm text-muted-foreground mt-1">SKU: {product.sku}</p>}
         </div>
 
-        <div className="flex flex-col gap-1 py-4 border-y border-pink-50/50">
+        <div className="flex flex-col gap-1 py-4 border-y border-border">
           {isOnSale ? (
             <div className="flex items-center gap-3">
-              <span className="text-gray-400 text-lg line-through font-bold">
+              <span className="text-muted-foreground text-lg line-through font-bold">
                 {formatPrice(product.retailPrice)}
               </span>
               <Badge className="bg-[#ff4d94] text-white rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest shadow-lg">
@@ -182,12 +182,12 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         ) : null}
 
         <div className="flex items-center gap-6 p-4 bg-muted/30 rounded-2xl border border-border">
-          <span className="text-sm font-black text-gray-500">الكمية المطلوبة:</span>
+          <span className="text-sm font-black text-muted-foreground">الكمية المطلوبة:</span>
           <div className="flex items-center gap-4">
             <Button 
               variant="outline" 
               size="icon" 
-              className="h-10 w-10 rounded-xl border-pink-100 hover:bg-pink-50 text-pink-600" 
+              className="h-10 w-10 rounded-xl border-border hover:bg-muted text-muted-foreground" 
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
             >
               <Minus className="w-4 h-4" />
@@ -203,7 +203,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               <Plus className="w-4 h-4" />
             </Button>
           </div>
-          <div className="mr-auto flex items-center gap-2 text-xs font-bold text-gray-400">
+          <div className="mr-auto flex items-center gap-2 text-xs font-bold text-muted-foreground">
              <Package className="w-3.5 h-3.5" />
              {product.stock} قطع متوفرة
           </div>
@@ -212,7 +212,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         <div className="flex flex-col sm:flex-row gap-4">
           <Button
             size="lg"
-            className="flex-1 btn-haliz rounded-2xl gap-2 py-8 text-lg shadow-xl shadow-pink-100/50"
+            className="flex-1 btn-haliz rounded-2xl gap-2 py-8 text-lg shadow-xl shadow-primary/20"
             disabled={product.stock === 0}
             onClick={handleAddToCart}
           >

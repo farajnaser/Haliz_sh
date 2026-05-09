@@ -72,18 +72,18 @@
 }
 
 .dark {
-  --background: #0d0b0c; /* Deep black-pink */
-  --foreground: #fceef3;
+  --background: #0d0b0c; 
+  --foreground: #fdf2f7;
   --card: #151113;
-  --card-foreground: #fceef3;
+  --card-foreground: #fdf2f7;
   --popover: #151113;
-  --popover-foreground: #fceef3;
+  --popover-foreground: #fdf2f7;
   --primary: #ff9ecb;
   --primary-foreground: #ffffff;
   --secondary: #251a1e;
   --secondary-foreground: #ffb3d6;
-  --muted: #1a1416;
-  --muted-foreground: #8a707a;
+  --muted: #1c1618;
+  --muted-foreground: #a0848f;
   --accent: #251a1e;
   --accent-foreground: #ffb3d6;
   --destructive: #ff4d4d;
@@ -115,7 +115,7 @@
   }
   
   .glass {
-    @apply bg-white/70 backdrop-blur-md border border-white/20;
+    @apply bg-background/70 backdrop-blur-md border border-border/50;
   }
   
   .soft-shadow {
@@ -124,17 +124,17 @@
 
   .btn-haliz {
     @apply bg-[#ff9ecb] text-white px-8 py-3 rounded-2xl font-bold transition-all duration-500 
-           hover:bg-[#ff85ba] hover:shadow-lg hover:shadow-pink-200 hover:-translate-y-0.5
+           hover:bg-[#ff85ba] hover:shadow-lg hover:shadow-pink-200/20 hover:-translate-y-0.5
            active:scale-95 flex items-center justify-center gap-2;
   }
   
   .btn-haliz-outline {
     @apply bg-transparent border-2 border-[#ff9ecb] text-[#ff9ecb] px-8 py-3 rounded-2xl font-bold 
-           transition-all duration-500 hover:bg-pink-50 active:scale-95;
+           transition-all duration-500 hover:bg-pink-50 dark:hover:bg-pink-900/10 active:scale-95;
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-black text-[#1a1a1a] tracking-tight mb-4;
+    @apply text-3xl md:text-4xl font-black text-foreground tracking-tight mb-4;
   }
 
   .section-subtitle {

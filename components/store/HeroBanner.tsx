@@ -29,9 +29,9 @@ const Hotspot = ({ top, right, title, price, slug, delay }: any) => {
       
       {/* Glassmorphic Tooltip */}
       <div className="absolute top-10 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-50">
-        <div className="bg-white/95 backdrop-blur-md px-5 py-3 rounded-2xl shadow-xl flex flex-col items-center min-w-[140px] border border-white/50 group-hover:bg-[#ff9ecb] transition-colors">
-           <span className="text-[#1a1a1a] group-hover:text-white font-black text-sm whitespace-nowrap transition-colors">{title}</span>
-           <span className="text-[#ff9ecb] group-hover:text-white font-bold text-sm mt-1 transition-colors">{price}</span>
+        <div className="bg-card/95 backdrop-blur-md px-5 py-3 rounded-2xl shadow-xl flex flex-col items-center min-w-[140px] border border-border group-hover:bg-[#ff9ecb] transition-colors">
+           <span className="text-foreground group-hover:text-white font-black text-sm whitespace-nowrap transition-colors">{title}</span>
+           <span className="text-primary group-hover:text-white font-bold text-sm mt-1 transition-colors">{price}</span>
         </div>
       </div>
     </Link>
@@ -57,7 +57,7 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
   const hasProducts = activeHotspots.length > 0;
 
   return (
-    <section className="relative w-full min-h-[90vh] md:min-h-screen p-4 md:p-8 flex items-center justify-center bg-white" dir="rtl">
+    <section className="relative w-full min-h-[90vh] md:min-h-screen p-4 md:p-8 flex items-center justify-center bg-background" dir="rtl">
       {/* Background Card */}
       <div className="absolute inset-4 md:inset-8 z-0 rounded-[3rem] overflow-hidden">
         <Image
@@ -91,7 +91,7 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
 
       {/* Main Content (Fades out in Explore Mode) */}
       <div className={`relative z-10 w-full pt-12 md:pt-20 text-center transition-all duration-700 ${exploreMode ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
-        <h1 className="text-5xl md:text-[5.5rem] lg:text-[7rem] font-black text-[#1a1a1a] leading-[0.9] tracking-tighter mx-auto max-w-5xl">
+        <h1 className="text-5xl md:text-[5.5rem] lg:text-[7rem] font-black text-foreground leading-[0.9] tracking-tighter mx-auto max-w-5xl">
           جمال <span className="text-white">يبرز</span><br />
           أنوثتك
         </h1>
@@ -123,10 +123,10 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
 
           <Link 
             href="/products" 
-            className="group flex items-center gap-3 bg-white text-[#1a1a1a] px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest hover:bg-[#ff9ecb] hover:text-white transition-all duration-500 shadow-lg"
+            className="group flex items-center gap-3 bg-foreground text-background px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest hover:bg-[#ff9ecb] hover:text-white transition-all duration-500 shadow-lg"
           >
             تسوقي الآن
-            <div className="w-6 h-6 rounded-full bg-[#1a1a1a] flex items-center justify-center text-white group-hover:bg-white group-hover:text-[#ff9ecb] transition-colors">
+            <div className="w-6 h-6 rounded-full bg-background flex items-center justify-center text-foreground group-hover:bg-white group-hover:text-[#ff9ecb] transition-colors">
               <ArrowLeft className="w-3 h-3" />
             </div>
           </Link>

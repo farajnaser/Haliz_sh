@@ -125,7 +125,7 @@ function NavbarContent() {
                   <Link
                     href={link.href}
                     className={`relative text-xs font-black uppercase tracking-[0.2em] transition-all duration-300 group ${
-                      isActive ? "text-[#ff85ba]" : "text-gray-400 hover:text-[#ff9ecb]"
+                      isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
                     }`}
                   >
                     {link.label}
@@ -149,7 +149,7 @@ function NavbarContent() {
                   <input 
                     type="text" 
                     placeholder="ابحثي عن منتج..." 
-                    className="w-full bg-pink-50 rounded-full px-5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-pink-200"
+                    className="w-full bg-muted rounded-full px-5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary/20"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -163,7 +163,7 @@ function NavbarContent() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block text-sm font-medium text-pink-900/70 hover:text-pink-600 hover:pl-2 transition-all"
+                    className="block text-sm font-medium text-muted-foreground hover:text-primary hover:pl-2 transition-all"
                   >
                     {link.label}
                   </Link>
@@ -179,7 +179,7 @@ function NavbarContent() {
         <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-md flex flex-col items-center justify-center p-6 animate-in fade-in duration-300">
           <button 
             onClick={() => setSearchOpen(false)}
-            className="absolute top-10 right-10 text-pink-950 hover:text-pink-500 transition-colors"
+            className="absolute top-10 right-10 text-foreground hover:text-primary transition-colors"
           >
             <X className="w-10 h-10" />
           </button>
@@ -195,7 +195,7 @@ function NavbarContent() {
                 autoFocus
                 type="text" 
                 placeholder="اكتبي ما تبحثين عنه هنا..." 
-                className="w-full bg-transparent border-b-2 border-pink-100 py-6 text-3xl sm:text-4xl font-light text-pink-950 focus:outline-none focus:border-pink-500 transition-colors placeholder:text-pink-100"
+                className="w-full bg-transparent border-b-2 border-border py-6 text-3xl sm:text-4xl font-light text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted-foreground/30"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
