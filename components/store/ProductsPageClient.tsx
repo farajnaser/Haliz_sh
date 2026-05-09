@@ -43,10 +43,10 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
         if (!p.category) return false;
         
         const searchCat = selectedCategory.toLowerCase().trim();
-        const catId = p.category.id.toLowerCase();
-        const catSlug = (p.category.slug || "").toLowerCase();
-        const catName = (p.category.name || "").toLowerCase();
-        const catNameAr = (p.category.nameAr || "").toLowerCase();
+        const catId = p.category.id.toLowerCase().trim();
+        const catSlug = (p.category.slug || "").toLowerCase().trim();
+        const catName = (p.category.name || "").toLowerCase().trim();
+        const catNameAr = (p.category.nameAr || "").toLowerCase().trim();
 
         // 1. Direct ID or Slug match
         if (catId === searchCat || catSlug === searchCat) return true;
@@ -54,16 +54,21 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
         // 2. Exact Name match
         if (catName === searchCat || catNameAr === searchCat) return true;
 
-        // 3. Common Alises & Typos
-        const isSkincare = searchCat.includes("skin") || searchCat.includes("عناية") || searchCat.includes("بشرة") || searchCat.includes("شيرة");
-        const isMakeup = searchCat.includes("make") || searchCat.includes("مكياج");
-        const isAccessory = searchCat.includes("access") || searchCat.includes("اكسسوار") || searchCat.includes("إكسسوار");
-        const isPerfume = searchCat.includes("perfume") || searchCat.includes("عطر");
+        // 3. Common Aliases & Robust Matching
+        const isSkincareSearch = searchCat.includes("skin") || searchCat.includes("عناية") || searchCat.includes("بشرة");
+        const isMakeupSearch = searchCat.includes("make") || searchCat.includes("مكياج");
+        const isAccessorySearch = searchCat.includes("access") || searchCat.includes("اكسسوار") || searchCat.includes("إكسسوار");
+        const isPerfumeSearch = searchCat.includes("perfume") || searchCat.includes("عطر");
 
-        if (isSkincare && (catName.includes("skin") || catNameAr.includes("عناية") || catNameAr.includes("بشرة") || catNameAr.includes("شيرة"))) return true;
-        if (isMakeup && (catName.includes("make") || catNameAr.includes("مكياج"))) return true;
-        if (isAccessory && (catName.includes("access") || catNameAr.includes("اكسسوار") || catNameAr.includes("إكسسوار"))) return true;
-        if (isPerfume && (catName.includes("perfume") || catNameAr.includes("عطر"))) return true;
+        const isSkincareCat = catName.includes("skin") || catNameAr.includes("عناية") || catNameAr.includes("بشرة");
+        const isMakeupCat = catName.includes("make") || catNameAr.includes("مكياج");
+        const isAccessoryCat = catName.includes("access") || catNameAr.includes("اكسسوار") || catNameAr.includes("إكسسوار");
+        const isPerfumeCat = catName.includes("perfume") || catNameAr.includes("عطر");
+
+        if (isSkincareSearch && isSkincareCat) return true;
+        if (isMakeupSearch && isMakeupCat) return true;
+        if (isAccessorySearch && isAccessoryCat) return true;
+        if (isPerfumeSearch && isPerfumeCat) return true;
 
         // 4. Substring fallback
         return catName.includes(searchCat) || catNameAr.includes(searchCat) || searchCat.includes(catName) || searchCat.includes(catNameAr);
