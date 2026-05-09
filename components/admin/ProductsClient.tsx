@@ -58,23 +58,7 @@ const statusColors: Record<string, string> = {
 export default function ProductsClient({ initialProducts, categories, partners }: ProductsClientProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [search, setSearch] = useState("");
-  const [partnerFilter, setPartnerFilter] = useState("ALL");
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  // Payout states
-  const [isPayoutDialogOpen, setIsPayoutDialogOpen] = useState(false);
-  const [isPayoutSubmitting, setIsPayoutSubmitting] = useState(false);
-  const [payoutData, setPayoutData] = useState<{
-    productId: string;
-    partnerId: string;
-    partnerName: string;
-    currentPaid: number;
-    earned: number;
-  } | null>(null);
-  const [payoutAmount, setPayoutAmount] = useState<string>("");
+  const [showRemainingOnly, setShowRemainingOnly] = useState(false);
 
   const handlePayout = async () => {
     if (!payoutData || !payoutAmount) return;
@@ -89,16 +73,19 @@ export default function ProductsClient({ initialProducts, categories, partners }
         })
       });
 
-      if (!res.ok) throw new Error();
-      
-      const updatedProduct = await res.json();
-      setProducts((prev) => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
-      
-      toast.success("تم تسجيل الدفعة بنجاح");
-      setIsPayoutDialogOpen(false);
-      setPayoutAmount("");
-    } catch {
-      toast.error("حدث خطأ أثناء تسجيل الدفعة");
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error || "Failed to register payout");
+        setProducts((prev) => prev.map(p => p.id === result.id ? result : p));
+        toast.success("تم تسجيل الدفعة بنجاح");
+        setIsPayoutDialogOpen(false);
+        setPayoutAmount("");
+      } else {
+        throw new Error(`Server error (${res.status})`);
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "حدث خطأ أثناء تسجيل الدفعة");
     } finally {
       setIsPayoutSubmitting(false);
     }
@@ -121,13 +108,17 @@ export default function ProductsClient({ initialProducts, categories, partners }
         body: JSON.stringify({ partnerId, amount: remaining })
       });
 
-      if (!res.ok) throw new Error();
-      
-      const updatedProduct = await res.json();
-      setProducts((prev) => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
-      toast.success("تمت التسوية الكاملة بنجاح");
-    } catch {
-      toast.error("حدث خطأ أثناء التسوية");
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error || "Failed to settle");
+        setProducts((prev) => prev.map(p => p.id === result.id ? result : p));
+        toast.success("تمت التسوية الكاملة بنجاح");
+      } else {
+        throw new Error(`Server error (${res.status})`);
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "حدث خطأ أثناء التسوية");
     }
   };
 
@@ -142,7 +133,18 @@ export default function ProductsClient({ initialProducts, categories, partners }
       matchesPartner = p.owners?.some(o => o.partnerId === partnerFilter) || false;
     }
 
-    return matchesSearch && matchesPartner;
+    let hasRemaining = true;
+    if (showRemainingOnly) {
+      hasRemaining = (p.owners || []).some(o => {
+        const totalContribution = p.owners.reduce((acc, ow) => acc + ow.amount, 0);
+        const sharePercent = totalContribution > 0 ? (o.amount / totalContribution) : 0;
+        const totalQtySold = (p as any).orderItems?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
+        const partnerEarned = ((p.wholesalePrice * sharePercent) * totalQtySold) + ((p.totalSalesProfit || 0) * sharePercent);
+        return (partnerEarned - (o.paidProfit || 0)) > 1; // More than 1 pound to account for precision
+      });
+    }
+
+    return matchesSearch && matchesPartner && hasRemaining;
   });
 
   const handleAdd = () => {
@@ -199,8 +201,8 @@ export default function ProductsClient({ initialProducts, categories, partners }
       </div>
 
       {/* Search & Filter */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
+      <div className="flex flex-col sm:flex-row gap-3 items-center">
+        <div className="relative flex-1 w-full">
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="البحث بالاسم أو رقم SKU..."
@@ -222,6 +224,18 @@ export default function ProductsClient({ initialProducts, categories, partners }
             ))}
           </SelectContent>
         </Select>
+
+        <button
+          onClick={() => setShowRemainingOnly(!showRemainingOnly)}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all border ${
+            showRemainingOnly 
+              ? "bg-pink-500 text-white border-pink-500 shadow-md shadow-pink-200" 
+              : "bg-white text-gray-500 border-gray-100 hover:border-pink-200"
+          }`}
+        >
+          <Calculator className="w-4 h-4" />
+          ديون الشركاء متبقية
+        </button>
       </div>
 
       {/* Products Table */}

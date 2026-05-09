@@ -53,54 +53,65 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { auth } = await import("@/lib/auth");
-  const session = await auth();
-  const body = await req.json();
-  const { name, nameAr, owners, ...rest } = body;
+  try {
+    const { auth } = await import("@/lib/auth");
+    const session = await auth();
+    const body = await req.json();
+    const { name, nameAr, owners, ...rest } = body;
 
-  const slug = slugify(name);
-  let uniqueSlug = slug;
-  let counter = 1;
-
-  while (await prisma.product.findUnique({ where: { slug: uniqueSlug } })) {
-    uniqueSlug = `${slug}-${counter++}`;
-  }
-
-  const totalCapitalLimit = (rest.wholesalePrice || 0) * (rest.stock || 0);
-
-  // Validation: Sum of owners' amounts <= Total Capital
-  if (owners && owners.length > 0) {
-    const totalOwnersAmount = owners.reduce((acc: number, o: any) => acc + (o.amount || 0), 0);
-    if (totalOwnersAmount > totalCapitalLimit && totalCapitalLimit > 0) {
-      return NextResponse.json({ 
-        error: `إجمالي مبالغ المساهمين (${totalOwnersAmount}) يتجاوز رأس مال المنتج (${totalCapitalLimit})` 
-      }, { status: 400 });
+    if (!name) {
+      return NextResponse.json({ error: "اسم المنتج مطلوب" }, { status: 400 });
     }
-  }
 
-  const profit = ((rest.salePrice && rest.salePrice < rest.retailPrice) ? rest.salePrice : (rest.retailPrice || 0)) - (rest.wholesalePrice || 0);
+    const slug = slugify(name);
+    let uniqueSlug = slug;
+    let counter = 1;
 
-  const product = await prisma.product.create({
-    data: {
-      name,
-      nameAr,
-      slug: uniqueSlug,
-      profit,
-      createdById: session?.user?.id || null,
-      ...rest,
-      owners: {
-        create: (owners || []).map((o: any) => ({
-          partnerId: o.partnerId,
-          amount: o.amount
-        }))
+    while (await prisma.product.findUnique({ where: { slug: uniqueSlug } })) {
+      uniqueSlug = `${slug}-${counter++}`;
+    }
+
+    const totalCapitalLimit = (rest.wholesalePrice || 0) * (rest.stock || 0);
+
+    // Validation: Sum of owners' amounts <= Total Capital
+    if (owners && owners.length > 0) {
+      const totalOwnersAmount = owners.reduce((acc: number, o: any) => acc + (o.amount || 0), 0);
+      if (totalOwnersAmount > totalCapitalLimit && totalCapitalLimit > 0) {
+        return NextResponse.json({ 
+          error: `إجمالي مبالغ المساهمين (${totalOwnersAmount}) يتجاوز رأس مال المنتج (${totalCapitalLimit})` 
+        }, { status: 400 });
       }
-    },
-    include: { 
-      category: true, 
-      createdBy: { select: { name: true, email: true } },
-      owners: { include: { partner: { select: { name: true, email: true } } } }
-    },
-  });
+    }
 
-  return NextResponse.json(product, { status: 201 });
+    const profit = ((rest.salePrice && rest.salePrice < rest.retailPrice) ? rest.salePrice : (rest.retailPrice || 0)) - (rest.wholesalePrice || 0);
+
+    const product = await prisma.product.create({
+      data: {
+        name,
+        nameAr,
+        slug: uniqueSlug,
+        profit,
+        createdById: session?.user?.id || null,
+        ...rest,
+        owners: {
+          create: (owners || []).map((o: any) => ({
+            partnerId: o.partnerId,
+            amount: o.amount
+          }))
+        }
+      },
+      include: { 
+        category: true, 
+        createdBy: { select: { name: true, email: true } },
+        owners: { include: { partner: { select: { name: true, email: true } } } }
+      },
+    });
+
+    return NextResponse.json(product, { status: 201 });
+  } catch (error) {
+    console.error("Error creating product:", error);
+    return NextResponse.json({ 
+      error: error instanceof Error ? error.message : "حدث خطأ غير متوقع" 
+    }, { status: 500 });
+  }
 }

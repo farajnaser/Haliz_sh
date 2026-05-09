@@ -11,14 +11,14 @@ export const productSchema = z.object({
   description: z.string().optional(),
   descriptionAr: z.string().optional(),
   salePrice: z.coerce.number().min(0).optional().nullable(),
-  retailPrice: z.coerce.number().min(0),
-  wholesalePrice: z.coerce.number().min(0),
-  stock: z.coerce.number().min(0),
+  retailPrice: z.coerce.number().min(0, "سعر البيع مطلوب"),
+  wholesalePrice: z.coerce.number().min(0, "سعر الجملة مطلوب"),
+  stock: z.coerce.number().min(0, "الكمية مطلوبة"),
   sku: z.string().optional(),
   barcode: z.string().optional(),
   featured: z.boolean().default(false),
   status: z.enum(["ACTIVE", "INACTIVE", "OUT_OF_STOCK"]).default("ACTIVE"),
-  categoryId: z.string().optional(),
+  categoryId: z.string().min(1, "يرجى اختيار فئة للمنتج"),
   images: z.array(z.string()).default([]),
 });
 

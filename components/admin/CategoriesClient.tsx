@@ -51,29 +51,46 @@ export default function CategoriesClient({ initialCategories }: { initialCategor
       const url = editing ? `/api/categories/${editing.id}` : "/api/categories";
       const method = editing ? "PUT" : "POST";
       const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      if (!res.ok) throw new Error();
-      const saved = await res.json();
+      
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const saved = await res.json();
+        if (!res.ok) throw new Error(saved.error || "فشل الحفظ");
 
-      if (editing) {
-        setCategories(prev => prev.map(c => c.id === saved.id ? { ...saved, _count: c._count } : c));
-        toast.success("تم تعديل الفئة");
+        if (editing) {
+          setCategories(prev => prev.map(c => c.id === saved.id ? { ...saved, _count: c._count } : c));
+          toast.success("تم تعديل الفئة بنجاح");
+        } else {
+          setCategories(prev => [{ ...saved, _count: { products: 0 } }, ...prev]);
+          toast.success("تم إضافة الفئة بنجاح");
+        }
+        setIsFormOpen(false);
       } else {
-        setCategories(prev => [{ ...saved, _count: { products: 0 } }, ...prev]);
-        toast.success("تم إضافة الفئة");
+        throw new Error(`Server error (${res.status})`);
       }
-      setIsFormOpen(false);
-    } catch { toast.error("حدث خطأ"); }
-    finally { setIsSubmitting(false); }
+    } catch (err) { 
+      console.error("Category save error:", err);
+      toast.error(err instanceof Error ? err.message : "حدث خطأ غير متوقع"); 
+    } finally { 
+      setIsSubmitting(false); 
+    }
   };
 
   const handleDelete = async () => {
     if (!deletingId) return;
     try {
-      await fetch(`/api/categories/${deletingId}`, { method: "DELETE" });
+      const res = await fetch(`/api/categories/${deletingId}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "فشل الحذف");
+      }
       setCategories(prev => prev.filter(c => c.id !== deletingId));
-      toast.success("تم حذف الفئة");
-    } catch { toast.error("حدث خطأ"); }
-    finally { setDeletingId(null); }
+      toast.success("تم حذف الفئة بنجاح");
+    } catch (err) { 
+      toast.error(err instanceof Error ? err.message : "حدث خطأ أثناء الحذف"); 
+    } finally { 
+      setDeletingId(null); 
+    }
   };
 
   return (

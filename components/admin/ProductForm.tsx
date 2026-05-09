@@ -168,15 +168,27 @@ export default function ProductForm({
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || "Failed to save");
-      }
+      const contentType = res.headers.get("content-type");
+      let errorMessage = "حدث خطأ أثناء الحفظ";
 
-      const saved = await res.json();
-      toast.success(product ? "تم تعديل المنتج بنجاح" : "تم إضافة المنتج بنجاح");
-      onSaved(saved);
+      if (contentType && contentType.includes("application/json")) {
+        const result = await res.json();
+        if (!res.ok) {
+          errorMessage = result.error || result.message || errorMessage;
+          throw new Error(errorMessage);
+        }
+        toast.success(product ? "تم تعديل المنتج بنجاح" : "تم إضافة المنتج بنجاح");
+        onSaved(result);
+      } else {
+        if (!res.ok) {
+          throw new Error(`خطأ في الخادم (${res.status})`);
+        }
+        // Fallback for non-JSON success (though API should return JSON)
+        toast.success("تمت العملية بنجاح");
+        onCancel();
+      }
     } catch (err) {
+      console.error("Submit error:", err);
       toast.error((err as Error).message || "حدث خطأ ما");
     } finally {
       setIsSubmitting(false);
