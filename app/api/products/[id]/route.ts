@@ -94,11 +94,21 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       include: { 
         category: true, 
         createdBy: { select: { name: true, email: true } },
-        owners: { include: { partner: { select: { name: true, email: true } } } }
+        owners: { include: { partner: { select: { name: true, email: true } } } },
+        orderItems: {
+          where: {
+            order: {
+              status: "COMPLETED"
+            }
+          }
+        }
       },
     });
 
-    return NextResponse.json(product);
+    const totalSalesRevenue = product.orderItems.reduce((acc: number, item: any) => acc + ((item.price - (item.discountAmount || 0)) * item.quantity), 0);
+    const totalSalesProfit = product.orderItems.reduce((acc: number, item: any) => acc + (((item.price - (item.discountAmount || 0)) - product.wholesalePrice) * item.quantity), 0);
+
+    return NextResponse.json({ ...product, totalSalesRevenue, totalSalesProfit });
   } catch (error) {
     console.error("Error updating product:", error);
     return NextResponse.json({ 

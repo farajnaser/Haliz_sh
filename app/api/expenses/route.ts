@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
-    const { title, amount, category, date, description } = body;
+    const { title, amount, category, date, description, paidById } = body;
 
     if (!title || !amount) {
       return NextResponse.json({ error: "Title and amount are required" }, { status: 400 });
@@ -36,7 +36,11 @@ export async function POST(req: NextRequest) {
         category: category || "OTHER",
         date: date ? new Date(date) : new Date(),
         description,
+        paidById: paidById || null,
       },
+      include: {
+        paidBy: { select: { id: true, name: true } }
+      }
     });
 
     return NextResponse.json(expense, { status: 201 });

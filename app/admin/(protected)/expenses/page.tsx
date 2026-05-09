@@ -2,9 +2,13 @@ import { prisma } from "@/lib/prisma";
 import ExpensesClient from "@/components/admin/ExpensesClient";
 
 export default async function ExpensesPage() {
-  const expenses = await prisma.expense.findMany({
-    orderBy: { date: "desc" },
-  });
+  const [expenses, partners] = await Promise.all([
+    prisma.expense.findMany({
+      orderBy: { date: "desc" },
+      include: { paidBy: { select: { id: true, name: true } } }
+    }),
+    prisma.partner.findMany({ select: { id: true, name: true } })
+  ]);
 
   // Serialize dates for client component
   const serializedExpenses = expenses.map(e => ({
@@ -14,5 +18,5 @@ export default async function ExpensesPage() {
     updatedAt: e.updatedAt.toISOString(),
   }));
 
-  return <ExpensesClient initialExpenses={serializedExpenses} />;
+  return <ExpensesClient initialExpenses={serializedExpenses} partners={partners} />;
 }

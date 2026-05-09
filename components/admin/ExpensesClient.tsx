@@ -23,6 +23,8 @@ interface Expense {
   category: string;
   date: string;
   description: string | null;
+  paidById: string | null;
+  paidBy?: { id: string, name: string } | null;
 }
 
 const CATEGORIES = [
@@ -33,7 +35,7 @@ const CATEGORIES = [
   { value: "OTHER", label: "مصاريف أخرى", icon: HelpCircle, color: "text-gray-500 bg-gray-50" },
 ];
 
-export default function ExpensesClient({ initialExpenses }: { initialExpenses: Expense[] }) {
+export default function ExpensesClient({ initialExpenses, partners = [] }: { initialExpenses: Expense[], partners?: { id: string, name: string }[] }) {
   const [expenses, setExpenses] = useState(initialExpenses);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editing, setEditing] = useState<Expense | null>(null);
@@ -56,7 +58,8 @@ export default function ExpensesClient({ initialExpenses }: { initialExpenses: E
       amount: exp.amount, 
       category: exp.category, 
       date: exp.date.split('T')[0], 
-      description: exp.description || "" 
+      description: exp.description || "",
+      paidById: exp.paidById || ""
     });
     setIsFormOpen(true);
   };
@@ -161,7 +164,12 @@ export default function ExpensesClient({ initialExpenses }: { initialExpenses: E
                     <h3 className="font-black text-lg line-clamp-1">{exp.title}</h3>
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-muted-foreground font-bold">{cat.label}</span>
-                      <span className="text-xs text-muted-foreground">{new Date(exp.date).toLocaleDateString('ar-LY')}</span>
+                      <div className="flex items-center gap-2">
+                        {exp.paidBy && (
+                           <span className="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full font-bold">بواسطة: {exp.paidBy.name}</span>
+                        )}
+                        <span className="text-xs text-muted-foreground">{new Date(exp.date).toLocaleDateString('ar-LY')}</span>
+                      </div>
                     </div>
                   </div>
 
@@ -218,6 +226,21 @@ export default function ExpensesClient({ initialExpenses }: { initialExpenses: E
                 </SelectContent>
               </Select>
               {errors.category && <p className="text-xs text-red-500">{errors.category.message}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label className="font-bold">من قام بالدفع؟ (اختياري)</Label>
+              <Select defaultValue={watch("paidById") || "none"} onValueChange={(v) => setValue("paidById", v === "none" ? null : v)}>
+                <SelectTrigger className="rounded-xl">
+                  <SelectValue placeholder="اختر الشريك أو دعه فارغاً..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">بدون تحديد (من المتجر)</SelectItem>
+                  {partners.map(p => (
+                    <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">

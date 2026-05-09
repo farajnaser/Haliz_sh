@@ -9,7 +9,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     const { id } = await params;
     const body = await req.json();
-    const { title, amount, category, date, description } = body;
+    const { title, amount, category, date, description, paidById } = body;
 
     const expense = await prisma.expense.update({
       where: { id },
@@ -19,7 +19,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         category,
         date: date ? new Date(date) : undefined,
         description,
+        paidById: paidById || null,
       },
+      include: {
+        paidBy: { select: { id: true, name: true } }
+      }
     });
 
     return NextResponse.json(expense);
