@@ -1,5 +1,5 @@
 import { formatPrice, formatDate } from "@/lib/utils";
-import { Package, ShoppingCart, TrendingUp, AlertTriangle } from "lucide-react";
+import { Package, ShoppingCart, TrendingUp, AlertTriangle, Receipt, Wallet } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import RevenueChart from "@/components/admin/RevenueChart";
 
@@ -8,6 +8,7 @@ interface Props {
     productCount: number;
     orderCount: number;
     totalRevenue: number;
+    totalExpenses: number;
   };
   lowStockProducts: {
     id: string;
@@ -41,6 +42,8 @@ const statusColors: Record<string, string> = {
 };
 
 export default function AdminDashboard({ stats, lowStockProducts, recentOrders, yearlyOrders }: Props) {
+  const netProfit = stats.totalRevenue - stats.totalExpenses;
+
   return (
     <div className="space-y-6" dir="rtl">
       <div>
@@ -49,44 +52,60 @@ export default function AdminDashboard({ stats, lowStockProducts, recentOrders, 
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="border-0 shadow-sm">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="border-0 shadow-sm rounded-3xl overflow-hidden">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">إجمالي المنتجات</p>
-                <p className="text-3xl font-bold mt-1">{stats.productCount}</p>
+                <p className="text-xs text-muted-foreground font-bold">إجمالي الإيرادات</p>
+                <p className="text-2xl font-black mt-1">{formatPrice(stats.totalRevenue)}</p>
               </div>
-              <div className="w-12 h-12 bg-pink-50 dark:bg-pink-900/30 rounded-2xl flex items-center justify-center">
-                <Package className="w-6 h-6 text-[#ff85ba]" />
+              <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-blue-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-sm">
+        <Card className="border-0 shadow-sm rounded-3xl overflow-hidden">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">إجمالي الطلبات</p>
-                <p className="text-3xl font-bold mt-1">{stats.orderCount}</p>
+                <p className="text-xs text-muted-foreground font-bold">إجمالي المصاريف</p>
+                <p className="text-2xl font-black mt-1 text-red-500">{formatPrice(stats.totalExpenses)}</p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center">
-                <ShoppingCart className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-red-50 dark:bg-red-900/20 rounded-2xl flex items-center justify-center">
+                <Receipt className="w-6 h-6 text-red-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-sm">
+        <Card className="border-0 shadow-sm rounded-3xl overflow-hidden">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">إجمالي الإيرادات</p>
-                <p className="text-3xl font-bold mt-1">{formatPrice(stats.totalRevenue)}</p>
+                <p className="text-xs text-muted-foreground font-bold">صافي الربح</p>
+                <p className={`text-2xl font-black mt-1 ${netProfit >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                  {formatPrice(netProfit)}
+                </p>
               </div>
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-2xl flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 bg-green-50 dark:bg-green-900/20 rounded-2xl flex items-center justify-center">
+                <Wallet className="w-6 h-6 text-green-500" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-0 shadow-sm rounded-3xl overflow-hidden">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-muted-foreground font-bold">إجمالي الطلبات</p>
+                <p className="text-2xl font-black mt-1">{stats.orderCount}</p>
+              </div>
+              <div className="w-12 h-12 bg-pink-50 dark:bg-pink-900/20 rounded-2xl flex items-center justify-center">
+                <ShoppingCart className="w-6 h-6 text-pink-500" />
               </div>
             </div>
           </CardContent>

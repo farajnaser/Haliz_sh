@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Plus, Search, Pencil, Trash2, Image as ImageIcon, Star, Package, Users, Check } from "lucide-react";
+import { Plus, Search, Pencil, Trash2, Image as ImageIcon, Star, Package, Users, Check, Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -58,7 +58,24 @@ const statusColors: Record<string, string> = {
 export default function ProductsClient({ initialProducts, categories, partners }: ProductsClientProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [search, setSearch] = useState("");
+  const [partnerFilter, setPartnerFilter] = useState("ALL");
   const [showRemainingOnly, setShowRemainingOnly] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Payout states
+  const [isPayoutDialogOpen, setIsPayoutDialogOpen] = useState(false);
+  const [isPayoutSubmitting, setIsPayoutSubmitting] = useState(false);
+  const [payoutData, setPayoutData] = useState<{
+    productId: string;
+    partnerId: string;
+    partnerName: string;
+    currentPaid: number;
+    earned: number;
+  } | null>(null);
+  const [payoutAmount, setPayoutAmount] = useState<string>("");
 
   const handlePayout = async () => {
     if (!payoutData || !payoutAmount) return;
@@ -136,7 +153,7 @@ export default function ProductsClient({ initialProducts, categories, partners }
     let hasRemaining = true;
     if (showRemainingOnly) {
       hasRemaining = (p.owners || []).some(o => {
-        const totalContribution = p.owners.reduce((acc, ow) => acc + ow.amount, 0);
+        const totalContribution = (p.owners || []).reduce((acc, ow) => acc + ow.amount, 0);
         const sharePercent = totalContribution > 0 ? (o.amount / totalContribution) : 0;
         const totalQtySold = (p as any).orderItems?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
         const partnerEarned = ((p.wholesalePrice * sharePercent) * totalQtySold) + ((p.totalSalesProfit || 0) * sharePercent);

@@ -5,7 +5,7 @@ export default async function AdminPage() {
   const now = new Date();
   const startOfYear = new Date(now.getFullYear(), 0, 1);
 
-  const [productCount, orderCount, totalRevenue, lowStockProducts, recentOrders, yearlyOrders] =
+  const [productCount, orderCount, totalRevenue, lowStockProducts, recentOrders, yearlyOrders, totalExpenses] =
     await Promise.all([
       prisma.product.count({ where: { status: "ACTIVE" } }),
       prisma.order.count(),
@@ -24,6 +24,7 @@ export default async function AdminPage() {
         where: { createdAt: { gte: startOfYear }, status: "COMPLETED" },
         select: { total: true, createdAt: true },
       }),
+      prisma.expense.aggregate({ _sum: { amount: true } }),
     ]);
 
   return (
@@ -32,6 +33,7 @@ export default async function AdminPage() {
         productCount,
         orderCount,
         totalRevenue: totalRevenue._sum.total || 0,
+        totalExpenses: totalExpenses._sum.amount || 0,
       }}
       lowStockProducts={lowStockProducts}
       recentOrders={recentOrders}

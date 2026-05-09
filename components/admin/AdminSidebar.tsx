@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   BarChart3,
   Users,
+  Receipt,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -22,6 +23,7 @@ const navItems = [
   { href: "/admin/categories", label: "الفئات", icon: Tag },
   { href: "/admin/orders", label: "الطلبات", icon: ShoppingCart },
   { href: "/admin/partners", label: "الشركاء", icon: Users },
+  { href: "/admin/expenses", label: "المصاريف", icon: Receipt },
   { href: "/admin/reports", label: "التقارير المالية", icon: BarChart3 },
   { href: "/admin/settings", label: "الإعدادات", icon: Settings },
 ];

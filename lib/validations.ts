@@ -55,8 +55,17 @@ export const settingsSchema = z.object({
   addressAr: z.string().optional(),
 });
 
+export const expenseSchema = z.object({
+  title: z.string().min(2, "العنوان مطلوب"),
+  amount: z.coerce.number().min(0.01, "المبلغ يجب أن يكون أكبر من 0"),
+  category: z.string().min(1, "الفئة مطلوبة"),
+  date: z.string().optional(),
+  description: z.string().optional(),
+});
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type ProductInput = z.infer<typeof productSchema>;
 export type CategoryInput = z.infer<typeof categorySchema>;
 export type OrderInput = z.infer<typeof orderSchema>;
 export type SettingsInput = z.infer<typeof settingsSchema>;
+export type ExpenseInput = z.infer<typeof expenseSchema>;
