@@ -26,12 +26,12 @@ const Hotspot = ({ top, right, title, price, slug, delay }: any) => {
         <div className="absolute w-full h-full bg-[#ff9ecb] rounded-full animate-ping opacity-75"></div>
         <div className="relative w-4 h-4 bg-white rounded-full shadow-[0_0_15px_#ff9ecb] transition-transform group-hover:scale-150 cursor-pointer"></div>
       </div>
-      
+
       {/* Glassmorphic Tooltip */}
       <div className="absolute top-10 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-50">
         <div className="bg-card/95 backdrop-blur-md px-5 py-3 rounded-2xl shadow-xl flex flex-col items-center min-w-[140px] border border-border group-hover:bg-[#ff9ecb] transition-colors">
-           <span className="text-foreground group-hover:text-white font-black text-sm whitespace-nowrap transition-colors">{title}</span>
-           <span className="text-primary group-hover:text-white font-bold text-sm mt-1 transition-colors">{price}</span>
+          <span className="text-foreground group-hover:text-white font-black text-sm whitespace-nowrap transition-colors">{title}</span>
+          <span className="text-primary group-hover:text-white font-bold text-sm mt-1 transition-colors">{price}</span>
         </div>
       </div>
     </Link>
@@ -75,14 +75,14 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
         {exploreMode && hasProducts && (
           <div className="absolute inset-0 z-20">
             {activeHotspots.map((item) => (
-              <Hotspot 
+              <Hotspot
                 key={item.id}
-                top={item.top} 
-                right={item.right} 
-                title={item.nameAr || item.name} 
-                price={`${item.retailPrice} د.ل`} 
-                slug={item.slug} 
-                delay={item.delay} 
+                top={item.top}
+                right={item.right}
+                title={item.nameAr || item.name}
+                price={`${item.retailPrice} د.ل`}
+                slug={item.slug}
+                delay={item.delay}
               />
             ))}
           </div>
@@ -92,19 +92,19 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
       {/* Main Content (Fades out in Explore Mode) */}
       <div className={`relative z-10 w-full pt-12 md:pt-20 text-center transition-all duration-700 ${exploreMode ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
         <h1 className="text-5xl md:text-[5.5rem] lg:text-[7rem] font-black text-foreground leading-[0.9] tracking-tighter mx-auto max-w-5xl">
-          جمال <span className="text-white">يبرز</span><br />
-          أنوثتك
+          Beauty <span className="text-white">&</span><br />
+          Elegance
         </h1>
         <div className="absolute left-10 md:left-32 top-1/2 transform -translate-y-1/2 hidden lg:block text-left max-w-[200px]" dir="ltr">
-           <p className="text-white text-sm font-bold opacity-80 leading-tight text-right">
-             استكشفي تشكيلتنا من أرقى منتجات المكياج والعناية بالبشرة، المصممة خصيصاً لكِ.
-           </p>
+          <p className="text-white text-sm font-bold opacity-80 leading-tight text-right">
+            استكشفي تشكيلتنا من أرقى منتجات المكياج والعناية بالبشرة، المصممة خصيصاً لكِ.
+          </p>
         </div>
       </div>
 
       {/* Bottom Floating Badges (Fades out in Explore Mode) */}
       <div className={`absolute bottom-12 left-12 right-12 z-10 flex flex-col sm:flex-row justify-between items-end pb-4 transition-all duration-700 ${exploreMode ? 'opacity-0 translate-y-8 pointer-events-none' : 'opacity-100 translate-y-0'}`}>
-        
+
         {/* Right Badges (due to RTL) */}
         <div className="flex flex-col gap-4 items-start w-full sm:w-auto mb-6 sm:mb-0">
           <div className="flex items-center gap-3">
@@ -116,13 +116,13 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
               </div>
             </div>
             <div className="text-white text-xs font-bold leading-tight">
-              <span>+200k</span><br/>
+              <span>+200k</span><br />
               <span className="opacity-70">تقييم</span>
             </div>
           </div>
 
-          <Link 
-            href="/products" 
+          <Link
+            href="/products"
             className="group flex items-center gap-3 bg-foreground text-background px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest hover:bg-[#ff9ecb] hover:text-white transition-all duration-500 shadow-lg"
           >
             تسوقي الآن
@@ -135,7 +135,7 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
         {/* Left Badge (due to RTL) - Only show if we have products to explore */}
         {hasProducts && (
           <div className="flex items-center justify-end w-full sm:w-auto">
-            <button 
+            <button
               onClick={() => setExploreMode(true)}
               className="group flex items-center gap-3 bg-white/20 backdrop-blur-md border border-white/30 text-white px-5 py-3 rounded-full text-xs font-black uppercase tracking-widest hover:bg-[#ff9ecb] hover:border-[#ff9ecb] transition-all duration-500 shadow-lg"
             >
@@ -151,11 +151,11 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
       {/* Explore Mode Controls */}
       {exploreMode && (
         <div className="absolute top-16 right-16 z-30 animate-in fade-in slide-in-from-top-4 duration-700">
-          <button 
-            onClick={() => setExploreMode(false)} 
+          <button
+            onClick={() => setExploreMode(false)}
             className="group bg-white/20 hover:bg-white backdrop-blur-md border border-white/30 text-white hover:text-[#1a1a1a] px-6 py-3 rounded-full font-black text-sm flex items-center gap-2 transition-all duration-500 shadow-xl"
           >
-            <X className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" /> 
+            <X className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
             إغلاق الاستكشاف
           </button>
         </div>
