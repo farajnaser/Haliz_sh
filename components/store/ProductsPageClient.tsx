@@ -28,7 +28,7 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
   const searchParams = useSearchParams();
   const router = useRouter();
   
-  const search = searchParams.get("q") || searchParams.get("search") || "";
+  const search = searchParams.get("q") || "";
   const selectedCategory = searchParams.get("cat") || "all";
   const onSale = searchParams.get("onSale") === "true";
   const sort = searchParams.get("sort") || "newest";
@@ -37,7 +37,14 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
   const filtered = useMemo(() => {
     let result = [...initialProducts];
     if (onSale) result = result.filter(p => p.salePrice && p.salePrice < p.retailPrice);
-    if (search) result = result.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || (p.nameAr && p.nameAr.includes(search)));
+    if (search) {
+      const q = search.toLowerCase().trim();
+      result = result.filter(p => 
+        p.name.toLowerCase().includes(q) || 
+        (p.nameAr && p.nameAr.includes(q)) ||
+        (p.sku && p.sku.toLowerCase().includes(q))
+      );
+    }
     if (selectedCategory !== "all") {
       result = result.filter(p => {
         if (!p.category) return false;
@@ -74,7 +81,7 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
         return catName.includes(searchCat) || catNameAr.includes(searchCat) || searchCat.includes(catName) || searchCat.includes(catNameAr);
       });
     }
-    if (sort === "newest") result.sort(() => 0);
+    if (sort === "newest") result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     else if (sort === "price-asc") result.sort((a, b) => a.retailPrice - b.retailPrice);
     else if (sort === "price-desc") result.sort((a, b) => b.retailPrice - a.retailPrice);
     return result;
@@ -96,12 +103,24 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
             value={search} 
             onChange={e => {
               const params = new URLSearchParams(searchParams.toString());
-              if (e.target.value) params.set("search", e.target.value);
-              else params.delete("search");
+              if (e.target.value) params.set("q", e.target.value);
+              else params.delete("q");
               router.push(`/products?${params.toString()}`);
             }} 
             className="pr-10 bg-card border-0 shadow-sm" 
           />
+          {search && (
+            <button 
+              onClick={() => {
+                const params = new URLSearchParams(searchParams.toString());
+                params.delete("q");
+                router.push(`/products?${params.toString()}`);
+              }}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              <Package className="w-4 h-4 rotate-45" /> {/* Using Package as a fallback for X if needed, or I'll just import X */}
+            </button>
+          )}
         </div>
         <Select 
           value={selectedCategory} 
