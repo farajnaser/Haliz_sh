@@ -62,7 +62,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
     customerName: "",
     customerPhone: "",
     notes: "",
-    items: [{ productId: "", quantity: 1, price: 0 }]
+    items: [{ productId: "", quantity: 1, price: 0, discountAmount: 0 }]
   });
 
   const filtered = orders.filter(order => {
@@ -81,18 +81,13 @@ export default function OrdersClient({ initialOrders, partners, products }: {
 
   const updateItemStatus = async (orderId: string, itemId: string, data: any) => {
     try {
-      await fetch(`/api/orders/${orderId}/items/${itemId}`, { 
+      const res = await fetch(`/api/orders/${orderId}/items/${itemId}`, { 
         method: "PUT", 
         headers: { "Content-Type": "application/json" }, 
         body: JSON.stringify(data) 
       });
-      setOrders(prev => prev.map(o => {
-        if (o.id !== orderId) return o;
-        return {
-          ...o,
-          items: o.items.map(i => i.id === itemId ? { ...i, ...data } : i)
-        };
-      }));
+      const updatedOrder = await res.json();
+      setOrders(prev => prev.map(o => o.id === orderId ? updatedOrder : o));
       toast.dismiss();
       toast.success("تم تحديث حالة المنتج");
     } catch { toast.error("حدث خطأ"); }
@@ -190,7 +185,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
       customerName: "",
       customerPhone: "",
       notes: "",
-      items: [{ productId: "", quantity: 1, price: 0 }]
+      items: [{ productId: "", quantity: 1, price: 0, discountAmount: 0 }]
     });
     setEditingOrderId(null);
   };
@@ -203,7 +198,8 @@ export default function OrdersClient({ initialOrders, partners, products }: {
       items: order.items.map(i => ({
         productId: i.product.id,
         quantity: i.quantity,
-        price: i.price
+        price: i.price,
+        discountAmount: i.discountAmount || 0
       }))
     });
     setEditingOrderId(order.id);
@@ -213,7 +209,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
   const addItemRow = () => {
     setOrderForm(prev => ({
       ...prev,
-      items: [...prev.items, { productId: "", quantity: 1, price: 0 }]
+      items: [...prev.items, { productId: "", quantity: 1, price: 0, discountAmount: 0 }]
     }));
   };
 
@@ -329,6 +325,16 @@ export default function OrdersClient({ initialOrders, partners, products }: {
                               onChange={e => updateItemRow(idx, "price", parseFloat(e.target.value) || 0)}
                             />
                           </div>
+                          <div className="w-28 space-y-2">
+                            <Label className="text-[10px]">الخصم</Label>
+                            <Input 
+                              type="number" 
+                              className="h-9 text-xs text-red-500 font-bold"
+                              value={item.discountAmount}
+                              onChange={e => updateItemRow(idx, "discountAmount", parseFloat(e.target.value) || 0)}
+                              placeholder="0"
+                            />
+                          </div>
                           {orderForm.items.length > 1 && (
                             <Button variant="ghost" size="icon" className="h-9 w-9 text-red-400 hover:text-red-500" onClick={() => removeItemRow(idx)}>
                               <Trash2 className="w-4 h-4" />
@@ -418,6 +424,15 @@ export default function OrdersClient({ initialOrders, partners, products }: {
                               className="h-9 text-xs"
                               value={item.price}
                               onChange={e => updateItemRow(idx, "price", parseFloat(e.target.value) || 0)}
+                            />
+                          </div>
+                          <div className="w-28 space-y-2">
+                            <Label className="text-[10px]">الخصم</Label>
+                            <Input 
+                              type="number" 
+                              className="h-9 text-xs text-red-500 font-bold"
+                              value={item.discountAmount}
+                              onChange={e => updateItemRow(idx, "discountAmount", parseFloat(e.target.value) || 0)}
                             />
                           </div>
                           <Button variant="ghost" size="icon" className="h-9 w-9 text-red-400" onClick={() => removeItemRow(idx)}>
@@ -554,6 +569,11 @@ export default function OrdersClient({ initialOrders, partners, products }: {
                     <div className="text-center">
                       <p className="text-xs text-muted-foreground mb-1">إجمالي الطلب</p>
                       <p className="text-2xl font-black text-pink-900">{formatPrice(order.total)}</p>
+                      {order.items.reduce((sum, item) => sum + (item.discountAmount || 0), 0) > 0 && (
+                        <p className="text-[10px] text-red-500 font-bold mt-1">
+                          الخصم: {formatPrice(order.items.reduce((sum, item) => sum + (item.discountAmount || 0), 0))}
+                        </p>
+                      )}
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                       <Select value={order.status} onValueChange={v => updateStatus(order.id, v)}>

@@ -42,8 +42,8 @@ export async function POST(req: NextRequest) {
   const { customerName, customerPhone, notes, items } = body;
 
   const total = items.reduce(
-    (sum: number, item: { price: number; quantity: number }) =>
-      sum + item.price * item.quantity,
+    (sum: number, item: { price: number; quantity: number; discountAmount?: number }) =>
+      sum + (item.price * item.quantity) - (item.discountAmount || 0),
     0
   );
 
@@ -54,10 +54,11 @@ export async function POST(req: NextRequest) {
       notes,
       total,
       items: {
-        create: items.map((item: { productId: string; quantity: number; price: number }) => ({
+        create: items.map((item: { productId: string; quantity: number; price: number; discountAmount?: number }) => ({
           productId: item.productId,
           quantity: item.quantity,
           price: item.price,
+          discountAmount: item.discountAmount || 0,
         })),
       },
     },

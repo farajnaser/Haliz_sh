@@ -6,11 +6,12 @@ export async function PUT(
   { params }: { params: Promise<{ orderId: string; itemId: string }> }
 ) {
   try {
-    const { itemId } = await params;
+    const { orderId, itemId } = await params;
     const body = await req.json();
     const { discountAmount, soldStatus } = body;
 
-    const item = await prisma.orderItem.update({
+    // Update the item
+    await prisma.orderItem.update({
       where: { id: itemId },
       data: {
         discountAmount: discountAmount !== undefined ? discountAmount : undefined,
@@ -18,7 +19,32 @@ export async function PUT(
       },
     });
 
-    return NextResponse.json(item);
+    // Recalculate order total
+    const allItems = await prisma.orderItem.findMany({
+      where: { orderId }
+    });
+
+    const newTotal = allItems.reduce((sum, item) => {
+      return sum + (item.price * item.quantity) - (item.discountAmount || 0);
+    }, 0);
+
+    const updatedOrder = await prisma.order.update({
+      where: { id: orderId },
+      data: { total: newTotal },
+      include: { 
+        items: { 
+          include: { 
+            product: { 
+              include: { 
+                owners: { include: { partner: true } } 
+              } 
+            } 
+          } 
+        } 
+      }
+    });
+
+    return NextResponse.json(updatedOrder);
   } catch (error) {
     console.error("Failed to update order item:", error);
     return NextResponse.json({ error: "Failed to update item" }, { status: 500 });

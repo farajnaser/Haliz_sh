@@ -91,10 +91,14 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
 
       {/* Main Content (Fades out in Explore Mode) */}
       <div className={`relative z-10 w-full pt-12 md:pt-20 text-center transition-all duration-700 ${exploreMode ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
-        <h1 className="text-5xl md:text-[5.5rem] lg:text-[7rem] font-black text-foreground leading-[0.9] tracking-tighter mx-auto max-w-5xl">
-          Beauty <span className="text-white">
-            &</span><br />
-          Elegance
+        <h1 className="text-6xl md:text-[8rem] lg:text-[11rem] font-black text-foreground leading-[0.8] tracking-tighter mx-auto max-w-5xl flex flex-col items-center select-none py-10" dir="ltr">
+          <span className="block translate-x-3 md:translate-x-6 hover:translate-x-0 transition-transform duration-700">BEAUTY</span>
+          <div className="relative flex items-center justify-center -my-4 md:-my-10 z-10 h-16 md:h-32">
+            <span className="text-white text-5xl md:text-[8rem] lg:text-[12rem] italic font-serif font-normal drop-shadow-2xl animate-in zoom-in duration-1000">
+              &
+            </span>
+          </div>
+          <span className="block -translate-x-3 md:-translate-x-6 hover:translate-x-0 transition-transform duration-700">ELEGANCE</span>
         </h1>
         <div className="absolute left-10 md:left-32 top-1/2 transform -translate-y-1/2 hidden lg:block text-left max-w-[200px]" dir="ltr">
           <p className="text-white text-sm font-bold opacity-80 leading-tight text-right">
