@@ -92,7 +92,8 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
       {/* Main Content (Fades out in Explore Mode) */}
       <div className={`relative z-10 w-full pt-12 md:pt-20 text-center transition-all duration-700 ${exploreMode ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
         <h1 className="text-5xl md:text-[5.5rem] lg:text-[7rem] font-black text-foreground leading-[0.9] tracking-tighter mx-auto max-w-5xl">
-          Beauty <span className="text-white">&</span><br />
+          Beauty <span className="text-white">
+            &</span><br />
           Elegance
         </h1>
         <div className="absolute left-10 md:left-32 top-1/2 transform -translate-y-1/2 hidden lg:block text-left max-w-[200px]" dir="ltr">
