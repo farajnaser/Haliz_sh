@@ -12,6 +12,7 @@ interface Product {
   id: string;
   name: string;
   nameAr: string | null;
+  sku: string | null;
   slug: string;
   retailPrice: number;
   salePrice: number | null;
@@ -20,6 +21,7 @@ interface Product {
   status: string;
   images: string[];
   category: { id: string; name: string; nameAr: string | null; slug: string } | null;
+  createdAt: string | Date;
 }
 
 interface Category { id: string; name: string; nameAr: string | null; slug: string; }
