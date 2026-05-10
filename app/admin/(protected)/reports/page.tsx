@@ -12,7 +12,10 @@ export default async function ReportsPage() {
         select: {
           productId: true,
           paidProfit: true,
-          amount: true // contribution
+          amount: true, // contribution per unit
+          product: {
+            select: { stock: true }
+          }
         }
       }
     }
@@ -37,8 +40,8 @@ export default async function ReportsPage() {
   // 3. Initialize report structure
   const reportMap: Record<string, any> = {};
   partners.forEach(partner => {
-    // Total contribution capital from all products
-    const totalCapital = partner.shares.reduce((acc, s) => acc + s.amount, 0);
+    // Total contribution capital from all products (amount per unit * current stock)
+    const totalCapital = partner.shares.reduce((acc, s) => acc + (s.amount * (s.product?.stock || 0)), 0);
     // Total amount the partner has already received
     const totalAlreadyPaid = partner.shares.reduce((acc, s) => acc + s.paidProfit, 0);
 
