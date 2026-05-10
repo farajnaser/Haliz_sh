@@ -74,6 +74,8 @@ model Product {
   status         String         @default("ACTIVE")
   createdById    String?
   salePrice      Float?
+  includeInCapital Boolean      @default(true)
+  capitalQuantity Int?
   orderItems     OrderItem[]
   category       Category?      @relation(fields: [categoryId], references: [id])
   createdBy      User?          @relation(fields: [createdById], references: [id])

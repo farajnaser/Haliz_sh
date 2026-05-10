@@ -26,11 +26,15 @@ export default async function AdminPage() {
       }),
       prisma.expense.aggregate({ _sum: { amount: true } }),
       prisma.product.findMany({
-        select: { wholesalePrice: true, stock: true }
+        select: { wholesalePrice: true, stock: true, includeInCapital: true, capitalQuantity: true }
       }),
     ]);
 
-  const inventoryCost = allProducts.reduce((sum, p) => sum + (p.wholesalePrice * p.stock), 0);
+  const inventoryCost = allProducts.reduce((sum, p) => {
+    if (p.includeInCapital === false) return sum;
+    const qty = p.capitalQuantity !== null && p.capitalQuantity !== undefined ? p.capitalQuantity : p.stock;
+    return sum + (p.wholesalePrice * qty);
+  }, 0);
   const totalExpenses = (generalExpenses._sum.amount || 0) + inventoryCost;
 
   return (

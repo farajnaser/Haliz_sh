@@ -33,7 +33,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const allowedFields = [
       "nameAr", "description", "descriptionAr", "retailPrice", 
       "wholesalePrice", "stock", "sku", "barcode", "featured", 
-      "images", "categoryId", "status", "salePrice"
+      "images", "categoryId", "status", "salePrice",
+      "includeInCapital", "capitalQuantity"
     ];
     const updateData: any = {};
     allowedFields.forEach(f => {

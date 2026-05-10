@@ -14,7 +14,11 @@ export default async function ReportsPage() {
           paidProfit: true,
           amount: true, // contribution per unit
           product: {
-            select: { stock: true }
+            select: { 
+              stock: true,
+              includeInCapital: true,
+              capitalQuantity: true
+            }
           }
         }
       }
@@ -40,8 +44,14 @@ export default async function ReportsPage() {
   // 3. Initialize report structure
   const reportMap: Record<string, any> = {};
   partners.forEach(partner => {
-    // Total contribution capital from all products (amount per unit * current stock)
-    const totalCapital = partner.shares.reduce((acc, s) => acc + (s.amount * (s.product?.stock || 0)), 0);
+    // Total contribution capital from all products (honoring includeInCapital and capitalQuantity)
+    const totalCapital = partner.shares.reduce((acc, s) => {
+      if (s.product?.includeInCapital === false) return acc;
+      const qty = s.product?.capitalQuantity !== null && s.product?.capitalQuantity !== undefined 
+        ? s.product.capitalQuantity 
+        : (s.product?.stock || 0);
+      return acc + (s.amount * qty);
+    }, 0);
     // Total amount the partner has already received
     const totalAlreadyPaid = partner.shares.reduce((acc, s) => acc + s.paidProfit, 0);
 

@@ -20,6 +20,8 @@ export const productSchema = z.object({
   status: z.enum(["ACTIVE", "INACTIVE", "OUT_OF_STOCK"]).default("ACTIVE"),
   categoryId: z.string().min(1, "يرجى اختيار فئة للمنتج"),
   images: z.array(z.string()).default([]),
+  includeInCapital: z.boolean().default(true),
+  capitalQuantity: z.coerce.number().min(0).optional().nullable(),
 });
 
 export const categorySchema = z.object({

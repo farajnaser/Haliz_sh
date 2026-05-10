@@ -87,6 +87,8 @@ export default function ProductForm({
       status: (product?.status as ProductInput["status"]) || "ACTIVE",
       categoryId: product?.categoryId || "",
       images: product?.images || [],
+      includeInCapital: product?.includeInCapital !== undefined ? product?.includeInCapital : true,
+      capitalQuantity: product?.capitalQuantity || null,
     },
   });
 
@@ -501,20 +503,54 @@ export default function ProductForm({
         )}
       </div>
 
-      {/* ── Inventory ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="stock">الكمية المتاحة *</Label>
-          <Input id="stock" type="number" min="0" {...register("stock")} placeholder="0" />
-          {errors.stock && <p className="text-xs text-red-500">{errors.stock.message}</p>}
+      {/* ── Inventory & Capital Control ── */}
+      <div className="p-4 bg-muted/20 rounded-xl space-y-4 border border-dashed border-pink-100">
+        <div className="flex items-center gap-2">
+          <Package className="w-4 h-4 text-pink-500" />
+          <Label className="font-semibold">المخزون والتحكم في رأس المال</Label>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="sku">رقم SKU</Label>
-          <Input id="sku" {...register("sku")} placeholder="ACC-001" />
+        
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="stock">الكمية المتاحة في المخزن *</Label>
+            <Input id="stock" type="number" min="0" {...register("stock")} placeholder="0" />
+            {errors.stock && <p className="text-xs text-red-500">{errors.stock.message}</p>}
+          </div>
+          
+          <div className="space-y-2">
+            <Label>احتساب في رأس المال؟</Label>
+            <div className="flex items-center gap-3 h-10 px-3 bg-background rounded-md border border-input">
+              <Switch
+                checked={watch("includeInCapital")}
+                onCheckedChange={(v) => setValue("includeInCapital", v)}
+              />
+              <span className="text-xs font-medium">{watch("includeInCapital") ? "نعم" : "لا"}</span>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="capitalQuantity">الكمية المحسوبة لرأس المال</Label>
+            <Input 
+              id="capitalQuantity" 
+              type="number" 
+              min="0" 
+              {...register("capitalQuantity")} 
+              placeholder="اتركه فارغاً لاستخدام المخزون بالكامل"
+              disabled={!watch("includeInCapital")}
+            />
+            <p className="text-[10px] text-muted-foreground">عدد القطع التي سيتم ضربها في سعر الجملة للتقرير المالي</p>
+          </div>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="barcode">الباركود</Label>
-          <Input id="barcode" {...register("barcode")} placeholder="1234567890" />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="sku">رقم SKU</Label>
+            <Input id="sku" {...register("sku")} placeholder="ACC-001" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="barcode">الباركود</Label>
+            <Input id="barcode" {...register("barcode")} placeholder="1234567890" />
+          </div>
         </div>
       </div>
 
