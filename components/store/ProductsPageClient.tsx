@@ -5,7 +5,7 @@ import ProductCard from "@/components/store/ProductCard";
 import { Input } from "@/components/ui/input";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Package } from "lucide-react";
+import { Search, Package, X } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 interface Product {
@@ -118,7 +118,7 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
               }}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
-              <Package className="w-4 h-4 rotate-45" /> {/* Using Package as a fallback for X if needed, or I'll just import X */}
+              <X className="w-4 h-4" />
             </button>
           )}
         </div>
