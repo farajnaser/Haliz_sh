@@ -21,6 +21,8 @@ export interface Product {
   featured: boolean;
   status: string;
   images: string[];
+  includeInCapital?: boolean;
+  capitalQuantity?: number | null;
   categoryId: string | null;
   category: Category | null;
   createdBy?: { name: string | null; email: string } | null;

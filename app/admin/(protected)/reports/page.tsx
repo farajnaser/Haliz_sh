@@ -45,7 +45,7 @@ export default async function ReportsPage() {
   const reportMap: Record<string, any> = {};
   partners.forEach(partner => {
     // Total contribution capital from all products (honoring includeInCapital and capitalQuantity)
-    const totalCapital = partner.shares.reduce((acc, s) => {
+    const totalCapital = (partner as any).shares.reduce((acc: number, s: any) => {
       if (s.product?.includeInCapital === false) return acc;
       const qty = s.product?.capitalQuantity !== null && s.product?.capitalQuantity !== undefined 
         ? s.product.capitalQuantity 
@@ -53,7 +53,7 @@ export default async function ReportsPage() {
       return acc + (s.amount * qty);
     }, 0);
     // Total amount the partner has already received
-    const totalAlreadyPaid = partner.shares.reduce((acc, s) => acc + s.paidProfit, 0);
+    const totalAlreadyPaid = (partner as any).shares.reduce((acc: number, s: any) => acc + s.paidProfit, 0);
 
     reportMap[partner.id] = {
       id: partner.id,
@@ -88,7 +88,7 @@ export default async function ReportsPage() {
       const profit = (item.price - (item.discountAmount || 0) - product.wholesalePrice) * item.quantity;
 
       if (product.owners && product.owners.length > 0) {
-        const totalAmountPaid = product.owners.reduce((acc, o) => acc + o.amount, 0);
+        const totalAmountPaid = product.owners.reduce((acc: number, o: any) => acc + o.amount, 0);
         
         product.owners.forEach(owner => {
           if (reportMap[owner.partnerId]) {

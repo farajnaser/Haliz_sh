@@ -26,6 +26,7 @@ import {
   Calculator,
   Users,
   UserPlus,
+  Package,
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
