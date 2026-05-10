@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import ProductCard from "@/components/store/ProductCard";
 import { Input } from "@/components/ui/input";
 
@@ -35,6 +35,11 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
   const onSale = searchParams.get("onSale") === "true";
   const sort = searchParams.get("sort") || "newest";
 
+  const [localSearch, setLocalSearch] = useState(search);
+
+  useEffect(() => {
+    setLocalSearch(search);
+  }, [search]);
 
   const filtered = useMemo(() => {
     let result = [...initialProducts];
@@ -102,21 +107,23 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input 
             placeholder="ابحث عن منتج..." 
-            value={search} 
+            value={localSearch} 
             onChange={e => {
+              setLocalSearch(e.target.value);
               const params = new URLSearchParams(searchParams.toString());
               if (e.target.value) params.set("q", e.target.value);
               else params.delete("q");
-              router.push(`/products?${params.toString()}`);
+              router.push(`/products?${params.toString()}`, { scroll: false });
             }} 
             className="pr-10 bg-card border-0 shadow-sm" 
           />
-          {search && (
+          {localSearch && (
             <button 
               onClick={() => {
+                setLocalSearch("");
                 const params = new URLSearchParams(searchParams.toString());
                 params.delete("q");
-                router.push(`/products?${params.toString()}`);
+                router.push(`/products?${params.toString()}`, { scroll: false });
               }}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
