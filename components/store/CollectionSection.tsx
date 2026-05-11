@@ -79,7 +79,7 @@ export default function CollectionSection({ categories: dbCategories }: Props) {
     : categories;
 
   return (
-    <section className="py-24 px-6 bg-card w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-border" dir="rtl">
+    <section className="py-16 md:py-24 px-4 md:px-6 bg-card w-full max-w-[95%] mx-auto my-6 md:my-8 rounded-[2rem] md:rounded-[3rem] shadow-sm border border-border" dir="rtl">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         
         {/* Title */}
@@ -91,14 +91,14 @@ export default function CollectionSection({ categories: dbCategories }: Props) {
           <Sparkles className="w-6 h-6 text-[#ff9ecb]" strokeWidth={1.5} />
         </div>
 
-        {/* Circular Grid */}
-        <div className="flex flex-wrap justify-center gap-8 md:gap-16 w-full">
+        {/* Category Grid — 2×2 on mobile, 4-col on desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-16 w-full">
           {displayCategories.map((cat) => {
             const isComingSoon = !!cat.badge;
             const content = (
               <>
                 {/* Circle */}
-                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full bg-background dark:bg-card flex items-center justify-center transition-all duration-500 shadow-[0_0_40px_rgba(255,158,203,0.15)] group-hover:shadow-[0_0_60px_rgba(255,158,203,0.4)] group-hover:-translate-y-3 group-hover:scale-105 border border-border group-hover:border-pink-300">
+                <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full bg-background dark:bg-card flex items-center justify-center transition-all duration-500 shadow-[0_0_40px_rgba(255,158,203,0.15)] group-hover:shadow-[0_0_60px_rgba(255,158,203,0.4)] group-hover:-translate-y-2 group-hover:scale-105 border border-border group-hover:border-pink-300">
                   
                   {/* Badge */}
                   {cat.badge && (
@@ -114,7 +114,7 @@ export default function CollectionSection({ categories: dbCategories }: Props) {
                 </div>
 
                 {/* Label */}
-                <span className="text-pink-900 dark:text-pink-300 text-xl font-black group-hover:text-[#ff9ecb] transition-colors">
+                <span className="text-pink-900 dark:text-pink-300 text-base md:text-xl font-black group-hover:text-[#ff9ecb] transition-colors">
                   {cat.name}
                 </span>
               </>
@@ -124,7 +124,7 @@ export default function CollectionSection({ categories: dbCategories }: Props) {
               return (
                 <div 
                   key={cat.id} 
-                  className="group flex flex-col items-center gap-6 cursor-not-allowed opacity-80"
+                  className="group flex flex-col items-center gap-3 md:gap-6 cursor-not-allowed opacity-80"
                   title="قريباً"
                 >
                   {content}
@@ -136,7 +136,7 @@ export default function CollectionSection({ categories: dbCategories }: Props) {
               <Link 
                 key={cat.id} 
                 href={`/categories/${cat.slug}`}
-                className="group flex flex-col items-center gap-6"
+                className="group flex flex-col items-center gap-3 md:gap-6"
               >
                 {content}
               </Link>

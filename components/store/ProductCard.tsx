@@ -30,11 +30,11 @@ export default function ProductCard({ product }: Props) {
   return (
     <div 
       onClick={() => router.push(`/products/${product.slug}`)}
-      className="group flex flex-col bg-card overflow-hidden cursor-pointer rounded-[3rem] shadow-sm hover:shadow-[0_0_50px_rgba(255,158,203,0.15)] transition-all duration-500 border border-transparent hover:border-pink-200/30"
+      className="group flex flex-col bg-card overflow-hidden cursor-pointer rounded-[2rem] md:rounded-[3rem] shadow-sm hover:shadow-[0_0_50px_rgba(255,158,203,0.15)] transition-all duration-500 border border-transparent hover:border-pink-200/30"
       dir="rtl"
     >
       {/* Image Container */}
-      <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-muted/30 rounded-t-[3rem]">
+      <div className="relative aspect-[3/4] overflow-hidden bg-muted/30 rounded-t-[2rem] md:rounded-t-[3rem]">
         {/* Badge Example (Optional) */}
         <div className="absolute top-6 right-6 z-10 flex flex-col gap-2">
            {isOnSale && (
@@ -64,28 +64,29 @@ export default function ProductCard({ product }: Props) {
       </div>
 
       {/* Info Container */}
-      <div className="space-y-3 px-6 pb-6">
+      <div className="space-y-2 md:space-y-3 px-3 md:px-6 pb-3 md:pb-6 pt-2 md:pt-0">
         <div>
-          <h3 className="text-foreground font-black text-lg tracking-tight mb-1 truncate">
+          <h3 className="text-foreground font-black text-sm md:text-lg tracking-tight mb-0.5 truncate">
             {displayName}
           </h3>
-          <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">
+          <p className="text-muted-foreground text-[9px] md:text-[10px] font-bold uppercase tracking-widest">
             {product.category?.nameAr || product.category?.name || "مجموعة حصرية"}
           </p>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-border mt-2">
+        <div className="flex items-center justify-between pt-2 md:pt-4 border-t border-border mt-1 md:mt-2">
           <div className="flex flex-col">
             {isOnSale && (
-              <span className="text-muted-foreground text-[10px] line-through font-bold mb-1">
+              <span className="text-muted-foreground text-[9px] md:text-[10px] line-through font-bold mb-0.5">
                 {formatPrice(product.retailPrice)}
               </span>
             )}
-            <span className={`${isOnSale ? 'text-[#ff4d94]' : 'text-foreground'} font-black text-xl leading-none`}>
+            <span className={`${isOnSale ? 'text-[#ff4d94]' : 'text-foreground'} font-black text-base md:text-xl leading-none`}>
               {formatPrice(sellingPrice)}
             </span>
           </div>
           
+          {/* Desktop: full button | Mobile: icon only */}
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -98,10 +99,10 @@ export default function ProductCard({ product }: Props) {
                 stock: 99,
               });
             }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-foreground text-background hover:bg-[#ff9ecb] hover:text-white transition-all duration-300 shadow-md group/btn"
+            className="flex items-center gap-1.5 px-3 md:px-5 py-2 md:py-2.5 rounded-full bg-foreground text-background hover:bg-[#ff9ecb] hover:text-white transition-all duration-300 shadow-md group/btn"
           >
-            <Plus className="w-4 h-4 text-white group-hover/btn:rotate-90 transition-transform" />
-            <span className="text-xs font-black tracking-wider">أضف للسلة</span>
+            <Plus className="w-3.5 h-3.5 md:w-4 md:h-4 text-inherit group-hover/btn:rotate-90 transition-transform" />
+            <span className="hidden md:inline text-xs font-black tracking-wider">أضف للسلة</span>
           </button>
         </div>
       </div>

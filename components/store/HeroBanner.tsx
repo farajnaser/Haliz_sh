@@ -57,7 +57,7 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
   const hasProducts = activeHotspots.length > 0;
 
   return (
-    <section className="relative w-full min-h-[90vh] md:min-h-screen p-4 md:p-8 flex items-center justify-center bg-background" dir="rtl">
+    <section className="relative w-full min-h-[85vh] md:min-h-screen p-3 md:p-8 flex items-center justify-center bg-background pb-24 md:pb-8" dir="rtl">
       {/* Background Card */}
       <div className="absolute inset-4 md:inset-8 z-0 rounded-[3rem] overflow-hidden">
         <Image
@@ -91,14 +91,14 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
 
       {/* Main Content (Fades out in Explore Mode) */}
       <div className={`relative z-10 w-full pt-12 md:pt-20 text-center transition-all duration-700 ${exploreMode ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
-        <h1 className="text-6xl md:text-[8rem] lg:text-[11rem] font-black text-foreground leading-[0.8] tracking-tighter mx-auto max-w-5xl flex flex-col items-center select-none py-10" dir="ltr">
-          <span className="block translate-x-3 md:translate-x-6 hover:translate-x-0 transition-transform duration-700">BEAUTY</span>
-          <div className="relative flex items-center justify-center -my-4 md:-my-10 z-10 h-16 md:h-32">
-            <span className="text-white text-5xl md:text-[8rem] lg:text-[12rem] italic font-serif font-normal drop-shadow-2xl animate-in zoom-in duration-1000">
+        <h1 className="text-4xl sm:text-6xl md:text-[8rem] lg:text-[11rem] font-black text-foreground leading-[0.85] tracking-tighter mx-auto max-w-5xl flex flex-col items-center select-none py-6 md:py-10" dir="ltr">
+          <span className="block translate-x-2 md:translate-x-6 hover:translate-x-0 transition-transform duration-700">BEAUTY</span>
+          <div className="relative flex items-center justify-center -my-2 md:-my-10 z-10 h-10 md:h-32">
+            <span className="text-white text-3xl sm:text-5xl md:text-[8rem] lg:text-[12rem] italic font-serif font-normal drop-shadow-2xl animate-in zoom-in duration-1000">
               &
             </span>
           </div>
-          <span className="block -translate-x-3 md:-translate-x-6 hover:translate-x-0 transition-transform duration-700">ELEGANCE</span>
+          <span className="block -translate-x-2 md:-translate-x-6 hover:translate-x-0 transition-transform duration-700">ELEGANCE</span>
         </h1>
         <div className="absolute left-10 md:left-32 top-1/2 transform -translate-y-1/2 hidden lg:block text-left max-w-[200px]" dir="ltr">
           <p className="text-white text-sm font-bold opacity-80 leading-tight text-right">
@@ -108,7 +108,7 @@ export default function HeroBanner({ featuredProducts = [] }: Props) {
       </div>
 
       {/* Bottom Floating Badges (Fades out in Explore Mode) */}
-      <div className={`absolute bottom-12 left-12 right-12 z-10 flex flex-col sm:flex-row justify-between items-end pb-4 transition-all duration-700 ${exploreMode ? 'opacity-0 translate-y-8 pointer-events-none' : 'opacity-100 translate-y-0'}`}>
+      <div className={`absolute bottom-8 md:bottom-12 left-4 right-4 md:left-12 md:right-12 z-10 flex flex-col sm:flex-row justify-between items-end pb-4 transition-all duration-700 ${exploreMode ? 'opacity-0 translate-y-8 pointer-events-none' : 'opacity-100 translate-y-0'}`}>
 
         {/* Right Badges (due to RTL) */}
         <div className="flex flex-col gap-4 items-start w-full sm:w-auto mb-6 sm:mb-0">

@@ -95,7 +95,7 @@ export default function ProductsPageClient({ initialProducts, categories }: { in
   }, [initialProducts, search, selectedCategory, sort, onSale]);
 
   return (
-    <div className="container mx-auto px-4 py-16" dir="rtl">
+    <div className="container mx-auto px-4 py-12 md:py-16 pb-24 md:pb-16" dir="rtl">
       <div className="mb-12 text-center">
         <h1 className="text-4xl font-black text-pink-900 dark:text-pink-200 uppercase tracking-tighter mb-2">المتجر</h1>
         <p className="text-[#ff85ba] font-bold text-xs uppercase tracking-widest">اكتشفي {filtered.length} قطعة مختارة بعناية</p>

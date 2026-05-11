@@ -23,7 +23,7 @@ const WHATSAPP_ICON = (
 
 export default function StoreFooter() {
   return (
-    <footer className="bg-secondary text-foreground py-20 px-6 w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-border" dir="rtl">
+    <footer className="bg-secondary text-foreground py-16 md:py-20 px-4 md:px-6 w-full max-w-[95%] mx-auto my-6 md:my-8 rounded-[2rem] md:rounded-[3rem] shadow-sm border border-border mb-20 md:mb-8" dir="rtl">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start gap-16 md:gap-8">
           
