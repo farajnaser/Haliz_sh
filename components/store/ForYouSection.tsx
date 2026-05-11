@@ -20,11 +20,11 @@ interface Props {
 
 export default function ForYouSection({ products }: Props) {
   return (
-    <section className="py-24 px-6 bg-background w-full" dir="rtl">
+    <section className="py-12 md:py-24 px-4 md:px-6 bg-background w-full pb-28 md:pb-24" dir="rtl">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-end mb-12 pb-4 border-b border-border">
-          <h2 className="text-4xl md:text-5xl font-black text-foreground tracking-tighter">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-foreground tracking-tighter">
             مختاراتنا لكِ
           </h2>
           <Link 
@@ -37,7 +37,7 @@ export default function ForYouSection({ products }: Props) {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
           {products.slice(0, 4).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

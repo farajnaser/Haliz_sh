@@ -22,7 +22,7 @@ export default function OffersSection({ products }: Props) {
   if (products.length === 0) return null;
 
   return (
-    <section className="py-24 px-6 w-full max-w-[95%] mx-auto my-12 rounded-[3.5rem] bg-zinc-950 dark:bg-card/50 relative overflow-hidden group/section shadow-2xl" dir="rtl">
+    <section className="py-12 md:py-24 px-4 md:px-6 w-full max-w-[95%] mx-auto my-6 md:my-12 rounded-[2rem] md:rounded-[3.5rem] bg-zinc-950 dark:bg-card/50 relative overflow-hidden group/section shadow-2xl" dir="rtl">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#ff4d94]/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#ff4d94]/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
@@ -34,10 +34,10 @@ export default function OffersSection({ products }: Props) {
               <Percent className="w-4 h-4" />
               <span className="text-[10px] font-black uppercase tracking-widest">عروض حصرية لفترة محدودة</span>
             </div>
-            <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
+            <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-none">
               تخفيضات <span className="text-[#ff4d94]">HALIZ</span>
             </h2>
-            <p className="text-gray-400 font-bold max-w-md text-lg">
+            <p className="text-gray-400 font-bold max-w-md text-base md:text-lg">
               لا تفوتي الفرصة! قطع مختارة بأسعار استثنائية لإطلالة لا تنسى.
             </p>
           </div>
@@ -53,7 +53,7 @@ export default function OffersSection({ products }: Props) {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
           {products.map((product) => (
             <div key={product.id} className="transform hover:-translate-y-2 transition-transform duration-500">
               <ProductCard product={product} />

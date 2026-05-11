@@ -14,16 +14,16 @@ const gallery = [
 
 export default function InstagramGallery() {
   return (
-    <section className="py-24 px-6 bg-muted/40 dark:bg-card w-full max-w-[95%] mx-auto my-8 rounded-[3rem] shadow-sm border border-border" dir="rtl">
+    <section className="py-12 md:py-24 px-4 md:px-6 bg-muted/40 dark:bg-card w-full max-w-[95%] mx-auto my-4 md:my-8 rounded-[2rem] md:rounded-[3rem] shadow-sm border border-border mb-20 md:mb-8" dir="rtl">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center mb-12">
           <span className="text-[#ff9ecb] font-bold tracking-[0.2em] text-xs uppercase mb-3">انستغرام &amp; تيك توك</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tighter">
+          <h2 className="text-2xl md:text-3xl lg:text-5xl font-black text-foreground tracking-tighter">
             إلهام HALIZ اليومي
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
           {gallery.map((img, i) => (
             <div key={i} className="group relative aspect-[3/4] overflow-hidden bg-gray-100 shadow-sm hover:shadow-[0_0_50px_rgba(255,158,203,0.25)] transition-all duration-500 rounded-[3rem] border border-transparent hover:border-pink-100">
               <Image
