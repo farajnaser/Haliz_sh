@@ -63,7 +63,7 @@ export default function CartDrawer() {
       closeCart();
       toast.success("تم تسجيل طلبك بنجاح!");
       
-      window.open(whatsappUrl, "_blank");
+      window.location.href = whatsappUrl;
     } catch (error) {
       console.error("Order error:", error);
       toast.error("حدث خطأ أثناء تسجيل الطلب. يرجى المحاولة مرة أخرى.");

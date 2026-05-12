@@ -91,7 +91,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       
       setIsDialogOpen(false);
       toast.success("تم تسجيل طلبك بنجاح!");
-      window.open(url, "_blank");
+      window.location.href = url;
     } catch (error) {
       console.error("Order error:", error);
       toast.error("حدث خطأ أثناء تسجيل الطلب");
