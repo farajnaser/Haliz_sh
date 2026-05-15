@@ -237,10 +237,10 @@ export default function OrdersClient({ initialOrders, partners, products }: {
 
   return (
     <div className="space-y-6" dir="rtl">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-4">
         <div>
-          <h1 className="text-2xl font-bold">الطلبات</h1>
-          <p className="text-muted-foreground text-sm">{orders.length} طلب إجمالاً</p>
+          <h1 className="text-xl md:text-2xl font-bold">الطلبات</h1>
+          <p className="text-muted-foreground text-xs md:text-sm">{orders.length} طلب إجمالاً</p>
         </div>
         
         <div className="flex flex-wrap gap-2">
@@ -452,7 +452,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
               </Dialog>
 
           <Select value={partnerFilter} onValueChange={setPartnerFilter}>
-            <SelectTrigger className="w-44 bg-background dark:bg-card border-border shadow-sm rounded-full">
+            <SelectTrigger className="w-full sm:w-44 bg-background dark:bg-card border-border shadow-sm rounded-full">
               <User className="w-4 h-4 ml-2 text-pink-400" />
               <SelectValue placeholder="بحث حسب الشريك" />
             </SelectTrigger>
@@ -465,7 +465,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
           </Select>
 
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-40 bg-background dark:bg-card border-border shadow-sm">
+            <SelectTrigger className="w-full sm:w-40 bg-background dark:bg-card border-border shadow-sm">
               <SelectValue placeholder="الحالة" />
             </SelectTrigger>
             <SelectContent>
@@ -565,7 +565,7 @@ export default function OrdersClient({ initialOrders, partners, products }: {
                   </div>
 
                   {/* Right Side: Actions */}
-                  <div className="w-full sm:w-48 bg-pink-50/30 p-5 flex flex-col items-center justify-center gap-4 border-r border-pink-50">
+                  <div className="w-full sm:w-48 bg-pink-50/30 p-4 sm:p-5 flex flex-col items-center justify-center gap-3 sm:gap-4 border-t sm:border-t-0 sm:border-r border-pink-50">
                     <div className="text-center">
                       <p className="text-xs text-muted-foreground mb-1">إجمالي الطلب</p>
                       <p className="text-2xl font-black text-pink-900">{formatPrice(order.total)}</p>

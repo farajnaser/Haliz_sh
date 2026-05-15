@@ -116,19 +116,19 @@ export default function ExpensesClient({ initialExpenses, partners = [] }: { ini
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
 
   return (
-    <div className="space-y-6" dir="rtl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4 md:space-y-6" dir="rtl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 md:gap-4">
         <div>
-          <h1 className="text-2xl font-bold">المصاريف والمدفوعات الجانبية</h1>
-          <p className="text-muted-foreground text-sm">تتبع المصاريف التشغيلية، الإعلانات، والشحن</p>
+          <h1 className="text-xl md:text-2xl font-bold">المصاريف والمدفوعات الجانبية</h1>
+          <p className="text-muted-foreground text-xs md:text-sm">تتبع المصاريف التشغيلية، الإعلانات، والشحن</p>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="bg-card px-4 py-2 rounded-2xl border shadow-sm flex flex-col items-end">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <div className="bg-card px-3 sm:px-4 py-2 rounded-2xl border shadow-sm flex flex-col items-end">
             <span className="text-[10px] text-muted-foreground font-bold">إجمالي المصاريف</span>
-            <span className="text-lg font-black text-red-500">{formatPrice(totalExpenses)}</span>
+            <span className="text-base sm:text-lg font-black text-red-500">{formatPrice(totalExpenses)}</span>
           </div>
-          <Button onClick={openAdd} className="bg-pink-500 text-white hover:bg-pink-600 gap-2 h-12 px-6 rounded-2xl shadow-lg shadow-pink-100">
-            <Plus className="w-5 h-5" /> إضافة مصروف
+          <Button onClick={openAdd} className="bg-pink-500 text-white hover:bg-pink-600 gap-2 h-10 sm:h-12 px-4 sm:px-6 rounded-2xl shadow-lg shadow-pink-100">
+            <Plus className="w-4 sm:w-5 h-4 sm:h-5" /> <span className="hidden sm:inline">إضافة مصروف</span><span className="sm:hidden">إضافة</span>
           </Button>
         </div>
       </div>

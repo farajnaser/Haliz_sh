@@ -254,8 +254,92 @@ export default function ProductsClient({ initialProducts, categories, partners }
         </button>
       </div>
 
-      {/* Products Table */}
-      <Card className="border-0 shadow-sm overflow-hidden">
+      {/* Mobile Product Cards */}
+      <div className="md:hidden space-y-3">
+        {filtered.length === 0 ? (
+          <div className="text-center py-16 bg-card rounded-3xl border border-border">
+            <Package className="w-12 h-12 mx-auto opacity-20 mb-3" />
+            <p className="font-medium text-muted-foreground">لا توجد منتجات</p>
+            <p className="text-xs text-muted-foreground mt-1">اضغط &quot;إضافة منتج&quot; للبدء</p>
+          </div>
+        ) : (
+          filtered.map((product) => (
+            <Card key={product.id} className="border-0 shadow-sm rounded-2xl overflow-hidden">
+              <CardContent className="p-3">
+                <div className="flex gap-3">
+                  {/* Product Image */}
+                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-muted flex-shrink-0 relative">
+                    {product.images[0] ? (
+                      <Image
+                        src={product.images[0]}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                        sizes="64px"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <ImageIcon className="w-5 h-5 text-muted-foreground" />
+                      </div>
+                    )}
+                  </div>
+                  {/* Product Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1">
+                          <p className="font-bold text-sm line-clamp-1">{product.nameAr || product.name}</p>
+                          {product.featured && <Star className="w-3 h-3 text-pink-500 fill-pink-500 flex-shrink-0" />}
+                        </div>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">
+                          {product.category?.nameAr || product.category?.name || "—"} · {product.sku || "—"}
+                        </p>
+                      </div>
+                      <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium flex-shrink-0 ${statusColors[product.status]}`}>
+                        {statusLabels[product.status]}
+                      </span>
+                    </div>
+                    {/* Price row */}
+                    <div className="flex items-center gap-3 mt-2">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] text-muted-foreground">بيع:</span>
+                        {product.salePrice && product.salePrice < product.retailPrice ? (
+                          <>
+                            <span className="text-xs font-bold text-pink-600">{formatPrice(product.salePrice)}</span>
+                            <span className="text-[10px] text-muted-foreground line-through">{formatPrice(product.retailPrice)}</span>
+                          </>
+                        ) : (
+                          <span className="text-xs font-bold">{formatPrice(product.retailPrice)}</span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-[10px] text-muted-foreground">ربح:</span>
+                        <span className="text-xs font-bold text-green-600 dark:text-green-400">+{formatPrice(product.profit)}</span>
+                      </div>
+                      <div className="flex items-center gap-1 mr-auto">
+                        <span className="text-[10px] text-muted-foreground">مخزون:</span>
+                        <span className={`text-xs font-bold ${product.stock <= 5 ? "text-red-500" : ""}`}>{product.stock}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Actions */}
+                <div className="flex items-center gap-1 mt-2 pt-2 border-t border-border/50">
+                  <Button variant="ghost" size="sm" className="h-8 text-xs text-muted-foreground hover:text-foreground gap-1 flex-1" onClick={() => handleEdit(product)}>
+                    <Pencil className="w-3 h-3" /> تعديل
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-8 text-xs text-muted-foreground hover:text-red-500 gap-1 flex-1" onClick={() => setDeletingId(product.id)}>
+                    <Trash2 className="w-3 h-3" /> حذف
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Products Table */}
+      <Card className="border-0 shadow-sm overflow-hidden hidden md:block">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

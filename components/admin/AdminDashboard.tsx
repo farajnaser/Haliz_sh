@@ -45,23 +45,23 @@ export default function AdminDashboard({ stats, lowStockProducts, recentOrders, 
   const netProfit = stats.totalRevenue - stats.totalExpenses;
 
   return (
-    <div className="space-y-6" dir="rtl">
+    <div className="space-y-4 md:space-y-6" dir="rtl">
       <div>
-        <h1 className="text-2xl font-bold">لوحة التحكم</h1>
-        <p className="text-muted-foreground text-sm mt-1">نظرة عامة على المتجر</p>
+        <h1 className="text-xl md:text-2xl font-bold">لوحة التحكم</h1>
+        <p className="text-muted-foreground text-xs md:text-sm mt-1">نظرة عامة على المتجر</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
         <Card className="border-0 shadow-sm rounded-3xl overflow-hidden">
-          <CardContent className="p-6">
+          <CardContent className="p-3 md:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground font-bold">إجمالي الإيرادات</p>
-                <p className="text-2xl font-black mt-1">{formatPrice(stats.totalRevenue)}</p>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold">إجمالي الإيرادات</p>
+                <p className="text-lg md:text-2xl font-black mt-1">{formatPrice(stats.totalRevenue)}</p>
               </div>
-              <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-blue-500" />
+              <div className="w-9 h-9 md:w-12 md:h-12 bg-blue-50 dark:bg-blue-900/20 rounded-xl md:rounded-2xl flex items-center justify-center">
+                <TrendingUp className="w-4 h-4 md:w-6 md:h-6 text-blue-500" />
               </div>
             </div>
           </CardContent>
@@ -71,11 +71,11 @@ export default function AdminDashboard({ stats, lowStockProducts, recentOrders, 
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground font-bold">إجمالي المصاريف</p>
-                <p className="text-2xl font-black mt-1 text-red-500">{formatPrice(stats.totalExpenses)}</p>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold">إجمالي المصاريف</p>
+                <p className="text-lg md:text-2xl font-black mt-1 text-red-500">{formatPrice(stats.totalExpenses)}</p>
               </div>
-              <div className="w-12 h-12 bg-red-50 dark:bg-red-900/20 rounded-2xl flex items-center justify-center">
-                <Receipt className="w-6 h-6 text-red-500" />
+              <div className="w-9 h-9 md:w-12 md:h-12 bg-red-50 dark:bg-red-900/20 rounded-xl md:rounded-2xl flex items-center justify-center">
+                <Receipt className="w-4 h-4 md:w-6 md:h-6 text-red-500" />
               </div>
             </div>
           </CardContent>
@@ -85,13 +85,13 @@ export default function AdminDashboard({ stats, lowStockProducts, recentOrders, 
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground font-bold">صافي الربح</p>
-                <p className={`text-2xl font-black mt-1 ${netProfit >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold">صافي الربح</p>
+                <p className={`text-lg md:text-2xl font-black mt-1 ${netProfit >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                   {formatPrice(netProfit)}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-green-50 dark:bg-green-900/20 rounded-2xl flex items-center justify-center">
-                <Wallet className="w-6 h-6 text-green-500" />
+              <div className="w-9 h-9 md:w-12 md:h-12 bg-green-50 dark:bg-green-900/20 rounded-xl md:rounded-2xl flex items-center justify-center">
+                <Wallet className="w-4 h-4 md:w-6 md:h-6 text-green-500" />
               </div>
             </div>
           </CardContent>
@@ -101,11 +101,11 @@ export default function AdminDashboard({ stats, lowStockProducts, recentOrders, 
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground font-bold">إجمالي الطلبات</p>
-                <p className="text-2xl font-black mt-1">{stats.orderCount}</p>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold">إجمالي الطلبات</p>
+                <p className="text-lg md:text-2xl font-black mt-1">{stats.orderCount}</p>
               </div>
-              <div className="w-12 h-12 bg-pink-50 dark:bg-pink-900/20 rounded-2xl flex items-center justify-center">
-                <ShoppingCart className="w-6 h-6 text-pink-500" />
+              <div className="w-9 h-9 md:w-12 md:h-12 bg-pink-50 dark:bg-pink-900/20 rounded-xl md:rounded-2xl flex items-center justify-center">
+                <ShoppingCart className="w-4 h-4 md:w-6 md:h-6 text-pink-500" />
               </div>
             </div>
           </CardContent>
@@ -122,7 +122,7 @@ export default function AdminDashboard({ stats, lowStockProducts, recentOrders, 
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {/* Low Stock Alert */}
         {lowStockProducts.length > 0 && (
           <Card className="border-0 shadow-sm border-l-4 border-l-[#ff9ecb]">

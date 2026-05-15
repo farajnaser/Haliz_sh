@@ -28,7 +28,11 @@ const navItems = [
   { href: "/admin/settings", label: "الإعدادات", icon: Settings },
 ];
 
-export default function AdminSidebar() {
+interface AdminSidebarProps {
+  onNavClick?: () => void;
+}
+
+export default function AdminSidebar({ onNavClick }: AdminSidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -47,7 +51,7 @@ export default function AdminSidebar() {
       {/* Logo */}
       <div className="flex items-center justify-between p-4 border-b h-16">
         {!collapsed && (
-          <Link href="/admin" className="flex items-center gap-2">
+          <Link href="/admin" className="flex items-center gap-2" onClick={onNavClick}>
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center">
               <Store className="w-4 h-4 text-white" />
             </div>
@@ -64,7 +68,7 @@ export default function AdminSidebar() {
         <button
           onClick={() => setCollapsed(!collapsed)}
           className={cn(
-            "p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground",
+            "p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground hidden md:block",
             collapsed && "mx-auto mt-1"
           )}
         >
@@ -81,6 +85,7 @@ export default function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onNavClick}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
                 active
