@@ -203,10 +203,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               <Plus className="w-4 h-4" />
             </Button>
           </div>
-          <div className="mr-auto flex items-center gap-2 text-xs font-bold text-muted-foreground">
-             <Package className="w-3.5 h-3.5" />
-             {product.stock} قطع متوفرة
-          </div>
+
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4">

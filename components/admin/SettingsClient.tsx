@@ -58,10 +58,10 @@ export default function SettingsClient({ settings }: { settings: Settings }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-2xl" dir="rtl">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6 max-w-2xl" dir="rtl">
       <div>
-        <h1 className="text-2xl font-bold">الإعدادات</h1>
-        <p className="text-muted-foreground text-sm">إعدادات المتجر العامة</p>
+        <h1 className="text-xl md:text-2xl font-bold">الإعدادات</h1>
+        <p className="text-muted-foreground text-xs md:text-sm">إعدادات المتجر العامة</p>
       </div>
 
       <Card className="border-0 shadow-sm">
@@ -69,7 +69,7 @@ export default function SettingsClient({ settings }: { settings: Settings }) {
           <CardTitle className="text-base flex items-center gap-2"><Store className="w-4 h-4" />معلومات المتجر</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>اسم المتجر (EN) *</Label>
               <Input {...register("storeName")} />

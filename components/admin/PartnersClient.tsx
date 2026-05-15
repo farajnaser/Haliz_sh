@@ -113,29 +113,29 @@ export default function PartnersClient({ initialPartners }: Props) {
   };
 
   return (
-    <div className="space-y-6" dir="rtl">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-6" dir="rtl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">إدارة الشركاء</h1>
-          <p className="text-muted-foreground">أضف أسماء الشركاء والمساهمين لتوزيع الأرباح عليهم.</p>
+          <h1 className="text-xl md:text-2xl font-bold">إدارة الشركاء</h1>
+          <p className="text-muted-foreground text-xs md:text-sm">أضف أسماء الشركاء والمساهمين لتوزيع الأرباح عليهم.</p>
         </div>
-        <Button onClick={() => setIsAddOpen(true)} className="bg-pink-500 hover:bg-pink-600 gap-2">
+        <Button onClick={() => setIsAddOpen(true)} className="bg-pink-500 hover:bg-pink-600 gap-2 text-xs md:text-sm">
           <Plus className="w-4 h-4" />
-          إضافة شريك جديد
+          <span className="hidden sm:inline">إضافة شريك جديد</span><span className="sm:hidden">إضافة</span>
         </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {partners.map((partner) => (
           <Card key={partner.id} className="group hover:border-pink-200 transition-colors shadow-sm border border-border bg-card">
-            <CardContent className="p-5">
+              <CardContent className="p-4 md:p-5">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center text-pink-600 dark:text-pink-400">
                     <User className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg">{partner.name}</h3>
+                    <h3 className="font-bold text-sm md:text-lg">{partner.name}</h3>
                     <div className="flex flex-col gap-1 mt-1">
                       {partner.email && (
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -152,7 +152,7 @@ export default function PartnersClient({ initialPartners }: Props) {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                <div className="flex gap-1">
                   <button 
                     onClick={() => {
                       setSelectedPartner(partner);

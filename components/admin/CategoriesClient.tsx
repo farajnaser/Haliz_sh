@@ -94,18 +94,18 @@ export default function CategoriesClient({ initialCategories }: { initialCategor
   };
 
   return (
-    <div className="space-y-6" dir="rtl">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-6" dir="rtl">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">الفئات</h1>
-          <p className="text-muted-foreground text-sm">{categories.length} فئة</p>
+          <h1 className="text-xl md:text-2xl font-bold">الفئات</h1>
+          <p className="text-muted-foreground text-xs md:text-sm">{categories.length} فئة</p>
         </div>
-        <Button onClick={openAdd} className="bg-gradient-to-r from-pink-500 to-rose-600 text-white gap-2">
-          <Plus className="w-4 h-4" /> إضافة فئة
+        <Button onClick={openAdd} className="bg-gradient-to-r from-pink-500 to-rose-600 text-white gap-2 text-xs md:text-sm">
+          <Plus className="w-4 h-4" /> <span className="hidden sm:inline">إضافة فئة</span><span className="sm:hidden">إضافة</span>
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
         {categories.length === 0 ? (
           <div className="col-span-3 text-center py-12 text-muted-foreground">
             <Tag className="w-12 h-12 mx-auto opacity-30 mb-3" />
@@ -119,7 +119,7 @@ export default function CategoriesClient({ initialCategories }: { initialCategor
                   <Image src={cat.image} alt={cat.name} fill className="object-cover transition-transform group-hover:scale-105" sizes="400px" />
                 </div>
               )}
-              <CardContent className="p-4">
+              <CardContent className="p-3 md:p-4">
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="font-semibold">{cat.nameAr || cat.name}</h3>
@@ -147,7 +147,7 @@ export default function CategoriesClient({ initialCategories }: { initialCategor
             <DialogTitle>{editing ? "تعديل الفئة" : "إضافة فئة جديدة"}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>الاسم (EN) *</Label>
                 <Input {...register("name")} placeholder="Category Name" />
