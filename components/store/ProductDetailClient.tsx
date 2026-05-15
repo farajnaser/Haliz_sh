@@ -149,7 +149,6 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         </div>
         <div>
           <h1 className="text-3xl font-bold">{product.nameAr || product.name}</h1>
-          {product.sku && <p className="text-sm text-muted-foreground mt-1">SKU: {product.sku}</p>}
         </div>
 
         <div className="flex flex-col gap-1 py-4 border-y border-border">
@@ -182,7 +181,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         ) : null}
 
         <div className="flex items-center gap-6 p-4 bg-muted/30 rounded-2xl border border-border">
-          <span className="text-sm font-black text-muted-foreground">الكمية المطلوبة:</span>
+          <span className="text-sm font-black text-muted-foreground">الكمية:</span>
           <div className="flex items-center gap-4">
             <Button 
               variant="outline" 
@@ -214,7 +213,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             onClick={handleAddToCart}
           >
             <ShoppingCart className="w-6 h-6" />
-            {product.stock === 0 ? "نفذ من المخزون" : "أضف للسلة"}
+            {"أضف للسلة"}
           </Button>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>

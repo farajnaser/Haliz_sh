@@ -17,7 +17,7 @@ export default function WhatsAppSection() {
               <h2 className="text-2xl font-bold">اطلب عبر واتساب</h2>
             </div>
             <p className="text-green-100 max-w-md">
-              تواصل معنا مباشرة عبر واتساب لطلب أي منتج أو الاستفسار عن التوفر والأسعار
+              تواصل معنا مباشرة عبر واتساب لطلب أي منتج أو الاستفسار عن الأسعار
             </p>
             <div className="flex flex-wrap gap-4 text-sm text-green-100">
               <div className="flex items-center gap-1.5">

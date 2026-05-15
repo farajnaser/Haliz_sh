@@ -321,6 +321,44 @@ export default function ProductsClient({ initialProducts, categories, partners }
                         <span className={`text-xs font-bold ${product.stock <= 5 ? "text-red-500" : ""}`}>{product.stock}</span>
                       </div>
                     </div>
+
+                    {/* Partners breakdown for mobile */}
+                    {product.owners && product.owners.length > 0 && (
+                      <div className="mt-3 pt-3 border-t border-dashed border-border">
+                        <p className="text-[10px] font-black text-muted-foreground mb-2 flex items-center gap-1">
+                          <Users className="w-3 h-3" /> تفاصيل الشركاء:
+                        </p>
+                        <div className="space-y-1.5">
+                          {(() => {
+                            const totalContribution = product.owners.reduce((acc, o) => acc + o.amount, 0);
+                            return product.owners.map((o, idx) => {
+                              const sharePercent = totalContribution > 0 ? (o.amount / totalContribution) : 0;
+                              const totalQtySold = ((product as any).orderItems || []).reduce((acc: number, item: any) => acc + item.quantity, 0);
+                              const partnerCapitalEarned = (product.wholesalePrice * sharePercent) * totalQtySold;
+                              const partnerProfitEarned = (product.totalSalesProfit || 0) * sharePercent;
+                              const partnerEarned = partnerCapitalEarned + partnerProfitEarned;
+                              const partnerPaid = o.paidProfit || 0;
+                              const partnerRemaining = partnerEarned - partnerPaid;
+
+                              return (
+                                <div key={idx} className="flex flex-col gap-0.5 bg-muted/30 p-2 rounded-lg">
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-[11px] font-black">{(o as any).partner?.name || "شريك"}</span>
+                                    <span className="text-[10px] text-pink-500 font-bold">{(sharePercent * 100).toFixed(0)}%</span>
+                                  </div>
+                                  <div className="flex justify-between text-[10px]">
+                                    <span className="text-muted-foreground">المستحق: <b className="text-foreground">{formatPrice(partnerEarned)}</b></span>
+                                    <span className={partnerRemaining > 0 ? "text-pink-600 font-black" : "text-green-600"}>
+                                      {partnerRemaining > 0 ? `متبقي: ${formatPrice(partnerRemaining)}` : "تمت التسوية ✅"}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            });
+                          })()}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {/* Actions */}
